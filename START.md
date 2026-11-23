@@ -10,13 +10,13 @@ Paste this whole file into Claude Code, or save it in your theme folder (next to
 I'm building a portfolio Shopify theme to get hired as a Shopify developer. CLAUDE.md has the rules and PLAN.md has the phases. This file adds the brand, the products, the homepage plan, and your first tasks. Everything here is made up and only for display.
 
 ## The brand
-- **Name:** Neelkora ("neel" = indigo, "kora" = raw, unbleached cotton)
+- **Name:** Fern & Fable (fern and leaf motifs are a classic of block printing, and every piece carries a story, its fable, from the carver, the dyer and the printer). Renamed from the working name Neelkora.
 - **One line:** Hand-block-printed cotton linens for Indian tables and homes.
 - **Sells:** home textiles in 5 collections: Kitchen, Table, Bed, Living, Gifts. Prices from ₹599 to ₹3,299.
 - **Audience:** 25–40, living in Indian cities, setting up first homes, love having friends over, buy thoughtful gifts, find brands on Instagram.
 - **Personality:** bold, warm, handmade. **Must not feel:** beige and minimal, kitschy, or like a souvenir shop.
 - **Story:** every piece is printed by hand with carved wooden blocks. Showing the craft (blocks, dye, hands, fabric) is the brand's big visual idea.
-- **Demo labels:** footer line "Demo store: a portfolio project by [your name]. Neelkora is not a real brand." Any reviews are labeled as sample reviews.
+- **Demo labels:** footer line "Demo store: a portfolio project by [your name]. Fern & Fable is not a real brand." Any reviews are labeled as sample reviews.
 
 ## Look and feel (starting point; DESIGN.md makes it final)
 - **Color:** deep indigo, madder red and turmeric yellow on an off-white like raw cotton. The colors come from the dyes.
@@ -63,6 +63,23 @@ Other pages: collection, product, cart drawer, search, About (the craft story), 
 | 15 | The Dinner Party Box | Gifts | - | 2,799 | on sale, in the Indigo Table look |
 | 16 | The Housewarming Kitchen Kit | Gifts | - | 1,799 | on sale |
 
+**Added later (rows 17 to 26 in products.csv):**
+
+| # | Product | Collection | Options | Price (₹) | Notes |
+|---|---|---|---|---|---|
+| 17 | Dabu Tea Towels (Set of 3) | Kitchen | - | 749 | new |
+| 18 | Block Print Roti Cover | Kitchen | - | 599 | bestseller |
+| 19 | Indigo Coasters (Set of 6) | Table | - | 649 | in the Indigo Table look |
+| 20 | Winter Berry Napkins (Set of 4) | Table | - | 649 | festive, pairs with the Winter Berry runner |
+| 21 | Block Print Star Ornaments (Set of 6) | Gifts | - | 599 | festive, the Christmas hint |
+| 22 | Sanganeri Pillow Covers (Pair) | Bed | - | 1,149 | new |
+| 23 | Jaipuri Cotton Razai | Bed | Size: Single, Double | 2,599–3,199 | Double has only 3 left (tests low stock) |
+| 24 | Kantha Floor Cushion Cover | Living | - | 1,399 | |
+| 25 | Block Print Curtain Panel | Living | Length: 5 ft, 7 ft | 1,499–1,799 | |
+| 26 | The Festive Host Box | Gifts | - | 3,099 | on sale (compare-at 3,496), festive |
+
+Gift card: create "Fern & Fable Gift Card" in the admin (Products → Gift cards), ₹500 to ₹5,000. It is not in the CSV.
+
 **Tags to build collections and sections from:**
 - `bestseller` and `new`: the Bestsellers / New arrivals tabs
 - `festive`: the Festive Edit banner and collection
@@ -70,14 +87,14 @@ Other pages: collection, product, cart drawer, search, About (the craft story), 
 - `look-indigo-table`: the Shop the look products ("Add the whole look" adds the runner, napkins and placemats, not the gift box)
 - `sale`: a Sale collection. Sale badges must come from the compare-at price, not from this tag.
 
-**Test cases included on purpose:** the Kantha Stripe Apron in Sage is sold out (to test sold-out states). Four products have a compare-at price (to test sale badges). The tablecloth's long option names stress-test the variant picker layout.
+**Test cases included on purpose:** the Kantha Stripe Apron in Sage is sold out (to test sold-out states). Five products have a compare-at price (to test sale badges). The tablecloth's long option names stress-test the variant picker layout.
 
 ---
 
 ## Your tasks, Claude
 
 ### Step 1: set up (no theme code yet)
-1. In CLAUDE.md and PLAN.md, replace `[BRAND]` with `Neelkora`.
+1. In CLAUDE.md and PLAN.md, replace `[BRAND]` with `Fern & Fable` (done).
 2. In CLAUDE.md, under Commands, add: "At the start of every session, run `git pull`. Shopify commits theme-editor changes to the connected GitHub branch."
 3. Read the Skeleton theme and summarize its structure in 10 lines.
 4. Stop and tell me to run `/impeccable init`.

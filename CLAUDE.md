@@ -1,14 +1,32 @@
 # CLAUDE.md
 
 ## Project
-A custom Shopify theme (Online Store 2.0) built on Shopify's Skeleton theme, for **[BRAND]**, a made-up D2C brand. It's my portfolio piece for Shopify developer jobs.
+A custom Shopify theme (Online Store 2.0) built on Shopify's Skeleton theme, for **Fern & Fable**, a made-up D2C brand of hand block printed cotton linens for Indian homes. It's my portfolio piece for Shopify developer jobs.
 
 Goal: a bold, magazine-style storefront that grabs attention but is still fast, accessible, and fully editable by a store owner in the theme editor.
 
 Read these before any design work:
+- `START.md`: brand, products, homepage plan (the original brief)
 - `PRODUCT.md`: brand, audience, purpose (written by `/impeccable init`)
 - `DESIGN.md`: colors, type, spacing, motion. The single source for every CSS token.
 - `PLAN.md`: build phases and progress so far.
+- `products.csv`: the product catalog I import into Shopify. Use these products for every example.
+
+## Base theme
+- Built on **Skeleton v1.0.0** (sections + JSON templates). Skeleton's newer `main` branch (v2) is block-first with no sections, no JSON templates and no presets, which breaks the "rebuild every page in the theme editor" goal. Don't migrate to it.
+
+## Skill precedence
+- `.claude/skills/landing-page-design/SKILL.md` applies to all UI work, with these overrides from my brief:
+  - Fonts: one display serif with character (headlines) + one sans for everything else (Manrope or Geist). This replaces the skill's one typeface rule.
+  - Tailwind classes in the skill are only a reference for values. Use its type scale, spacing tokens, radius values and motion curve as CSS custom properties. No Tailwind.
+  - The skill's light theme hero gradient (black to gray) is replaced by whatever DESIGN.md decides.
+  - Product data (titles, option values like "4-seater") is exempt from the no hyphen copy rule. Theme copy is not.
+- Order when rules clash: my message > CLAUDE.md > DESIGN.md > SKILL.md > other skills.
+
+## Seasonal layer: a hint of Christmas
+- The store launches near Christmas, so add a subtle festive layer: Festive Edit in the announcement bar and gift finder, a winter accent in the hero and one small seasonal effect (for example block printed stars drifting slowly).
+- It must be a hint, never a theme takeover: no red and green overload, no snow over the whole page, no sound.
+- Everything seasonal sits behind one theme setting (`festive_mode`, on/off) so the store owner turns it off in January. It respects reduced motion.
 
 ## Stack rules
 - Use only Liquid, HTML, CSS and plain JavaScript (custom elements). No React, jQuery, Tailwind or CSS frameworks. No build step unless I approve one.
@@ -24,6 +42,7 @@ Read these before any design work:
 
 ## Motion rules
 - Try CSS first: transitions, scroll-snap, scroll-driven animations. Use GSAP (ScrollTrigger, SplitText) only for the 2–3 signature moments, and load it only in those sections. GSAP files go in `assets/` (copied minified builds), not a CDN.
+- 3D (approved): three.js, minified ES module build copied into `assets/`, used only for two signature moments: the hero cloth (a printed runner unfurling onto the table) and the craft story's carved wooden block. Load it only after the hero image (the LCP) has painted, and only on the home page. Low power phones, no WebGL and reduced motion get the still image or video instead. Product pages use Shopify's native 3D media (`model_viewer_tag`) when a product has a GLB model.
 - Every animation respects `prefers-reduced-motion: reduce`: show the end state with no movement.
 - No hijacking the scroll, no autoplay sound, no layout jumps caused by animation, and no animation that blocks reading or clicking.
 
@@ -40,6 +59,7 @@ Read these before any design work:
 - **web-design-guidelines**: accessibility and usability audit at the end of each phase.
 
 ## Commands
+- At the start of every session, run `git pull`. Shopify commits theme-editor changes to the connected GitHub branch.
 - I run the dev server myself in another terminal (`shopify theme dev`). Preview: http://127.0.0.1:9292. If it isn't responding, ask me. Don't start a second one, and never write the store password into any file.
 - Lint: `shopify theme check`. It must show zero errors before every commit.
 - Upload a copy: `shopify theme push --unpublished`

@@ -1,4 +1,4 @@
-# PLAN.md: [BRAND] Shopify theme
+# PLAN.md: Fern & Fable Shopify theme
 
 There are 8 phases (0–7). Do one per Claude Code session and type `/clear` between phases. Start each session with:
 
@@ -30,24 +30,21 @@ Left out on purpose:
 ## Phase 0: Setup (one evening)
 
 ### 0.1 Install
-- [ ] Node.js 20+ (LTS version) and Git
-- [ ] Claude Code
+- [x] Node.js 20+ (LTS version) and Git
+- [x] Claude Code
   - macOS / Linux / WSL: `curl -fsSL https://claude.ai/install.sh | bash`
   - Windows PowerShell: `irm https://claude.ai/install.ps1 | iex` (also install Git for Windows)
-- [ ] Shopify CLI 3.84.0 or newer. Older versions no longer work with password-protected dev stores.
+- [x] Shopify CLI 3.84.0 or newer (5.0.2 installed). Older versions no longer work with password-protected dev stores.
   ```bash
   npm install -g @shopify/cli@latest
   shopify version
   ```
 
 ### 0.2 Create the theme
-```bash
-shopify theme init brand-theme     # copies Shopify's Skeleton theme
-cd brand-theme
-git init
-git add -A && git commit -m "chore: start from Skeleton theme"
-```
-- [ ] Copy `CLAUDE.md` and `PLAN.md` into this folder. Replace `[BRAND]` once you've picked a name.
+- [x] Theme lives at the root of the `Fern & Fable` folder, copied from Skeleton **v1.0.0** (sections + JSON templates; see CLAUDE.md "Base theme" for why not v2). Git initialised on `main`.
+- [x] `CLAUDE.md`, `PLAN.md`, `START.md` and `products.csv` in this folder. Brand set to Fern & Fable.
+- [x] `landing-page-design` skill installed at `.claude/skills/landing-page-design/SKILL.md`.
+- [ ] Create a free Shopify Partner account and a development store (only I can do this).
 - [ ] Open a second terminal, start the dev server, and leave it running:
   ```bash
   shopify theme dev --store your-store --store-password "your-store-password"
@@ -106,7 +103,7 @@ Constraints: Shopify Online Store 2.0 theme, Liquid + plain JS, Lighthouse mobil
 
 Prompts, in this order:
 1. `/impeccable init`: answer its questions using the brief. This writes PRODUCT.md.
-2. `Propose 2 very different visual directions for [BRAND]: font pairing, color palette with hex values, photo style, how things move, and a rough sketch of the hero for each. No theme code yet.` Pick one, or mix them.
+2. `Propose 2 very different visual directions for Fern & Fable: font pairing, color palette with hex values, photo style, how things move, and a rough sketch of the hero for each. No theme code yet.` Pick one, or mix them.
 3. `Write DESIGN.md for the chosen direction: color tokens (with contrast notes), type sizes, spacing scale, corner radii, shadows, motion (durations, easing, what moves and what doesn't), and notes on components. This will be the source for all CSS tokens.`
 4. `/impeccable shape the homepage around these signature moments: [list]. Plan the order of sections, the text for each one, and where motion goes.`
 
@@ -133,6 +130,8 @@ When done: run shopify theme check, take playwright-cli screenshots of http://12
 ## Phase 3: Signature homepage (4–6 days)
 
 Go big on 2–3 of these. Keep the rest clean and simple.
+
+Fern & Fable picks (from START.md): ★ hero with a three.js cloth unfurling onto the table, ★ product reels, ★ Shop the look "The Indigo Table", and the sticky craft story with a 3D carved block. Plus the landing-page-design skill's tagline reveal section, and the `festive_mode` Christmas hint (see CLAUDE.md).
 
 - [ ] Hero: headline that animates in letter by letter (GSAP SplitText) over a full-width video or image, or one huge product photo with layers that move at different speeds as you scroll
 - [ ] Scrolling strip of brand claims or press quotes (CSS only; it stops on hover and for people who turn off motion)
