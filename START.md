@@ -16,7 +16,7 @@ I'm building a portfolio Shopify theme to get hired as a Shopify developer. CLAU
 - **Audience:** 25–40, living in Indian cities, setting up first homes, love having friends over, buy thoughtful gifts, find brands on Instagram.
 - **Personality:** bold, warm, handmade. **Must not feel:** beige and minimal, kitschy, or like a souvenir shop.
 - **Story:** every piece is printed by hand with carved wooden blocks. Showing the craft (blocks, dye, hands, fabric) is the brand's big visual idea.
-- **Demo labels:** footer line "Demo store: a portfolio project by [your name]. Fern & Fable is not a real brand." Any reviews are labeled as sample reviews.
+- **Demo labels:** footer line "Demo store: a portfolio project. Fern & Fable is not a real brand." No personal name anywhere on the site. Any reviews are labeled as sample reviews.
 
 ## Look and feel (starting point; DESIGN.md makes it final)
 - **Color:** deep indigo, madder red and turmeric yellow on an off-white like raw cotton. The colors come from the dyes.

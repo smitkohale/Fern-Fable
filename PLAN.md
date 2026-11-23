@@ -77,8 +77,9 @@ Optional: stop the toolkit sending usage data to Shopify:
 - macOS / Linux: `mkdir -p ~/.config/shopify-ai-toolkit && touch ~/.config/shopify-ai-toolkit/opt-out`
 - Windows PowerShell: `New-Item -ItemType File -Force "$HOME\.config\shopify-ai-toolkit\opt-out"`
 
-- [ ] Type `/` in Claude Code and check that `impeccable`, `playwright-cli`, `web-design-guidelines` and the Shopify toolkit skills all appear.
-- [ ] First prompt: `Read CLAUDE.md and PLAN.md. Explain the Skeleton theme's folder structure to me in 10 lines, then stop.`
+- [x] Skipped: Impeccable, playwright-cli, web-design-guidelines and the Shopify toolkit are not installed. Claude covers them: design work by hand from DESIGN.md, screenshots with the app's built-in browser, Liquid checks with `shopify theme check`. Wherever this plan says `/impeccable …` or `playwright-cli`, do the same job that way.
+- [x] (was) Type `/` in Claude Code and check that `impeccable`, `playwright-cli`, `web-design-guidelines` and the Shopify toolkit skills all appear.
+- [x] First prompt: `Read CLAUDE.md and PLAN.md. Explain the Skeleton theme's folder structure to me in 10 lines, then stop.`
 
 ---
 
@@ -86,7 +87,7 @@ Optional: stop the toolkit sending usage data to Shopify:
 
 Decide what will make the site memorable before writing any code.
 
-- [ ] Pick a made-up brand and a category with 8–15 products (coffee, skincare, sneakers, streetwear, audio...).
+- [x] Pick a made-up brand and a category with 8–15 products (coffee, skincare, sneakers, streetwear, audio...).
 - [ ] Collect 5–8 sites you like (Awwwards e-commerce, Godly, premium Shopify themes). Write one line on what you like about each: type, layout, motion or color. Use them for ideas only; don't copy.
 - [ ] Get product photos in one consistent style (free stock photos or AI-generated). A consistent style matters more than perfect photos.
 
@@ -108,6 +109,10 @@ Prompts, in this order:
 4. `/impeccable shape the homepage around these signature moments: [list]. Plan the order of sections, the text for each one, and where motion goes.`
 
 Phase 1 is done when PRODUCT.md and DESIGN.md exist and you'd be proud to show the direction.
+
+- [x] PRODUCT.md written from START.md.
+- [x] Direction chosen: "The Dye House" (DESIGN.md section 1). DESIGN.md written, homepage plan in DESIGN.md section 11.
+- [ ] Product photos and videos (my checklist in START.md).
 
 ---
 
