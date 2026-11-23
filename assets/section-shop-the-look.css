@@ -1,0 +1,386 @@
+/* Shop the look. Prefix: .look */
+
+.look {
+  display: block;
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+}
+
+.look__inner {
+  display: grid;
+  gap: var(--space-500);
+  align-items: center;
+}
+
+@media (min-width: 990px) {
+  .look__inner {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    gap: var(--space-800);
+  }
+}
+
+/* ---------- Photo and hotspots ---------- */
+.look__frame {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  background-color: var(--color-surface);
+}
+
+@media (min-width: 750px) {
+  .look__frame {
+    aspect-ratio: 5 / 4;
+  }
+}
+
+.look__image,
+.look__placeholder {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.look__placeholder {
+  fill: color-mix(in srgb, var(--color-foreground) 22%, transparent);
+}
+
+/* Centred on its point with margins, not a transform: a transform here would
+   trap the phone sheet (position: fixed) inside the hotspot. */
+.look__hotspot {
+  position: absolute;
+  top: var(--y);
+  left: var(--x);
+  z-index: 2;
+  width: var(--space-400);
+  height: var(--space-400);
+  margin: calc(var(--space-200) * -1) 0 0 calc(var(--space-200) * -1);
+}
+
+.look__hotspot.is-open {
+  z-index: 5;
+}
+
+.look__dot {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--space-400);
+  height: var(--space-400);
+  padding: 0;
+  border: 2px solid var(--color-kora);
+  border-radius: var(--radius-full);
+  background-color: var(--color-indigo);
+  color: var(--color-kora);
+  box-shadow: var(--shadow-float);
+  transition: background-color var(--dur-hover) var(--ease-out),
+    color var(--dur-hover) var(--ease-out),
+    transform var(--dur-hover) var(--ease-out);
+}
+
+/* 44px touch target around the 32px dot */
+.look__dot::before {
+  content: '';
+  position: absolute;
+  inset: calc(var(--space-75) * -1 + var(--space-25) * -1);
+}
+
+/* A ring that pulses once when the photo first appears */
+.look__dot::after {
+  content: '';
+  position: absolute;
+  inset: calc(var(--space-25) * -1);
+  border: 2px solid var(--color-kora);
+  border-radius: var(--radius-full);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.look__dot:hover,
+.look__hotspot.is-highlighted .look__dot,
+.look__hotspot.is-open .look__dot {
+  background-color: var(--color-turmeric);
+  color: var(--color-indigo);
+  transform: scale(1.08);
+}
+
+.look__dot:active {
+  transform: scale(0.98);
+}
+
+@keyframes look-pulse {
+  from {
+    opacity: 0.9;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(1.9);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .look__media.is-revealed .look__dot::after {
+    animation: look-pulse 1200ms var(--ease-out) 2;
+    animation-delay: 500ms;
+  }
+}
+
+/* ---------- Product card beside a dot ---------- */
+.look__card {
+  position: absolute;
+  top: 50%;
+  width: 288px;
+  padding: var(--space-100);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  box-shadow: var(--shadow-float);
+  opacity: 0;
+  transform: translateY(calc(-50% + var(--space-75)));
+  transition: opacity var(--dur-move) var(--ease-out),
+    transform var(--dur-move) var(--ease-out);
+}
+
+.look__card.is-visible {
+  opacity: 1;
+  transform: translateY(-50%);
+}
+
+.look__card[hidden] {
+  display: none;
+}
+
+.look__hotspot--right .look__card {
+  left: calc(100% + var(--space-100));
+}
+
+.look__hotspot--left .look__card {
+  right: calc(100% + var(--space-100));
+}
+
+/* Phones: the card becomes a sheet along the bottom of the screen. */
+@media (max-width: 749px) {
+  .look__card,
+  .look__hotspot--right .look__card,
+  .look__hotspot--left .look__card {
+    position: fixed;
+    top: auto;
+    right: var(--page-gutter);
+    bottom: var(--space-200);
+    left: var(--page-gutter);
+    width: auto;
+    transform: translateY(var(--space-200));
+  }
+
+  .look__card.is-visible {
+    transform: none;
+  }
+}
+
+.look__card-body {
+  display: grid;
+  grid-template-columns: var(--space-900) minmax(0, 1fr) auto;
+  gap: var(--space-100);
+  align-items: start;
+}
+
+.look__card-media {
+  display: block;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  background-color: var(--color-surface);
+}
+
+.look__card-media img,
+.look__card-placeholder {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.look__card-info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-50);
+}
+
+.look__card-title a {
+  text-decoration: none;
+}
+
+.look__card-title a:hover {
+  text-decoration: underline;
+}
+
+.look__card-info s {
+  margin-inline-start: var(--space-50);
+}
+
+.look__card-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--tap-target);
+  height: var(--tap-target);
+  margin: calc(var(--space-100) * -1) calc(var(--space-100) * -1) 0 0;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--color-muted-text);
+}
+
+.look__card-close:hover {
+  color: var(--color-foreground);
+}
+
+.look__card-close .icon {
+  width: var(--space-200);
+  height: var(--space-200);
+}
+
+.look__card-actions {
+  margin-block-start: var(--space-100);
+}
+
+/* Quick add sits in the card's flow here, always visible. */
+.look__card .quick-add {
+  position: relative;
+  inset: auto;
+  opacity: 1;
+  transform: none;
+}
+
+.look__card-sold-out {
+  margin-block-start: var(--space-100);
+}
+
+/* ---------- Text, list, total ---------- */
+.look__content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-200);
+}
+
+.look__list {
+  display: flex;
+  flex-direction: column;
+  margin: var(--space-200) 0 0;
+  padding: 0;
+  list-style: none;
+  border-block-start: 1px solid var(--color-border);
+}
+
+.look__item {
+  display: grid;
+  grid-template-columns: var(--space-400) minmax(0, 1fr) auto;
+  gap: var(--space-100);
+  align-items: center;
+  padding: var(--space-100) var(--space-75);
+  border-block-end: 1px solid var(--color-border);
+  transition: background-color var(--dur-hover) var(--ease-out);
+}
+
+.look__item.is-highlighted {
+  background-color: var(--color-surface);
+}
+
+.look__item-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--space-300);
+  height: var(--space-300);
+  border-radius: var(--radius-full);
+  background-color: var(--color-indigo);
+  color: var(--color-kora);
+  letter-spacing: 0;
+}
+
+.look__item-link {
+  text-decoration: none;
+}
+
+.look__item-link:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.look__item-price {
+  color: var(--color-muted-text);
+}
+
+.look__form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-200);
+  margin-block-start: var(--space-200);
+}
+
+.look__total {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-200);
+}
+
+.look__total-price {
+  color: var(--color-heading);
+}
+
+.look__button {
+  width: 100%;
+}
+
+.look__button .icon {
+  width: var(--space-300);
+  height: var(--space-300);
+}
+
+.look__button.is-added {
+  background-color: var(--color-success);
+  border-color: var(--color-success);
+  color: var(--color-kora);
+}
+
+.look__status {
+  color: var(--color-accent);
+}
+
+.look__status[hidden] {
+  display: none;
+}
+
+@media (min-width: 750px) {
+  .look__button {
+    width: auto;
+    align-self: flex-start;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .look__card,
+  .look__card.is-visible {
+    transform: translateY(-50%);
+    transition-property: opacity;
+  }
+
+  .look__dot {
+    transition-property: background-color, color;
+  }
+
+  .look__dot,
+  .look__dot:hover,
+  .look__hotspot.is-highlighted .look__dot,
+  .look__hotspot.is-open .look__dot {
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) and (max-width: 749px) {
+  .look__card,
+  .look__card.is-visible {
+    transform: none;
+  }
+}

@@ -210,6 +210,22 @@
       "text_info": "Each line here is a line on the page (two lines or more). Wrap words in *stars* to give them the accent colour.",
       "link_label": "Link label",
       "link": "Link"
+    },
+    "shop_the_look": {
+      "name": "Shop the look",
+      "card_color_scheme": "Product card color scheme",
+      "image": "Image",
+      "image_info": "A styled photo, 5:4 on desktop. Place each dot with the sliders in its block.",
+      "caption": "Caption",
+      "heading": "Heading",
+      "text": "Text",
+      "button_label": "Button label",
+      "hotspot": "Product dot",
+      "product": "Product",
+      "x": "Across (from the left)",
+      "y": "Down (from the top)",
+      "include_in_look": "Include in the whole look",
+      "include_in_look_info": "Turn off for things like gift boxes that already contain the other pieces."
     }
   }
 }

@@ -120,12 +120,78 @@
         "link_label": "Read the craft story",
         "link": ""
       }
+    },
+    "shop-the-look": {
+      "type": "shop-the-look",
+      "blocks": {
+        "spot-ajrakh-table": {
+          "type": "hotspot",
+          "settings": {
+            "product": "ajrakh-table-runner",
+            "x": 48,
+            "y": 46,
+            "include_in_look": true
+          }
+        },
+        "spot-indigo-dabu": {
+          "type": "hotspot",
+          "settings": {
+            "product": "indigo-dabu-napkins-set-of-4",
+            "x": 26,
+            "y": 64,
+            "include_in_look": true
+          }
+        },
+        "spot-paisley-placemats": {
+          "type": "hotspot",
+          "settings": {
+            "product": "paisley-placemats-set-of-6",
+            "x": 70,
+            "y": 62,
+            "include_in_look": true
+          }
+        },
+        "spot-indigo-coasters": {
+          "type": "hotspot",
+          "settings": {
+            "product": "indigo-coasters-set-of-6",
+            "x": 62,
+            "y": 30,
+            "include_in_look": true
+          }
+        },
+        "spot-the-dinner": {
+          "type": "hotspot",
+          "settings": {
+            "product": "the-dinner-party-box",
+            "x": 84,
+            "y": 80,
+            "include_in_look": false
+          }
+        }
+      },
+      "block_order": [
+        "spot-ajrakh-table",
+        "spot-indigo-dabu",
+        "spot-paisley-placemats",
+        "spot-indigo-coasters",
+        "spot-the-dinner"
+      ],
+      "settings": {
+        "color_scheme": "scheme-kora-2",
+        "card_color_scheme": "scheme-kora",
+        "caption": "Shop the look",
+        "heading": "The Indigo Table",
+        "text": "Runner, napkins, placemats and coasters, styled for six.",
+        "button_label": "Add the whole look"
+      }
     }
   },
   "order": [
     "hero",
     "collection-tiles",
     "product-tabs",
-    "tagline-reveal"
+    "tagline-reveal",
+    "shop-the-look"
   ]
 }

@@ -144,7 +144,7 @@ Fern & Fable picks (from START.md): ★ hero with a three.js cloth unfurling ont
 - [ ] Scroll story: the section stays on screen while the product changes as you scroll, in 3–4 steps (GSAP ScrollTrigger)
 - [ ] Featured collection as a sideways-scrolling row (CSS scroll-snap) with quick add
 - [ ] Magazine-style image + text with huge numbers and mixed type sizes
-- [ ] Shoppable lookbook: dots on a photo that open product cards
+- [x] Shop the look, The Indigo Table: numbered dots open product cards with quick add (bottom sheet on phones), matching list, total and "Add the whole look" (items[] form, works without JS)
 - [x] Shop by collection: staggered row of 5 tiles, hover and focus react, swipe row on phones
 - [x] Bestsellers / New arrivals tabs: product card (second photo on hover, sale badge from compare at price, sold out), quick add with variant chips, header cart count
 - [ ] Newsletter block with a playful small animation

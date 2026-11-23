@@ -97,6 +97,20 @@
       "view_all": "View all {{ title }}",
       "empty": "New pieces are on the way. Browse the full collection meanwhile.",
       "empty_link": "Browse all products"
+    },
+    "shop_the_look": {
+      "show_product": "Show {{ title }}",
+      "close": "Close",
+      "total": {
+        "one": "{{ count }} piece",
+        "other": "{{ count }} pieces together"
+      },
+      "added": "Look added",
+      "announce": {
+        "one": "{{ count }} piece added to your cart.",
+        "other": "{{ count }} pieces added to your cart."
+      },
+      "some_sold_out": "Sold out pieces are left out of the total."
     }
   },
   "newsletter": {
