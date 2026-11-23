@@ -140,11 +140,11 @@ Fern & Fable picks (from START.md): ★ hero with a three.js cloth unfurling ont
 
 - [x] Hero (built as: WebGL2 runner that drops and unrolls, words rise in CSS, festive stars, flat runner fallback). Original idea: headline that animates in letter by letter (GSAP SplitText) over a full-width video or image, or one huge product photo with layers that move at different speeds as you scroll
 - [x] Tagline reveal (skill B11): words light up in reading order over half a screen of scrolling, accent words with *stars*
-- [ ] Scrolling strip of brand claims or press quotes (CSS only; it stops on hover and for people who turn off motion)
+- [~] Skipped on purpose (not in START.md): Scrolling strip of brand claims or press quotes (CSS only; it stops on hover and for people who turn off motion)
 - [x] Craft story: steps scroll past a pinned 3D carved block that turns (carve), dips in indigo (dye) and stamps the cloth (print); follows scroll, never hijacks it; flat print fallback
 - [x] Product reels: swipeable 9:16 video row with quick add; plays only in view, per reel pause, posters for reduced motion and Save Data
 - [x] Gift finder: Under ₹999, For hosts, The Festive Edit (festive only) tiles; tag links work before collections exist; product photos fan out on hover
-- [ ] Magazine-style image + text with huge numbers and mixed type sizes
+- [~] Skipped on purpose (not in START.md): Magazine-style image + text with huge numbers and mixed type sizes
 - [x] Shop the look, The Indigo Table: numbered dots open product cards with quick add (bottom sheet on phones), matching list, total and "Add the whole look" (items[] form, works without JS)
 - [x] Shop by collection: staggered row of 5 tiles, hover and focus react, swipe row on phones
 - [x] Bestsellers / New arrivals tabs: product card (second photo on hover, sale badge from compare at price, sold out), quick add with variant chips, header cart count
@@ -179,7 +179,7 @@ Switch to plan mode (Shift+Tab) before starting the product page and the cart dr
 - [ ] About: the brand story as a page that unfolds as you scroll (reuse your signature sections)
 - [ ] Blog list and article pages with a magazine layout
 - [ ] Contact page (contact form)
-- [ ] Search results page
+- [x] Search results page (built with predictive search)
 - [ ] 404 page with personality
 - [ ] Password page (the theme's own `password.liquid`)
 
