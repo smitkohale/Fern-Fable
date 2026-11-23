@@ -195,5 +195,23 @@
         "default": "Hi Fern & Fable, I have a question about"
       }
     ]
+  },
+  {
+    "name": "t:settings.cart.name",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "cart_open_on_add",
+        "label": "t:settings.cart.open_on_add",
+        "default": true
+      },
+      {
+        "type": "number",
+        "id": "free_shipping_threshold",
+        "label": "t:settings.cart.free_shipping",
+        "info": "t:settings.cart.free_shipping_info",
+        "default": 1499
+      }
+    ]
   }
 ]

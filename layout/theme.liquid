@@ -19,7 +19,7 @@
     {{ content_for_header }}
   </head>
 
-  <body class="{% for scheme in settings.color_schemes limit: 1 %}color-{{ scheme.id }}{% endfor %}{% if settings.festive_mode %} is-festive{% endif %}">
+  <body class="{% for scheme in settings.color_schemes limit: 1 %}color-{{ scheme.id }}{% endfor %}{% if settings.festive_mode %} is-festive{% endif %}" data-cart-open-on-add="{{ settings.cart_open_on_add }}">
     <a class="skip-link button-sm" href="#MainContent">{{ 'accessibility.skip_to_content' | t }}</a>
 
     {% sections 'header-group' %}
@@ -29,6 +29,8 @@
     </main>
 
     {% sections 'footer-group' %}
+
+    {% section 'cart-drawer' %}
 
     {% render 'whatsapp-button' %}
 

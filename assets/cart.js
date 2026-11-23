@@ -5,7 +5,10 @@
  */
 const root = (window.Shopify && window.Shopify.routes && window.Shopify.routes.root) || '/';
 
-export async function addToCart(formData) {
+/**
+ * Adds to the cart. Fires `cart:added` (the drawer opens on it) unless open is false.
+ */
+export async function addToCart(formData, { open = true } = {}) {
   const response = await fetch(`${root}cart/add.js`, {
     method: 'POST',
     headers: { Accept: 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
@@ -18,6 +21,7 @@ export async function addToCart(formData) {
     throw error;
   }
   const cart = await refreshCart();
+  if (open) document.dispatchEvent(new CustomEvent('cart:added', { detail: { item: data, cart } }));
   return { item: data, cart };
 }
 

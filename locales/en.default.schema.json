@@ -41,6 +41,12 @@
       "number": "WhatsApp number",
       "number_info": "Country code and number, digits only, for example 919876543210. The button hides while this is empty.",
       "message": "Pre written message"
+    },
+    "cart": {
+      "name": "Cart",
+      "open_on_add": "Open the cart drawer after adding to cart",
+      "free_shipping": "Free shipping from (₹)",
+      "free_shipping_info": "Shows a progress bar in the cart drawer. Set 0 to hide it."
     }
   },
   "general": {
@@ -329,6 +335,15 @@
       "heading_complementary_info": "Pick complementary products per product in the free Search & Discovery app.",
       "heading_related": "Heading for related products",
       "products_to_show": "Products to show"
+    },
+    "cart_drawer": {
+      "name": "Cart drawer",
+      "show_gift": "Show gift wrap and card note",
+      "show_pairs": "Show products that pair well",
+      "pairs_heading": "Pairs well heading",
+      "pairs_collection": "Pairs well collection",
+      "pairs_collection_info": "Items already in the cart are skipped. Leave empty to use all products.",
+      "empty_collection": "Collection to suggest when the cart is empty"
     }
   }
 }

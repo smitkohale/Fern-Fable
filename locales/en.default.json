@@ -20,7 +20,37 @@
     "checkout": "Checkout",
     "title": "Cart",
     "update": "Update",
-    "remove": "Remove"
+    "remove": "Remove",
+    "drawer": {
+      "title": "Your cart",
+      "close": "Close cart",
+      "items": "Items in your cart",
+      "shipping_away_html": "You are <strong>{{ amount }}</strong> away from free shipping",
+      "shipping_unlocked": "Free shipping unlocked",
+      "shipping_progress": "Progress towards free shipping",
+      "decrease": "Decrease quantity of {{ title }}",
+      "increase": "Increase quantity of {{ title }}",
+      "quantity": "Quantity of {{ title }}",
+      "remove": "Remove",
+      "gift_wrap": "Gift wrap this order, free",
+      "add_note": "Add a note for the card",
+      "note_label": "Note for the gift card",
+      "note_placeholder": "Happy housewarming, love from all of us",
+      "pairs": "Pairs well with",
+      "add_pair": "Add {{ title }} to cart",
+      "choose_pair": "Choose options for {{ title }}",
+      "subtotal": "Subtotal",
+      "taxes": "Taxes included. Shipping calculated at checkout.",
+      "checkout": "Check out",
+      "view_cart": "View cart",
+      "empty_title": "Your cart is empty",
+      "empty_text": "Start with the pieces people love most, or find a gift.",
+      "empty_cta": "Shop {{ title }}",
+      "empty_cta_all": "Shop all linens",
+      "keep_browsing": "Keep browsing",
+      "updated": "Cart updated.",
+      "error": "Could not update your cart. Try again."
+    }
   },
   "customers": {
     "login": {
