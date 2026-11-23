@@ -1,0 +1,85 @@
+{%- doc -%}
+  Quick add for a product card. One variant: a single add button.
+  Several variants: a <details> listing one button per variant (sold out ones
+  disabled). Works as plain forms without JavaScript; assets/quick-add.js
+  adds to the cart in place and updates the header count.
+
+  @param {product} product - The product.
+  @param {string} card_id - Id prefix of the card, used to name the button.
+
+  @example
+  {% render 'quick-add', product: product, card_id: 'ProductCard-123' %}
+{%- enddoc -%}
+
+{%- liquid
+  assign single = false
+  if product.has_only_default_variant or product.variants.size == 1
+    assign single = true
+  endif
+  assign title_id = card_id | append: '-title'
+  assign status_id = card_id | append: '-status'
+  assign escaped_title = product.title | escape
+-%}
+
+<quick-add
+  class="quick-add"
+  data-product-title="{{ product.title | escape }}"
+  data-label-added="{{ 'products.quick_add.added' | t }}"
+  data-label-adding="{{ 'products.quick_add.adding' | t }}"
+  data-label-announce="{{ 'products.quick_add.announce' | t: title: escaped_title }}"
+  data-label-error="{{ 'products.quick_add.error' | t }}"
+>
+  {%- if single -%}
+    {%- form 'product', product, class: 'quick-add__form', novalidate: 'novalidate' -%}
+      <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+      <input type="hidden" name="quantity" value="1">
+      <button type="submit" class="quick-add__button button button--small" aria-describedby="{{ title_id }}">
+        {%- render 'icon', name: 'plus' -%}
+        <span data-quick-add-label>{{ 'products.quick_add.add' | t }}</span>
+      </button>
+    {%- endform -%}
+  {%- else -%}
+    {%- assign option_name = product.options.first | downcase -%}
+    <details class="quick-add__details">
+      <summary class="quick-add__button button button--small" aria-describedby="{{ title_id }}">
+        {%- render 'icon', name: 'plus' -%}
+        <span data-quick-add-label>
+          {%- if product.options.size == 1 -%}
+            {{ 'products.quick_add.choose_option' | t: option: option_name }}
+          {%- else -%}
+            {{ 'products.quick_add.choose' | t }}
+          {%- endif -%}
+        </span>
+      </summary>
+      <div class="quick-add__panel">
+        {%- form 'product', product, class: 'quick-add__form', novalidate: 'novalidate' -%}
+          <input type="hidden" name="quantity" value="1">
+          <fieldset class="quick-add__fieldset">
+            <legend class="quick-add__legend caption-3">
+              {%- if product.options.size == 1 %}{{ product.options.first }}{% else %}{{ 'products.quick_add.options' | t }}{% endif -%}
+            </legend>
+            <div class="quick-add__chips">
+              {%- for variant in product.variants -%}
+                <button
+                  type="submit"
+                  name="id"
+                  value="{{ variant.id }}"
+                  class="quick-add__chip button-sm"
+                  {% unless variant.available %}
+                    disabled
+                  {% endunless %}
+                >
+                  {{- variant.title -}}
+                  {%- unless variant.available -%}
+                    <span class="visually-hidden">, {{ 'products.card.sold_out' | t }}</span>
+                  {%- endunless -%}
+                </button>
+              {%- endfor -%}
+            </div>
+          </fieldset>
+        {%- endform -%}
+      </div>
+    </details>
+  {%- endif -%}
+  <p class="quick-add__status body-6" id="{{ status_id }}" role="status" hidden></p>
+</quick-add>

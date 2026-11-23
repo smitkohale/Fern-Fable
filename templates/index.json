@@ -81,10 +81,40 @@
         "link": "",
         "show_count": true
       }
+    },
+    "product-tabs": {
+      "type": "product-tabs",
+      "blocks": {
+        "tab-bestsellers": {
+          "type": "tab",
+          "settings": {
+            "title": "Bestsellers",
+            "collection": "bestsellers"
+          }
+        },
+        "tab-new": {
+          "type": "tab",
+          "settings": {
+            "title": "New arrivals",
+            "collection": "new-arrivals"
+          }
+        }
+      },
+      "block_order": [
+        "tab-bestsellers",
+        "tab-new"
+      ],
+      "settings": {
+        "color_scheme": "scheme-kora",
+        "label": "Shop our favourites",
+        "products_to_show": 8,
+        "show_quick_add": true
+      }
     }
   },
   "order": [
     "hero",
-    "collection-tiles"
+    "collection-tiles",
+    "product-tabs"
   ]
 }

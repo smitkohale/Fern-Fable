@@ -1,0 +1,313 @@
+/* Product grid, product card and quick add. Prefixes: .product-grid, .product-card, .quick-add */
+
+/* ---------- Grid ---------- */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-500) var(--space-200);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media (min-width: 750px) {
+  .product-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-600) var(--space-300);
+  }
+}
+
+@media (min-width: 1200px) {
+  .product-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+/* ---------- Card ---------- */
+.product-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-100);
+  height: 100%;
+}
+
+.product-card__media {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  background-color: var(--color-surface);
+}
+
+.product-card__media-link {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.product-card__image,
+.product-card__placeholder {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: opacity var(--dur-move) var(--ease-out),
+    transform var(--dur-move) var(--ease-out);
+}
+
+.product-card__placeholder {
+  fill: color-mix(in srgb, var(--color-foreground) 22%, transparent);
+}
+
+/* Second photo inks in on hover (pointer devices only). */
+.product-card__image--second {
+  opacity: 0;
+  transform: scale(1.02);
+}
+
+@media (hover: hover) {
+  .product-card:hover .product-card__image--second {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.product-card.is-sold-out .product-card__image--first {
+  opacity: 0.72;
+}
+
+/* Badges */
+.product-card__badges {
+  position: absolute;
+  top: var(--space-100);
+  left: var(--space-100);
+  z-index: 2;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-50);
+  pointer-events: none;
+}
+
+.product-card__badge {
+  padding: var(--space-50) var(--space-75);
+  border-radius: var(--radius-full);
+}
+
+.product-card__badge--sale {
+  background-color: var(--color-madder);
+  color: var(--color-kora);
+}
+
+.product-card__badge--sold-out {
+  background-color: var(--color-background);
+  color: var(--color-muted-text);
+}
+
+/* Info */
+.product-card__info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-25);
+}
+
+.product-card__title {
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  line-height: var(--leading-base);
+  font-weight: 500;
+  font-variation-settings: normal;
+  color: var(--color-foreground);
+  letter-spacing: 0;
+}
+
+.product-card__link {
+  text-decoration: none;
+}
+
+/* The whole card is one link target (the title); quick add sits above it. */
+.product-card__link::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.product-card:hover .product-card__link {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+.product-card__link:focus-visible {
+  outline: none;
+}
+
+.product-card__link:focus-visible::after {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 4px;
+}
+
+.product-card__price {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-75);
+}
+
+.product-card__price-sale {
+  color: var(--color-accent);
+}
+
+.product-card__price-compare {
+  color: var(--color-muted-text);
+}
+
+/* ---------- Quick add ---------- */
+.quick-add {
+  position: absolute;
+  right: var(--space-75);
+  bottom: var(--space-75);
+  left: var(--space-75);
+  z-index: 2;
+  display: block;
+}
+
+.quick-add__button {
+  width: 100%;
+  min-height: var(--tap-target);
+  list-style: none;
+  cursor: pointer;
+}
+
+.quick-add__button::-webkit-details-marker {
+  display: none;
+}
+
+.quick-add__button .icon {
+  width: var(--space-200);
+  height: var(--space-200);
+  transition: transform var(--dur-hover) var(--ease-out);
+}
+
+.quick-add__details[open] .quick-add__button .icon {
+  transform: rotate(45deg);
+}
+
+.quick-add__button.is-added {
+  background-color: var(--color-success);
+  border-color: var(--color-success);
+  color: var(--color-kora);
+}
+
+/* On pointer devices it rises in on hover or focus; on touch it is always there. */
+@media (hover: hover) {
+  .quick-add {
+    opacity: 0;
+    transform: translateY(var(--space-75));
+    transition: opacity var(--dur-hover) var(--ease-out),
+      transform var(--dur-move) var(--ease-out);
+  }
+
+  .product-card:hover .quick-add,
+  .product-card:focus-within .quick-add,
+  .quick-add:has(details[open]),
+  .quick-add[aria-busy] {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.quick-add__panel {
+  position: absolute;
+  right: 0;
+  bottom: calc(100% + var(--space-75));
+  left: 0;
+  padding: var(--space-100);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-background);
+  box-shadow: var(--shadow-float);
+}
+
+.quick-add__fieldset {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+
+.quick-add__legend {
+  margin-block-end: var(--space-75);
+  padding: 0;
+  color: var(--color-muted-text);
+}
+
+.quick-add__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-75);
+}
+
+.quick-add__chip {
+  min-height: var(--space-500);
+  padding: var(--space-75) var(--space-100);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  background-color: var(--color-surface);
+  color: var(--color-foreground);
+  transition: background-color var(--dur-hover) var(--ease-out),
+    color var(--dur-hover) var(--ease-out),
+    transform var(--dur-hover) var(--ease-out);
+}
+
+.quick-add__chip:hover:not([disabled]) {
+  border-color: var(--color-button);
+  background-color: var(--color-button);
+  color: var(--color-button-text);
+}
+
+.quick-add__chip:active:not([disabled]) {
+  transform: scale(0.98);
+}
+
+.quick-add__chip[disabled] {
+  color: var(--color-muted-text);
+  text-decoration: line-through;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.quick-add__status {
+  margin-block-start: var(--space-75);
+  padding: var(--space-75) var(--space-100);
+  border-radius: var(--radius-sm);
+  background-color: var(--color-background);
+  color: var(--color-accent);
+}
+
+.quick-add__status[hidden] {
+  display: none;
+}
+
+/* Small phones: the label shrinks, the button stays a 44px target. */
+@media (max-width: 479px) {
+  .quick-add__button {
+    padding-inline: var(--space-75);
+    font-size: var(--text-sm);
+    line-height: var(--leading-sm);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .product-card__image,
+  .quick-add,
+  .quick-add__button .icon {
+    transition-property: opacity;
+  }
+
+  .product-card__image--second,
+  .quick-add {
+    transform: none;
+  }
+}

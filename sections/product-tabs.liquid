@@ -1,0 +1,160 @@
+{%- comment -%}
+  Bestsellers / New arrivals: one tab per block, each showing a collection as
+  a product grid. ARIA tabs with arrow key support (assets/product-tabs.js).
+  Without JavaScript every panel shows, one after another.
+  A tab with no collection picked shows the newest products in the store.
+{%- endcomment -%}
+
+{{ 'component-product-card.css' | asset_url | stylesheet_tag }}
+{{ 'section-product-tabs.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'product-tabs.js' | asset_url }}" type="module"></script>
+<script src="{{ 'quick-add.js' | asset_url }}" type="module"></script>
+
+<product-tabs class="product-tabs full-width color-{{ section.settings.color_scheme }} section-space">
+  <div class="page-width">
+    {%- if section.blocks.size > 1 -%}
+      <div class="product-tabs__tablist" role="tablist" aria-label="{{ section.settings.label | escape }}" data-reveal="rise">
+        {%- for block in section.blocks -%}
+          {%- assign tab_collection = block.settings.collection | default: collections.all -%}
+          <button
+            type="button"
+            class="product-tabs__tab heading-2"
+            role="tab"
+            id="Tab-{{ section.id }}-{{ forloop.index }}"
+            aria-controls="Panel-{{ section.id }}-{{ forloop.index }}"
+            aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+            {% unless forloop.first %}
+              tabindex="-1"
+            {% endunless %}
+            {{ block.shopify_attributes }}
+          >
+            {{- block.settings.title -}}
+            <sup class="product-tabs__count caption-3" aria-hidden="true">{{ tab_collection.products_count }}</sup>
+          </button>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+
+    {%- for block in section.blocks -%}
+      {%- liquid
+        assign tab_collection = block.settings.collection | default: collections.all
+        if block.settings.collection != blank
+          assign view_all_url = block.settings.collection.url
+        else
+          assign view_all_url = routes.all_products_collection_url
+        endif
+      -%}
+      <div
+        class="product-tabs__panel"
+        id="Panel-{{ section.id }}-{{ forloop.index }}"
+        {% if section.blocks.size > 1 %}
+          role="tabpanel"
+          aria-labelledby="Tab-{{ section.id }}-{{ forloop.index }}"
+          tabindex="0"
+          {% unless forloop.first %}
+            data-inactive
+          {% endunless %}
+        {% endif %}
+      >
+        {%- if section.blocks.size == 1 -%}
+          <h2 class="product-tabs__single-heading heading-2">{{ block.settings.title }}</h2>
+        {%- endif -%}
+
+        {%- if tab_collection.products_count > 0 -%}
+          <ul class="product-grid" role="list" data-reveal-group>
+            {%- for product in tab_collection.products limit: section.settings.products_to_show -%}
+              <li class="product-grid__item" data-reveal="rise">
+                {%- render 'product-card',
+                  product: product,
+                  sizes: '(min-width: 1200px) 25vw, (min-width: 750px) 33vw, 50vw',
+                  show_quick_add: section.settings.show_quick_add
+                -%}
+              </li>
+            {%- endfor -%}
+          </ul>
+
+          <div class="product-tabs__footer">
+            <a href="{{ view_all_url }}" class="button button--secondary">
+              {{- 'sections.product_tabs.view_all' | t: title: block.settings.title -}}
+              {%- render 'icon', name: 'arrow-right' -%}
+            </a>
+          </div>
+        {%- else -%}
+          <div class="product-tabs__empty">
+            <p class="body-3 text-muted">{{ 'sections.product_tabs.empty' | t }}</p>
+            <a href="{{ routes.all_products_collection_url }}" class="button button--secondary">
+              {{- 'sections.product_tabs.empty_link' | t -}}
+            </a>
+          </div>
+        {%- endif -%}
+      </div>
+    {%- endfor -%}
+  </div>
+</product-tabs>
+
+{% schema %}
+{
+  "name": "t:sections.product_tabs.name",
+  "class": "section-product-tabs",
+  "max_blocks": 3,
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:settings.colors.scheme",
+      "default": "scheme-kora"
+    },
+    {
+      "type": "text",
+      "id": "label",
+      "label": "t:sections.product_tabs.label",
+      "info": "t:sections.product_tabs.label_info",
+      "default": "Shop our favourites"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "min": 4,
+      "max": 12,
+      "step": 4,
+      "label": "t:sections.product_tabs.products_to_show",
+      "default": 8
+    },
+    {
+      "type": "checkbox",
+      "id": "show_quick_add",
+      "label": "t:sections.product_tabs.show_quick_add",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "tab",
+      "name": "t:sections.product_tabs.tab",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "t:sections.product_tabs.title",
+          "default": "Bestsellers"
+        },
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "t:sections.product_tabs.collection",
+          "info": "t:sections.product_tabs.collection_info"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.product_tabs.name",
+      "blocks": [
+        { "type": "tab", "settings": { "title": "Bestsellers" } },
+        { "type": "tab", "settings": { "title": "New arrivals" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

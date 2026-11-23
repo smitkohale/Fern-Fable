@@ -191,6 +191,17 @@
       "caption_info": "A short line, for example what's inside.",
       "image": "Image",
       "image_info": "Leave empty to use the collection's image."
+    },
+    "product_tabs": {
+      "name": "Product tabs",
+      "label": "Accessible name",
+      "label_info": "Read by screen readers to describe the tabs.",
+      "products_to_show": "Products per tab",
+      "show_quick_add": "Show quick add",
+      "tab": "Tab",
+      "title": "Tab title",
+      "collection": "Collection",
+      "collection_info": "Leave empty to show the newest products."
     }
   }
 }

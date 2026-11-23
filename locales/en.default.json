@@ -66,7 +66,9 @@
         "other": "Cart, {{ count }} items"
       },
       "shop_all": "Shop all {{ title }}",
-      "popular_in": "Popular in {{ title }}"
+      "popular_in": "Popular in {{ title }}",
+      "cart_label_one": "Cart, [count] item",
+      "cart_label_other": "Cart, [count] items"
     },
     "announcement_bar": {
       "label": "Announcements",
@@ -90,6 +92,11 @@
         "one": "{{ count }} piece",
         "other": "{{ count }} pieces"
       }
+    },
+    "product_tabs": {
+      "view_all": "View all {{ title }}",
+      "empty": "New pieces are on the way. Browse the full collection meanwhile.",
+      "empty_link": "Browse all products"
     }
   },
   "newsletter": {
@@ -100,5 +107,25 @@
     "error_required": "Enter your email to sign up.",
     "error_taken": "This email is already on our list.",
     "error_generic": "Sign up failed. Try again in a moment."
+  },
+  "products": {
+    "card": {
+      "sold_out": "Sold out",
+      "save": "Save {{ amount }}",
+      "sale_price": "Sale price",
+      "regular_price": "Regular price",
+      "from": "From {{ price }}",
+      "colours": "{{ count }} colours"
+    },
+    "quick_add": {
+      "add": "Add to cart",
+      "adding": "Adding",
+      "added": "Added",
+      "choose_option": "Choose {{ option }}",
+      "choose": "Choose options",
+      "options": "Options",
+      "announce": "{{ title }} added to your cart.",
+      "error": "Could not add this to your cart. Try again."
+    }
   }
 }

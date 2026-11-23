@@ -1,0 +1,136 @@
+{%- doc -%}
+  Product card: 4:5 photo that swaps to the second photo on hover,
+  sale badge from the compare at price (never from a tag), sold out badge,
+  title, price, colour count and quick add.
+
+  Quick add works without JavaScript: one variant posts straight to the cart;
+  several variants open a <details> with one button per variant.
+  assets/quick-add.js upgrades both to add without leaving the page.
+
+  @param {product} product - The product to show.
+  @param {string} [sizes] - The sizes attribute for the images.
+  @param {boolean} [eager] - Load the first image eagerly (above the fold only).
+  @param {boolean} [show_quick_add] - Show the quick add control. Default: true.
+  @param {string} [heading_tag] - Tag for the title. Default: 'h3'.
+
+  @example
+  {% render 'product-card', product: product, sizes: '(min-width: 990px) 25vw, 50vw' %}
+{%- enddoc -%}
+
+{%- liquid
+  assign sizes = sizes | default: '(min-width: 1200px) 25vw, (min-width: 750px) 33vw, 50vw'
+  assign heading_tag = heading_tag | default: 'h3'
+  if show_quick_add == false
+    assign quick_add = false
+  else
+    assign quick_add = true
+  endif
+
+  assign first_image = product.featured_media.preview_image
+  assign second_image = null
+  if product.media.size > 1
+    assign second_image = product.media[1].preview_image
+  endif
+
+  if eager
+    assign loading = 'eager'
+  else
+    assign loading = 'lazy'
+  endif
+
+  assign on_sale = false
+  if product.compare_at_price > product.price
+    assign on_sale = true
+    assign saving = product.compare_at_price | minus: product.price | money_without_trailing_zeros
+  endif
+
+  assign price_from = product.price_min | money_without_trailing_zeros
+
+  assign colour_count = 0
+  for option in product.options_with_values
+    assign option_name = option.name | downcase
+    if option_name == 'color' or option_name == 'colour'
+      assign colour_count = option.values.size
+    endif
+  endfor
+
+  assign card_id = 'ProductCard-' | append: product.id
+-%}
+
+<article class="product-card{% unless product.available %} is-sold-out{% endunless %}" aria-labelledby="{{ card_id }}-title">
+  <div class="product-card__media">
+    <a href="{{ product.url }}" class="product-card__media-link" tabindex="-1" aria-hidden="true">
+      {%- if first_image -%}
+        {{
+          first_image
+          | image_url: width: 1100
+          | image_tag:
+            widths: '360, 540, 720, 900, 1100',
+            sizes: sizes,
+            loading: loading,
+            class: 'product-card__image product-card__image--first',
+            alt: first_image.alt
+        }}
+        {%- if second_image -%}
+          {{
+            second_image
+            | image_url: width: 1100
+            | image_tag:
+              widths: '360, 540, 720, 900, 1100',
+              sizes: sizes,
+              loading: 'lazy',
+              class: 'product-card__image product-card__image--second',
+              alt: ''
+          }}
+        {%- endif -%}
+      {%- else -%}
+        {{ 'product-1' | placeholder_svg_tag: 'product-card__placeholder' }}
+      {%- endif -%}
+    </a>
+
+    {%- if on_sale or product.available == false -%}
+      <div class="product-card__badges">
+        {%- if product.available == false -%}
+          <span class="product-card__badge product-card__badge--sold-out caption-3">{{ 'products.card.sold_out' | t }}</span>
+        {%- elsif on_sale -%}
+          <span class="product-card__badge product-card__badge--sale caption-3">
+            {{- 'products.card.save' | t: amount: saving -}}
+          </span>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    {%- if quick_add and product.available -%}
+      {%- render 'quick-add', product: product, card_id: card_id -%}
+    {%- endif -%}
+  </div>
+
+  <div class="product-card__info">
+    <{{ heading_tag }} class="product-card__title title-3" id="{{ card_id }}-title">
+      <a href="{{ product.url }}" class="product-card__link">{{ product.title }}</a>
+    </{{ heading_tag }}>
+
+    <p class="product-card__price body-2">
+      {%- if on_sale -%}
+        <span class="visually-hidden">{{ 'products.card.sale_price' | t }}</span>
+        <span class="product-card__price-sale">
+          {%- if product.price_varies -%}
+            {{ 'products.card.from' | t: price: price_from }}
+          {%- else -%}
+            {{ product.price | money_without_trailing_zeros }}
+          {%- endif -%}
+        </span>
+        <span class="visually-hidden">{{ 'products.card.regular_price' | t }}</span>
+        <s class="product-card__price-compare body-6">{{ product.compare_at_price | money_without_trailing_zeros }}</s>
+      {%- elsif product.price_varies -%}
+        {{ 'products.card.from' | t: price: price_from }}
+      {%- else -%}
+        {{ product.price | money_without_trailing_zeros }}
+      {%- endif -%}
+    </p>
+
+    {%- if colour_count > 1 -%}
+      <p class="product-card__meta body-6 text-muted">{{ 'products.card.colours' | t: count: colour_count }}</p>
+    {%- endif -%}
+  </div>
+</article>

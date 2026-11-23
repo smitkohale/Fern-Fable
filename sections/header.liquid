@@ -238,7 +238,15 @@
           <span class="site-header__cart-count caption-3" data-cart-count {% if cart.item_count == 0 %}hidden{% endif %}>
             {{- cart.item_count -}}
           </span>
-          <span class="visually-hidden" data-cart-label>{{ cart_label }}</span>
+          <span
+            class="visually-hidden"
+            data-cart-label
+            data-label-empty="{{ 'sections.header.cart_empty' | t }}"
+            data-label-one="{{ 'sections.header.cart_label_one' | t }}"
+            data-label-other="{{ 'sections.header.cart_label_other' | t }}"
+          >
+            {{- cart_label -}}
+          </span>
         </a>
       </div>
     </div>
