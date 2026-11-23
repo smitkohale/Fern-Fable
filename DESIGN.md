@@ -1,6 +1,8 @@
 # DESIGN.md: Fern & Fable
 
 The single source for every CSS token. If code and this file disagree, fix one of them so they match.
+
+> **Status:** updated after the build to match the theme as shipped. Changes from the original plan are marked **Built as** or **Not built**.
 Values follow `.claude/skills/landing-page-design/SKILL.md` unless a rule here says it overrides it (see CLAUDE.md, Skill precedence).
 
 ---
@@ -136,11 +138,11 @@ The look is cut cloth and paper, so mostly square.
 ---
 
 ## 5. Pattern and texture (the brand's signature graphic)
-- Three motifs drawn as SVG, in `assets/`: **fern** (the brand mark), **buti** (small repeat), **jaal** (lattice for bands).
-- They look block printed: slightly uneven edges and a faint ink speckle, baked into the SVG (no filters at runtime).
-- Used as: a 24px pattern band between big sections, the cart drawer edge, the 404 page, the password page, the loading skeleton tint. Never behind running text.
-- One colour per band (indigo on kora, or turmeric on indigo).
-- Paper grain: an optional 4% opacity noise PNG on kora backgrounds, under 8 KB, off by default in the theme settings.
+- **Built as:** one motif, the **fern** sprig, drawn in code and reused everywhere:
+  - inline SVG for the favicon (`assets/favicon.svg`), cart drawer empty state, 404 misprint, gift card, image with text fallback and article card fallback;
+  - procedurally on a 2D canvas (`drawFern` in `assets/gl-kit.js`) for the hero runner print and the craft block's carved relief, with stamp jitter, border bands and speckle so it reads as hand printed.
+- Never behind running text.
+- **Not built:** the buti and jaal motifs, pattern bands between sections, the cart drawer edge and the paper grain texture (its unused theme setting was removed). The fern alone carried the brand well enough.
 
 ## 6. Icons
 **Phosphor** (MIT), regular weight, 20px in UI and 24px in the header, inlined as SVG snippets. Stroke inherits `currentColor`. No Material icons, no emoji.
@@ -167,24 +169,27 @@ The look is cut cloth and paper, so mostly square.
 | `--dur-reveal` | 700ms | Section scroll reveals |
 | `--dur-hero` | 1400ms | Hero cloth unfurl, headline |
 
-Animate only `transform` and `opacity` (plus `clip-path` for the ink reveal, which does not cause layout).
+Animate only `transform` and `opacity`.
 
 ### Named animations
-- **Ink in** (default reveal for images and cards): starts at `scale(1.02)`, opacity 0 and an uneven clip mask; settles to `scale(1)` over 700ms. Like a block lifting off fresh print. Each once, via `IntersectionObserver`.
+- **Ink in** (default reveal for images and cards): starts at `scale(1.02)` and opacity 0, settles over 700ms with `--ease-press`. Each once, via `IntersectionObserver` (`assets/theme.js`). **Built as:** no clip mask; scale plus fade read cleanly enough.
 - **Rise** (text blocks): up 32px and fade in, 700ms, `--ease-out`. Siblings step 60ms apart, max 400ms total.
 - **Unfold** (drawers, mega menu, accordions): `scaleY` from 0.96 plus opacity from the top edge, 500ms.
-- **Hero headline:** words rise in one by one (GSAP SplitText) after the cloth lands.
-- **Hero cloth (three.js):** the runner drops and unfurls across the table in 1.4s, then rests with a faint breathing ripple (stops after 6s to save battery).
-- **Craft story (GSAP ScrollTrigger plus three.js):** section pins; the carved block rotates (carve), dips (dye), then stamps down and the print appears on the cloth (print).
-- **Tagline reveal:** each word goes from 30% opacity to 100% as it crosses 60% of the viewport height (skill B11).
+- **Hero headline:** words split in Liquid and rise one by one with a CSS animation (no GSAP). They start at opacity 0.01, not 0, so Chrome counts the headline as painted for LCP.
+- **Hero cloth (hand written WebGL2, not three.js):** the runner drops and unrolls in 1.4s (Archimedean spiral in the vertex shader), then a faint ripple for 3.5s, then rendering stops.
+- **Craft story (WebGL2 and scroll position, no GSAP):** the panel stays pinned with CSS `position: sticky`; the carved block turns (carve), dips (dye) and stamps the print (print), following scroll progress and never taking over the scroll.
+- **Tagline reveal:** words light up in reading order over half a screen of scrolling. **Built as:** muted words at **52%** of the heading colour, not 30%: 30% is only 1.8:1, and 52% is the lightest tone that passes WCAG's 3:1 for large text.
 - **Nav:** floating bar 12px off the top, translucent kora at 80% with a 16px backdrop blur; hides on scroll down, returns on scroll up.
 
 ### Reduced motion
-`prefers-reduced-motion: reduce` shows the end state of everything: no unfurl (the hero shows the still photo), no pin scrolling (craft steps stack normally), tagline fully inked, reels show posters, stars do not drift. Opacity fades of 200ms or less are allowed.
+`prefers-reduced-motion: reduce` shows the end state of everything: the hero shows the unrolled runner with no movement, the craft block shows the finished print, the tagline is fully lit, reels do not autoplay, stars are hidden. Opacity fades of 200ms or less are allowed.
 
 ### Loading
-- GSAP and three.js are loaded only by the sections that use them, after the LCP image has painted.
-- The three.js scene does not start on devices with fewer than 4 CPU cores, with Save Data on, or without WebGL2. They keep the photo or video.
+- No GSAP and no three.js in the end: both scenes are plain WebGL2 sharing `assets/gl-kit.js` (about 7 KB gzipped for the hero).
+- Scenes start after `load`, when idle and on screen. Shaders compile in parallel (`KHR_parallel_shader_compile`), and GPU set up is split into short tasks.
+- Flat fallback (photo, or a flat drawing of the print) on: fewer than 4 CPU cores, Save Data, no WebGL2, software WebGL (SwiftShader, llvmpipe), and phones when the theme setting "Show the 3D ... on phones" is off.
+- Phones render at most 1.5x pixel density without multisampling.
+- CSS for sections below the first screen and for hidden panels (cart drawer, search, WhatsApp) loads without blocking render (`snippets/deferred-stylesheet.liquid`).
 
 ---
 
@@ -196,10 +201,13 @@ Animate only `transform` and `opacity` (plus `clip-path` for the ink reveal, whi
 - **Variant picker:** chips (rounded full) for 1 to 4 short values; a select for long ones (the tablecloth). Sold out values crossed through and still selectable to show "Sold out".
 - **Price:** sale price madder, compare-at muted and struck through, with a visually hidden "Regular price" label.
 - **Inputs:** kora 2 background, 1px muted border, 4px radius, 44px height. Errors inline below in madder with an icon and specific text ("Enter an email like name@example.com").
-- **Cart drawer:** slides in from the right with Unfold, kora 2, free shipping progress bar (turmeric fill on indigo track) toward ₹1,499, gift wrap toggle, a designed empty state with the fern motif and links to Bestsellers.
-- **Skeletons:** kora 2 blocks shaped like the real layout with a slow shimmer (off under reduced motion). No spinners.
+- **Cart drawer:** slides in from the right, kora, free shipping progress bar (turmeric fill on indigo track) toward a threshold set in theme settings (₹1,499), gift wrap toggle (cart attribute), card note (cart note), "pairs well" suggestions, and an empty state with the fern motif.
+- **Loading states:** **Built as** dimmed content with `aria-busy` while filters, cart lines or search results update. No skeletons were needed, because every update keeps the existing layout on screen. No spinners.
 - **Mega menu:** full width panel, collection links in Title 2 on the left, one featured photo with a caption on the right.
 - **Mobile menu:** full height panel, kora at 96% with a 24px blur, links rise in 60ms apart (max 400ms).
+- **Header under 400px:** store name steps down to 18px, spacing tightens, and the account icon moves into the menu so everything fits at 320px.
+- **Search overlay:** drops from the top, combobox with arrow keys, popular searches.
+- **Phone 3D switches:** theme settings on the hero and craft story turn the 3D off on phones only.
 
 ---
 
@@ -214,7 +222,7 @@ When on:
 ---
 
 ## 11. Homepage plan
-Section order from START.md, with copy and motion. ★ is a signature moment.
+Section order from START.md, with copy and motion. ★ is a signature moment. **Built as:** product reels moved up to third (after Shop by collection) to keep the kora and indigo sections alternating; the About page reuses the craft story, tagline reveal and newsletter.
 
 | # | Section | Scheme | Copy (draft) | Motion |
 |---|---|---|---|---|

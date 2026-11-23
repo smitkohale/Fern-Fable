@@ -18,9 +18,7 @@
     },
     "layout": {
       "name": "Layout",
-      "page_width": "Maximum page width",
-      "paper_grain": "Paper grain texture",
-      "paper_grain_info": "Adds a faint raw cotton grain to light backgrounds."
+      "page_width": "Maximum page width"
     },
     "festive": {
       "name": "Festive mode",

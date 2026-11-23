@@ -131,13 +131,6 @@
         "unit": "px",
         "label": "t:settings.layout.page_width",
         "default": 1440
-      },
-      {
-        "type": "checkbox",
-        "id": "paper_grain",
-        "label": "t:settings.layout.paper_grain",
-        "info": "t:settings.layout.paper_grain_info",
-        "default": false
       }
     ]
   },
