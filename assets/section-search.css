@@ -1,0 +1,110 @@
+/* Search results page. Prefixes: .search-page, .search-row */
+
+.search-page {
+  padding-block: var(--space-400) var(--section-space);
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+}
+
+.search-page__header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-300);
+  margin-block-end: var(--space-600);
+}
+
+.search-page__title {
+  color: var(--color-heading);
+}
+
+.search-page__form {
+  display: flex;
+  gap: var(--space-75);
+  max-width: var(--text-column);
+}
+
+.search-page__input {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: var(--tap-target);
+  padding: var(--space-75) var(--space-100);
+  border: 1px solid var(--color-muted-text);
+  border-radius: var(--radius-sm);
+  background-color: var(--color-surface);
+  color: var(--color-foreground);
+}
+
+.search-page__form .button .icon {
+  width: var(--space-200);
+  height: var(--space-200);
+}
+
+.search-page__count strong {
+  color: var(--color-heading);
+}
+
+.search-page__other {
+  margin-block-start: var(--space-700);
+}
+
+.search-page__other-heading {
+  margin-block-end: var(--space-200);
+  font-family: var(--font-body);
+  font-variation-settings: normal;
+  color: var(--color-muted-text);
+}
+
+.search-page__rows {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-block-start: 1px solid var(--color-border);
+}
+
+.search-row {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--space-200);
+  min-height: var(--space-700);
+  padding-block: var(--space-100);
+  border-block-end: 1px solid var(--color-border);
+  text-decoration: none;
+}
+
+.search-row .icon {
+  width: var(--space-200);
+  height: var(--space-200);
+  transition: transform var(--dur-hover) var(--ease-out);
+}
+
+.search-row:hover .title-2 {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.search-row:hover .icon {
+  transform: translateX(var(--space-50));
+}
+
+.search-page__pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-200);
+  margin-block-start: var(--space-700);
+}
+
+.search-page__empty {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-200);
+  max-width: var(--text-column);
+}
+
+@media (max-width: 479px) {
+  .search-page__form .button {
+    padding-inline: var(--space-100);
+  }
+}

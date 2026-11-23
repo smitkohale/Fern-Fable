@@ -212,6 +212,7 @@
         <a
           href="{{ routes.search_url }}"
           class="site-header__icon-button"
+          data-search-open
           {% if request.page_type == 'search' %}aria-current="page"{% endif %}
         >
           {%- render 'icon', name: 'magnifying-glass' -%}
@@ -313,7 +314,7 @@
     {%- endif -%}
 
     <div class="mobile-menu__footer" style="--i: {{ menu.links.size }};">
-      <a href="{{ routes.search_url }}" class="mobile-menu__utility body-2">
+      <a href="{{ routes.search_url }}" class="mobile-menu__utility body-2" data-search-open>
         {%- render 'icon', name: 'magnifying-glass' -%}
         {{ 'sections.header.search' | t }}
       </a>

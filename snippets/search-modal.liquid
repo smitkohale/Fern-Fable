@@ -1,0 +1,61 @@
+{%- doc -%}
+  Search overlay opened from the header's search icon. A combobox input with
+  results from Shopify's predictive search (sections/predictive-search.liquid)
+  that arrow keys move through. Submitting goes to the search page, so it
+  still works without JavaScript (the header link goes there directly).
+
+  @example
+  {% render 'search-modal' %}
+{%- enddoc -%}
+
+{{ 'component-search.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'predictive-search.js' | asset_url }}" type="module"></script>
+
+<predictive-search class="search-modal" data-status-template="{{ 'search.predictive.status' | t }}">
+  <dialog class="search-modal__dialog color-{% for scheme in settings.color_schemes limit: 1 %}{{ scheme.id }}{% endfor %}" aria-label="{{ 'search.predictive.dialog' | t }}" scroll-lock data-search-dialog>
+    <div class="search-modal__panel page-width">
+      <form action="{{ routes.search_url }}" method="get" role="search" class="search-modal__form" data-search-form>
+        {%- render 'icon', name: 'magnifying-glass', class: 'search-modal__icon' -%}
+        <label class="visually-hidden" for="PredictiveSearchInput">{{ 'search.predictive.label' | t }}</label>
+        <input
+          type="search"
+          id="PredictiveSearchInput"
+          class="search-modal__input heading-5"
+          name="q"
+          value="{{ search.terms | escape }}"
+          placeholder="{{ 'search.predictive.placeholder' | t }}"
+          autocomplete="off"
+          autocapitalize="off"
+          spellcheck="false"
+          role="combobox"
+          aria-expanded="false"
+          aria-controls="PredictiveResults"
+          aria-autocomplete="list"
+          aria-haspopup="listbox"
+          data-search-input
+        >
+        <input type="hidden" name="options[prefix]" value="last">
+        <button type="button" class="site-header__icon-button search-modal__close" data-search-close aria-label="{{ 'search.predictive.close' | t }}">
+          {%- render 'icon', name: 'x' -%}
+        </button>
+      </form>
+
+      <div class="search-modal__results" id="PredictiveResults" role="listbox" aria-label="{{ 'search.predictive.results' | t }}" data-search-results></div>
+
+      <div class="search-modal__start" data-search-start>
+        <p class="caption-3 text-muted">{{ 'search.predictive.popular' | t }}</p>
+        <ul class="search-modal__chips" role="list">
+          {%- assign popular = 'search.predictive.popular_terms' | t | split: ',' -%}
+          {%- for term in popular -%}
+            {%- assign term_clean = term | strip -%}
+            <li>
+              <a href="{{ routes.search_url }}?q={{ term_clean | url_encode }}" class="search-modal__chip body-5" data-search-term="{{ term_clean | escape }}">{{ term_clean }}</a>
+            </li>
+          {%- endfor -%}
+        </ul>
+      </div>
+
+      <p class="visually-hidden" aria-live="polite" data-search-status></p>
+    </div>
+  </dialog>
+</predictive-search>

@@ -106,7 +106,43 @@
     "placeholder": "Search articles, pages, or products",
     "submit": "Search",
     "no_results_html": "No results found for {{ terms }}",
-    "results_for_html": "{{ count }} results found for {{ terms }}"
+    "results_for_html": "{{ count }} results found for {{ terms }}",
+    "predictive": {
+      "dialog": "Search",
+      "label": "Search the store",
+      "placeholder": "Search runners, napkins, gifts…",
+      "close": "Close search",
+      "results": "Search results",
+      "popular": "Popular searches",
+      "popular_terms": "Table runner, Napkins, Indigo, Gift box, Cushion cover",
+      "suggestions": "Suggestions",
+      "collections": "Collections",
+      "pages": "Pages",
+      "products": "Products",
+      "none": "No matches for “{{ terms }}”. Try a shorter word or a colour.",
+      "search_for": "Search for “{{ terms }}”",
+      "status": "[count] products found"
+    },
+    "page": {
+      "title": "Search",
+      "results_title": "Search results",
+      "submit": "Search",
+      "count_html": {
+        "one": "{{ count }} result for <strong>“{{ terms }}”</strong>",
+        "other": "{{ count }} results for <strong>“{{ terms }}”</strong>"
+      },
+      "pages_articles": "Pages and articles",
+      "page_label": "Page",
+      "article_label": "Article",
+      "pagination": "Search result pages",
+      "previous": "Previous",
+      "next": "Next",
+      "page_of": "Page {{ current }} of {{ total }}",
+      "none_title": "Nothing found for “{{ terms }}”",
+      "none_text": "Check the spelling, try a broader word like runner or cushion, or start from a popular search.",
+      "start_text": "Looking for something particular? Start with a popular search.",
+      "browse_all": "Browse all products"
+    }
   },
   "sections": {
     "header": {

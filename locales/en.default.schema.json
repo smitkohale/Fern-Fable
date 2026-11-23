@@ -350,6 +350,12 @@
       "show_image": "Show collection image",
       "show_description": "Show collection description",
       "per_page": "Products per page"
+    },
+    "predictive_search": {
+      "name": "Predictive search"
+    },
+    "search": {
+      "name": "Search results"
     }
   }
 }

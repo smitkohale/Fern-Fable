@@ -11,7 +11,9 @@
   "sections": {
     "main": {
       "type": "search",
-      "settings": {}
+      "settings": {
+        "color_scheme": "scheme-kora"
+      }
     }
   },
   "order": [
