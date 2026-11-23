@@ -84,6 +84,12 @@
       "social_link": "{{ shop }} on {{ network }}",
       "payment": "Payment methods we accept",
       "copyright": "© {{ year }} {{ shop }}"
+    },
+    "collection_tiles": {
+      "count": {
+        "one": "{{ count }} piece",
+        "other": "{{ count }} pieces"
+      }
     }
   },
   "newsletter": {

@@ -1,0 +1,221 @@
+/* Shop by collection. Prefixes: .collection-tiles, .collection-tile */
+
+.collection-tiles {
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+}
+
+.collection-tiles__header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-200) var(--space-400);
+  margin-block-end: var(--space-500);
+}
+
+.collection-tiles__all {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-75);
+  min-height: var(--tap-target);
+  color: var(--color-heading);
+  text-decoration: none;
+}
+
+.collection-tiles__all .icon {
+  width: var(--space-200);
+  height: var(--space-200);
+  transition: transform var(--dur-hover) var(--ease-out);
+}
+
+.collection-tiles__all:hover {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+}
+
+.collection-tiles__all:hover .icon {
+  transform: translateX(var(--space-50));
+}
+
+/* ---------- Phones and tablets: a swipeable row, the next tile peeks in ---------- */
+.collection-tiles__list {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 72%;
+  gap: var(--space-200);
+  margin: 0;
+  padding: 0 var(--page-gutter) var(--space-200);
+  list-style: none;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: var(--page-gutter);
+  scrollbar-width: none;
+}
+
+.collection-tiles__list::-webkit-scrollbar {
+  display: none;
+}
+
+.collection-tiles__item {
+  scroll-snap-align: start;
+}
+
+@media (min-width: 750px) {
+  .collection-tiles__list {
+    grid-auto-columns: 40%;
+    gap: var(--space-300);
+  }
+}
+
+/* ---------- Desktop: one staggered magazine row ---------- */
+@media (min-width: 990px) {
+  .collection-tiles__list {
+    grid-auto-flow: row;
+    grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+    width: 100%;
+    max-width: var(--page-width);
+    margin-inline: auto;
+    padding-block-end: var(--space-600);
+    overflow: visible;
+    scroll-snap-type: none;
+  }
+
+  /* Every second tile sits lower: reads like a laid out magazine spread. */
+  .collection-tiles__item:nth-child(even) {
+    margin-block-start: var(--space-600);
+  }
+}
+
+/* ---------- The tile ---------- */
+.collection-tile {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-200);
+  color: inherit;
+  text-decoration: none;
+}
+
+.collection-tile__media {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  background-color: var(--color-surface);
+}
+
+.collection-tile__image,
+.collection-tile__placeholder {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--dur-move) var(--ease-out);
+}
+
+.collection-tile__placeholder {
+  fill: color-mix(in srgb, var(--color-foreground) 22%, transparent);
+}
+
+.collection-tile__number {
+  position: absolute;
+  top: var(--space-100);
+  left: var(--space-100);
+  padding: var(--space-50) var(--space-75);
+  border-radius: var(--radius-full);
+  background-color: var(--color-background);
+  color: var(--color-heading);
+}
+
+.collection-tile__info {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-200);
+}
+
+.collection-tile__text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-50);
+}
+
+.collection-tile__title {
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 6px;
+  transition: text-decoration-color var(--dur-hover) var(--ease-out);
+}
+
+.collection-tile__arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: var(--space-500);
+  height: var(--space-500);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  color: var(--color-heading);
+  transition: background-color var(--dur-hover) var(--ease-out),
+    color var(--dur-hover) var(--ease-out),
+    border-color var(--dur-hover) var(--ease-out),
+    transform var(--dur-move) var(--ease-out);
+}
+
+.collection-tile__arrow .icon {
+  width: var(--space-200);
+  height: var(--space-200);
+}
+
+/* Hover and keyboard focus react the same way. */
+.collection-tile:hover .collection-tile__image,
+.collection-tile:hover .collection-tile__placeholder,
+.collection-tile:focus-visible .collection-tile__image,
+.collection-tile:focus-visible .collection-tile__placeholder {
+  transform: scale(1.04);
+}
+
+.collection-tile:hover .collection-tile__title,
+.collection-tile:focus-visible .collection-tile__title {
+  text-decoration-color: currentColor;
+}
+
+.collection-tile:hover .collection-tile__arrow,
+.collection-tile:focus-visible .collection-tile__arrow {
+  border-color: var(--color-button);
+  background-color: var(--color-button);
+  color: var(--color-button-text);
+  transform: translateX(var(--space-50));
+}
+
+.collection-tile:active .collection-tile__media {
+  transform: scale(0.98);
+}
+
+.collection-tile__media {
+  transition: transform var(--dur-hover) var(--ease-out);
+}
+
+.collection-tile:focus-visible {
+  outline-offset: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .collection-tile__image,
+  .collection-tile__placeholder,
+  .collection-tile__arrow,
+  .collection-tile__media {
+    transition-property: opacity, background-color, color, border-color;
+  }
+
+  .collection-tile:hover .collection-tile__image,
+  .collection-tile:hover .collection-tile__placeholder,
+  .collection-tile:focus-visible .collection-tile__image,
+  .collection-tile:focus-visible .collection-tile__placeholder,
+  .collection-tile:hover .collection-tile__arrow,
+  .collection-tile:focus-visible .collection-tile__arrow {
+    transform: none;
+  }
+}

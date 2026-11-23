@@ -144,6 +144,7 @@ Fern & Fable picks (from START.md): ★ hero with a three.js cloth unfurling ont
 - [ ] Featured collection as a sideways-scrolling row (CSS scroll-snap) with quick add
 - [ ] Magazine-style image + text with huge numbers and mixed type sizes
 - [ ] Shoppable lookbook: dots on a photo that open product cards
+- [x] Shop by collection: staggered row of 5 tiles, hover and focus react, swipe row on phones
 - [ ] Collection grid where hovering a card shows a second photo
 - [ ] Newsletter block with a playful small animation
 

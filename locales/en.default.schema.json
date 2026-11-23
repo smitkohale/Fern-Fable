@@ -176,6 +176,21 @@
       "image_mobile": "Mobile image",
       "show_stars": "Show drifting stars",
       "show_stars_info": "Only while festive mode is on."
+    },
+    "collection_tiles": {
+      "name": "Shop by collection",
+      "heading": "Heading",
+      "link_label": "Link label",
+      "link": "Link",
+      "show_count": "Show number of products when there is no caption",
+      "block_name": "Collection",
+      "collection": "Collection",
+      "title": "Title",
+      "title_info": "Leave empty to use the collection's title.",
+      "caption": "Caption",
+      "caption_info": "A short line, for example what's inside.",
+      "image": "Image",
+      "image_info": "Leave empty to use the collection's image."
     }
   }
 }

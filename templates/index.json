@@ -22,9 +22,69 @@
         "print": "auto",
         "show_stars": true
       }
+    },
+    "collection-tiles": {
+      "type": "collection-tiles",
+      "blocks": {
+        "tile-kitchen": {
+          "type": "collection",
+          "settings": {
+            "collection": "kitchen",
+            "title": "Kitchen",
+            "caption": "Napkins, aprons, roti covers"
+          }
+        },
+        "tile-table": {
+          "type": "collection",
+          "settings": {
+            "collection": "table",
+            "title": "Table",
+            "caption": "Runners, placemats, tablecloths"
+          }
+        },
+        "tile-bed": {
+          "type": "collection",
+          "settings": {
+            "collection": "bed",
+            "title": "Bed",
+            "caption": "Mulmul sheets, dohars, razais"
+          }
+        },
+        "tile-living": {
+          "type": "collection",
+          "settings": {
+            "collection": "living",
+            "title": "Living",
+            "caption": "Cushions, throws, curtains"
+          }
+        },
+        "tile-gifts": {
+          "type": "collection",
+          "settings": {
+            "collection": "gifts",
+            "title": "Gifts",
+            "caption": "Boxes ready to give"
+          }
+        }
+      },
+      "block_order": [
+        "tile-kitchen",
+        "tile-table",
+        "tile-bed",
+        "tile-living",
+        "tile-gifts"
+      ],
+      "settings": {
+        "color_scheme": "scheme-kora",
+        "heading": "Start with a room",
+        "link_label": "All collections",
+        "link": "",
+        "show_count": true
+      }
     }
   },
   "order": [
-    "hero"
+    "hero",
+    "collection-tiles"
   ]
 }
