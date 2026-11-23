@@ -1,7 +1,7 @@
 /**
  * <hero-cloth>: a block printed runner that drops and unrolls in 3D.
  *
- * Hand written WebGL2, no library (about 8 KB instead of three.js at 150 KB+).
+ * Hand written WebGL2, no library (about 7 KB gzipped, three.js alone is 150 KB+).
  * - The print is drawn procedurally on a 2D canvas (no image download).
  * - The roll is an Archimedean spiral in the vertex shader, so the layers of
  *   the roll never overlap; the roll shrinks as the cloth unrolls.
