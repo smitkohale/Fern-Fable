@@ -5,8 +5,8 @@
   A tab with no collection picked shows the newest products in the store.
 {%- endcomment -%}
 
-{{ 'component-product-card.css' | asset_url | stylesheet_tag }}
-{{ 'section-product-tabs.css' | asset_url | stylesheet_tag }}
+{% render 'deferred-stylesheet', name: 'component-product-card.css' %}
+{% render 'deferred-stylesheet', name: 'section-product-tabs.css' %}
 <script src="{{ 'product-tabs.js' | asset_url }}" type="module"></script>
 <script src="{{ 'quick-add.js' | asset_url }}" type="module"></script>
 

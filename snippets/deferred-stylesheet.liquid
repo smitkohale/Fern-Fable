@@ -1,0 +1,15 @@
+{%- doc -%}
+  Loads a stylesheet without blocking the first paint. For sections below the
+  first screen and for hidden panels (cart drawer, search): the browser fetches
+  the file at low priority as "print" CSS, then switches it to "all" on load.
+  A <noscript> link keeps it working without JavaScript.
+
+  @param {string} name - Asset file name, for example 'section-footer.css'.
+
+  @example
+  {% render 'deferred-stylesheet', name: 'section-footer.css' %}
+{%- enddoc -%}
+
+{%- assign href = name | asset_url -%}
+<link rel="stylesheet" href="{{ href }}" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="{{ href }}"></noscript>

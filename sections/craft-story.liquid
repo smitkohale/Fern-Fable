@@ -7,7 +7,7 @@
   no movement. No WebGL: a flat drawing of the stamped print.
 {%- endcomment -%}
 
-{{ 'section-craft-story.css' | asset_url | stylesheet_tag }}
+{% render 'deferred-stylesheet', name: 'section-craft-story.css' %}
 <script src="{{ 'craft-story.js' | asset_url }}" type="module"></script>
 {%- if section.settings.show_3d -%}
   <script src="{{ 'craft-block.js' | asset_url }}" type="module"></script>

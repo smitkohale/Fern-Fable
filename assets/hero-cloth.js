@@ -12,7 +12,7 @@
  *   .is-fallback and shows its photo, or a flat drawing of the runner.
  */
 
-import { compile, drawBerry, drawFern, hexToRgb, isSoftwareRenderer, lookAt, multiply, perspective, seeded } from './gl-kit.js';
+import { compileAsync, drawBerry, drawFern, hexToRgb, isSoftwareRenderer, lookAt, multiply, perspective, seeded } from './gl-kit.js';
 
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 const desktop = window.matchMedia('(min-width: 990px)');
@@ -22,7 +22,7 @@ const DROP = 650;
 const UNROLL_START = 250;
 const UNROLL = 1400; /* --dur-hero */
 const WAVE_START = 1500;
-const WAVE = 6000;
+const WAVE = 3500;
 const END = WAVE_START + WAVE + 200;
 
 /* ---------- Cloth geometry (scene units) ---------- */
@@ -31,7 +31,7 @@ const CLOTH_LENGTH = 2.9;
 const ROLL_CORE = 0.024; /* innermost radius of the roll */
 const ROLL_STEP = 0.0011; /* radius lost per radian, about 7 mm a turn */
 const SEGMENTS_U = 24;
-const SEGMENTS_V = 220;
+const SEGMENTS_V = 160;
 
 const ease = {
   outCubic: (t) => 1 - Math.pow(1 - t, 3),
@@ -323,7 +323,9 @@ class HeroCloth extends HTMLElement {
   }
 
   async init() {
-    const gl = this.canvas.getContext('webgl2', { antialias: true, alpha: true, premultipliedAlpha: true });
+    // Multisampling is wasted work on high density screens: the pixels are already tiny.
+    const antialias = (window.devicePixelRatio || 1) < 2;
+    const gl = this.canvas.getContext('webgl2', { antialias, alpha: true, premultipliedAlpha: true });
     if (!gl || isSoftwareRenderer(gl)) {
       this.fallback();
       return;
@@ -331,8 +333,10 @@ class HeroCloth extends HTMLElement {
     this.gl = gl;
 
     try {
-      this.cloth = compile(gl, CLOTH_VERTEX, CLOTH_FRAGMENT);
-      this.shadow = compile(gl, SHADOW_VERTEX, SHADOW_FRAGMENT);
+      [this.cloth, this.shadow] = await Promise.all([
+        compileAsync(gl, CLOTH_VERTEX, CLOTH_FRAGMENT),
+        compileAsync(gl, SHADOW_VERTEX, SHADOW_FRAGMENT),
+      ]);
     } catch (error) {
       this.fallback();
       return;
@@ -373,8 +377,13 @@ class HeroCloth extends HTMLElement {
     /* The print, as a mipmapped texture. */
     const texture = gl.createTexture();
     gl.bindTexture(gl.TEXTURE_2D, texture);
-    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, await makePrint(this.print));
+    // Each heavy GPU step gets its own task, so none of them adds up to one long block.
+    const print = await makePrint(this.print);
+    await yieldToMain();
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, print);
+    await yieldToMain();
     gl.generateMipmap(gl.TEXTURE_2D);
+    await yieldToMain();
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
@@ -399,6 +408,11 @@ class HeroCloth extends HTMLElement {
       this.section?.addEventListener('pointermove', this.onPointer, { passive: true });
     }
 
+    // Warm-up draw while still invisible: the driver finishes its pipeline set up
+    // here, in its own task, instead of inside the first animation frame.
+    this.render(0);
+    await yieldToMain();
+
     this.startTime = performance.now();
     this.classList.add('is-ready');
     if (reducedMotion.matches) {
@@ -417,7 +431,8 @@ class HeroCloth extends HTMLElement {
   };
 
   resize() {
-    const ratio = Math.min(window.devicePixelRatio || 1, 2);
+    // Phones render at up to 1.5x: the cloth stays sharp and each frame costs far less.
+    const ratio = Math.min(window.devicePixelRatio || 1, desktop.matches ? 2 : 1.5);
     const width = Math.max(1, Math.round(this.clientWidth * ratio));
     const height = Math.max(1, Math.round(this.clientHeight * ratio));
     if (this.canvas.width !== width || this.canvas.height !== height) {

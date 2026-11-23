@@ -3,7 +3,7 @@
   a huge store name that inks in, then fine print, policies and payment icons.
 {%- endcomment -%}
 
-{{ 'section-footer.css' | asset_url | stylesheet_tag }}
+{% render 'deferred-stylesheet', name: 'section-footer.css' %}
 {%- if section.settings.show_newsletter -%}
   <script src="{{ 'newsletter-form.js' | asset_url }}" type="module"></script>
 {%- endif -%}

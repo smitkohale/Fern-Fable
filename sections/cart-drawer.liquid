@@ -7,7 +7,7 @@
   /cart without JavaScript.
 {%- endcomment -%}
 
-{{ 'section-cart-drawer.css' | asset_url | stylesheet_tag }}
+{% render 'deferred-stylesheet', name: 'section-cart-drawer.css' %}
 <script src="{{ 'cart-drawer.js' | asset_url }}" type="module"></script>
 
 {%- liquid

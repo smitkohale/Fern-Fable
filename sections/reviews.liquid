@@ -5,7 +5,7 @@
   data: search engines must never read made up reviews as real ones.
 {%- endcomment -%}
 
-{{ 'section-reviews.css' | asset_url | stylesheet_tag }}
+{% render 'deferred-stylesheet', name: 'section-reviews.css' %}
 
 {%- liquid
   assign sample_label = 'sections.reviews.sample_label' | t

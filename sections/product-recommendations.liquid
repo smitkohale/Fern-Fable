@@ -5,8 +5,8 @@
   swaps in the grid. Nothing shows if Shopify has no recommendations.
 {%- endcomment -%}
 
-{{ 'component-product-card.css' | asset_url | stylesheet_tag }}
-{{ 'section-product-recommendations.css' | asset_url | stylesheet_tag }}
+{% render 'deferred-stylesheet', name: 'component-product-card.css' %}
+{% render 'deferred-stylesheet', name: 'section-product-recommendations.css' %}
 <script src="{{ 'product-recommendations.js' | asset_url }}" type="module"></script>
 <script src="{{ 'quick-add.js' | asset_url }}" type="module"></script>
 

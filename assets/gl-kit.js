@@ -184,3 +184,43 @@ export function isSoftwareRenderer(gl) {
   }
 }
 
+/**
+ * Like compile(), but lets the GPU driver compile and link in the background
+ * (KHR_parallel_shader_compile) and only checks the result once it is ready,
+ * so the main thread is not blocked waiting for the driver. Falls back to
+ * compile() where the extension is missing.
+ */
+export async function compileAsync(gl, vertexSource, fragmentSource) {
+  const ext = gl.getExtension('KHR_parallel_shader_compile');
+  if (!ext) return compile(gl, vertexSource, fragmentSource);
+
+  const program = gl.createProgram();
+  const shaders = [
+    [gl.VERTEX_SHADER, vertexSource],
+    [gl.FRAGMENT_SHADER, fragmentSource],
+  ].map(([type, source]) => {
+    const shader = gl.createShader(type);
+    gl.shaderSource(shader, source);
+    gl.compileShader(shader);
+    gl.attachShader(program, shader);
+    return shader;
+  });
+  gl.linkProgram(program);
+
+  while (!gl.getProgramParameter(program, ext.COMPLETION_STATUS_KHR)) {
+    await new Promise((resolve) => requestAnimationFrame(resolve));
+  }
+
+  if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+    const log = shaders.map((shader) => gl.getShaderInfoLog(shader)).join(' ') || gl.getProgramInfoLog(program);
+    throw new Error(log || 'Program failed to link');
+  }
+  const uniforms = {};
+  const count = gl.getProgramParameter(program, gl.ACTIVE_UNIFORMS);
+  for (let i = 0; i < count; i += 1) {
+    const { name } = gl.getActiveUniform(program, i);
+    uniforms[name] = gl.getUniformLocation(program, name);
+  }
+  return { program, uniforms, aUv: gl.getAttribLocation(program, 'aUv') };
+}
+

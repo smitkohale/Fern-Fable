@@ -6,7 +6,7 @@
   "Festive only" tiles hide when festive mode is off.
 {%- endcomment -%}
 
-{{ 'section-gift-finder.css' | asset_url | stylesheet_tag }}
+{% render 'deferred-stylesheet', name: 'section-gift-finder.css' %}
 
 <div class="gifts full-width color-{{ section.settings.color_scheme }} section-space">
   <div class="page-width">

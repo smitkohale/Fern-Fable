@@ -182,9 +182,11 @@
 }
 
 /* ---------- Entrance: words rise one by one, then the rest ---------- */
+/* Starts at 0.01, not 0: Chrome does not count fully transparent text as painted,
+   so 0 would delay Largest Contentful Paint until the fade finishes. */
 @keyframes hero-rise {
   from {
-    opacity: 0;
+    opacity: 0.01;
     transform: translateY(0.35em);
   }
   to {

@@ -12,7 +12,7 @@
 -%}
 
 {%- if settings.whatsapp_show and number != blank -%}
-  {{ 'component-whatsapp.css' | asset_url | stylesheet_tag }}
+  {% render 'deferred-stylesheet', name: 'component-whatsapp.css' %}
   {%- liquid
     assign whatsapp_url = 'https://wa.me/' | append: number
     if settings.whatsapp_message != blank

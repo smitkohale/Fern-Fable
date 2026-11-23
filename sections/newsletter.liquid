@@ -4,7 +4,7 @@
   (section-newsletter.css) so a page never shows two forms.
 {%- endcomment -%}
 
-{{ 'section-newsletter.css' | asset_url | stylesheet_tag }}
+{% render 'deferred-stylesheet', name: 'section-newsletter.css' %}
 <script src="{{ 'newsletter-form.js' | asset_url }}" type="module"></script>
 
 <div class="newsletter-banner full-width color-{{ section.settings.color_scheme }}">

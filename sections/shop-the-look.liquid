@@ -7,8 +7,8 @@
   Blocks: one per product. "Include in the whole look" leaves gift boxes out.
 {%- endcomment -%}
 
-{{ 'component-product-card.css' | asset_url | stylesheet_tag }}
-{{ 'section-shop-the-look.css' | asset_url | stylesheet_tag }}
+{% render 'deferred-stylesheet', name: 'component-product-card.css' %}
+{% render 'deferred-stylesheet', name: 'section-shop-the-look.css' %}
 <script src="{{ 'shop-the-look.js' | asset_url }}" type="module"></script>
 <script src="{{ 'quick-add.js' | asset_url }}" type="module"></script>
 

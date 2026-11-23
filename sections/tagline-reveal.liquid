@@ -7,7 +7,7 @@
   the words show at full colour straight away.
 {%- endcomment -%}
 
-{{ 'section-tagline-reveal.css' | asset_url | stylesheet_tag }}
+{% render 'deferred-stylesheet', name: 'section-tagline-reveal.css' %}
 <script src="{{ 'tagline-reveal.js' | asset_url }}" type="module"></script>
 
 {%- assign lines = section.settings.text | strip | newline_to_br | split: '<br />' -%}

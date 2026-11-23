@@ -11,7 +11,7 @@
  */
 import {
   chain,
-  compile,
+  compileAsync,
   drawFern,
   lookAt,
   multiply,
@@ -319,7 +319,9 @@ class CraftBlock extends HTMLElement {
     drawFlatPrint(this);
   }
 
-  init() {
+  async init() {
+    if (this.initialising) return;
+    this.initialising = true;
     const gl = this.canvas.getContext('webgl2', { antialias: true, alpha: true });
     if (!gl || isSoftwareRenderer(gl)) {
       this.fallback();
@@ -327,7 +329,7 @@ class CraftBlock extends HTMLElement {
     }
     let program;
     try {
-      program = compile(gl, VERTEX, FRAGMENT);
+      program = await compileAsync(gl, VERTEX, FRAGMENT);
     } catch (error) {
       this.fallback();
       return;
