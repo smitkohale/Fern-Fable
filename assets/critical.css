@@ -34,6 +34,13 @@ body {
 
 main {
   flex: 1 0 auto;
+  /* The floating header overlays the page; leave room for it. */
+  padding-top: var(--header-height);
+}
+
+/* A full bleed hero sits under the floating header instead. */
+main:has(> .section-hero:first-child) {
+  padding-top: 0;
 }
 
 html:has(dialog[scroll-lock][open], details[scroll-lock][open]) {

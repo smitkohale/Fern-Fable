@@ -9,12 +9,22 @@
  */
 {
   "sections": {
-    "main": {
-      "type": "hello-world",
-      "settings": {}
+    "hero": {
+      "type": "hero",
+      "settings": {
+        "color_scheme": "scheme-indigo-deep",
+        "heading": "Set a table\nthey'll remember.",
+        "subheading": "Cotton linens printed by hand with carved wooden blocks, in indigo, madder and turmeric.",
+        "button_label": "Shop the table",
+        "button_link": "",
+        "proof": "Printed by hand, one block at a time",
+        "show_3d": true,
+        "print": "auto",
+        "show_stars": true
+      }
     }
   },
   "order": [
-    "main"
+    "hero"
   ]
 }

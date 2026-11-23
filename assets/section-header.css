@@ -5,6 +5,8 @@
   position: sticky;
   top: 0;
   z-index: 50;
+  /* Overlay the content below: main adds the same space back (critical.css). */
+  margin-bottom: calc(var(--header-height) * -1);
   pointer-events: none;
 }
 

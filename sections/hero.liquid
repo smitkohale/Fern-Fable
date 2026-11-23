@@ -1,0 +1,227 @@
+{%- comment -%}
+  Hero (signature moment 1). A hand block printed runner drops onto the page
+  and unrolls in 3D (hand written WebGL2, assets/hero-cloth.js) while the
+  headline rises in word by word. Reduced motion shows the unrolled runner
+  with no movement. No WebGL, low power devices and Save Data get the photo
+  (if set) or a flat drawing of the runner. Without JavaScript: the photo.
+  Each line of the heading setting is a line in the headline (meaningful breaks).
+{%- endcomment -%}
+
+{{ 'section-hero.css' | asset_url | stylesheet_tag }}
+{%- if section.settings.show_3d -%}
+  <script src="{{ 'hero-cloth.js' | asset_url }}" type="module"></script>
+{%- endif -%}
+
+{%- liquid
+  assign print = section.settings.print
+  if print == 'auto'
+    if settings.festive_mode
+      assign print = 'winter_berry'
+    else
+      assign print = 'dabu'
+    endif
+  endif
+
+  assign heading_lines = section.settings.heading | strip | newline_to_br | split: '<br />'
+  assign word_index = 0
+  assign has_image = false
+  if section.settings.image != blank
+    assign has_image = true
+  endif
+-%}
+
+<section
+  class="hero full-width color-{{ section.settings.color_scheme }}{% if section.settings.show_3d %} hero--3d{% endif %}{% if has_image %} hero--has-image{% endif %}"
+  aria-labelledby="HeroHeading-{{ section.id }}"
+>
+  <div class="hero__media">
+    {%- if has_image -%}
+      <picture class="hero__picture">
+        {%- if section.settings.image_mobile != blank -%}
+          <source
+            media="(max-width: 749px)"
+            srcset="{{ section.settings.image_mobile | image_url: width: 750 }} 750w, {{ section.settings.image_mobile | image_url: width: 1100 }} 1100w"
+            sizes="100vw"
+          >
+        {%- endif -%}
+        {%- liquid
+          if section.settings.show_3d
+            assign image_loading = 'lazy'
+          else
+            assign image_loading = 'eager'
+          endif
+        -%}
+        {{
+          section.settings.image
+          | image_url: width: 2400
+          | image_tag:
+            class: 'hero__image',
+            widths: '750, 1100, 1500, 1800, 2400',
+            sizes: '100vw',
+            loading: image_loading,
+            alt: section.settings.image.alt
+        }}
+      </picture>
+    {%- endif -%}
+
+    {%- if section.settings.show_3d -%}
+      <hero-cloth
+        class="hero__cloth"
+        data-print="{{ print }}"
+        data-back="#E6DCC8"
+      >
+        <canvas class="hero__canvas" aria-hidden="true"></canvas>
+      </hero-cloth>
+    {%- endif -%}
+
+    {%- if settings.festive_mode and section.settings.show_stars -%}
+      <div class="hero__stars" aria-hidden="true">
+        {%- for i in (1..8) -%}
+          {%- liquid
+            assign x = i | times: 37 | modulo: 100
+            assign size = i | modulo: 3 | times: 6 | plus: 12
+            assign duration = i | times: 7 | modulo: 20 | plus: 22
+            assign delay = i | times: 3 | modulo: 17
+          -%}
+          <span
+            class="hero__star"
+            style="--x: {{ x }}%; --size: {{ size }}px; --duration: {{ duration }}s; --delay: -{{ delay }}s;"
+          >
+            <svg viewBox="0 0 24 24" focusable="false"><path d="M12 0c.9 6.4 5.1 10.6 12 12-6.9 1.4-11.1 5.6-12 12-.9-6.4-5.1-10.6-12-12C6.9 10.6 11.1 6.4 12 0Z"/></svg>
+          </span>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  </div>
+
+  <div class="hero__content page-width">
+    <div class="hero__text">
+      <h1 class="hero__heading display-1" id="HeroHeading-{{ section.id }}">
+        {%- for line in heading_lines -%}
+          {%- assign words = line | strip | split: ' ' -%}
+          <span class="hero__line">
+            {%- for word in words -%}
+              <span class="hero__word" style="--i: {{ word_index }};">{{ word }}</span>
+              {%- unless forloop.last -%}{{ ' ' }}{%- endunless -%}
+              {%- assign word_index = word_index | plus: 1 -%}
+            {%- endfor -%}
+          </span>
+          {%- unless forloop.last -%}{{ ' ' }}{%- endunless -%}
+        {%- endfor -%}
+      </h1>
+
+      {%- if section.settings.subheading != blank -%}
+        <p class="hero__subheading body-3" style="--i: {{ word_index | plus: 1 }};">{{ section.settings.subheading }}</p>
+      {%- endif -%}
+
+      {%- if section.settings.button_label != blank -%}
+        <div class="hero__actions" style="--i: {{ word_index | plus: 2 }};">
+          <a
+            href="{{ section.settings.button_link | default: routes.all_products_collection_url }}"
+            class="button hero__button"
+          >
+            {{- section.settings.button_label -}}
+            {%- render 'icon', name: 'arrow-right' -%}
+          </a>
+        </div>
+      {%- endif -%}
+
+      {%- if section.settings.proof != blank -%}
+        <p class="hero__proof caption-1" style="--i: {{ word_index | plus: 3 }};">
+          <span class="hero__proof-mark" aria-hidden="true"></span>
+          {{- section.settings.proof -}}
+        </p>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "t:sections.hero.name",
+  "class": "section-hero",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:settings.colors.scheme",
+      "default": "scheme-indigo-deep"
+    },
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "t:sections.hero.heading",
+      "info": "t:sections.hero.heading_info",
+      "default": "Set a table\nthey'll remember."
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "t:sections.hero.subheading",
+      "default": "Cotton linens printed by hand with carved wooden blocks, in indigo, madder and turmeric."
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "t:sections.hero.button_label",
+      "default": "Shop the table"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "t:sections.hero.button_link"
+    },
+    {
+      "type": "text",
+      "id": "proof",
+      "label": "t:sections.hero.proof",
+      "default": "Printed by hand, one block at a time"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.hero.media"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_3d",
+      "label": "t:sections.hero.show_3d",
+      "info": "t:sections.hero.show_3d_info",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "print",
+      "label": "t:sections.hero.print",
+      "options": [
+        { "value": "auto", "label": "t:sections.hero.print_auto" },
+        { "value": "dabu", "label": "t:sections.hero.print_dabu" },
+        { "value": "winter_berry", "label": "t:sections.hero.print_winter_berry" }
+      ],
+      "default": "auto"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "t:sections.hero.image",
+      "info": "t:sections.hero.image_info"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_mobile",
+      "label": "t:sections.hero.image_mobile"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_stars",
+      "label": "t:sections.hero.show_stars",
+      "info": "t:sections.hero.show_stars_info",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.hero.name"
+    }
+  ]
+}
+{% endschema %}

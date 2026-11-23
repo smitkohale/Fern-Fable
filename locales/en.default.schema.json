@@ -155,6 +155,27 @@
         "heading": "Heading",
         "menu": "Menu"
       }
+    },
+    "hero": {
+      "name": "Hero",
+      "heading": "Heading",
+      "heading_info": "Each line here becomes a line in the headline. Break where the thought breaks.",
+      "subheading": "Subheading",
+      "button_label": "Button label",
+      "button_link": "Button link",
+      "proof": "Proof line",
+      "media": "Media",
+      "show_3d": "Show the 3D runner",
+      "show_3d_info": "Phones on low power, Save Data and browsers without WebGL see the image below instead.",
+      "print": "Runner print",
+      "print_auto": "Automatic (Winter Berry in festive mode)",
+      "print_dabu": "Indigo Dabu",
+      "print_winter_berry": "Winter Berry",
+      "image": "Image",
+      "image_info": "Used when the 3D runner is off or cannot run. 16:9 works best.",
+      "image_mobile": "Mobile image",
+      "show_stars": "Show drifting stars",
+      "show_stars_info": "Only while festive mode is on."
     }
   }
 }

@@ -42,7 +42,7 @@ Read these before any design work:
 
 ## Motion rules
 - Try CSS first: transitions, scroll-snap, scroll-driven animations. Use GSAP (ScrollTrigger, SplitText) only for the 2–3 signature moments, and load it only in those sections. GSAP files go in `assets/` (copied minified builds), not a CDN.
-- 3D (approved): three.js, minified ES module build copied into `assets/`, used only for two signature moments: the hero cloth (a printed runner unfurling onto the table) and the craft story's carved wooden block. Load it only after the hero image (the LCP) has painted, and only on the home page. Low power phones, no WebGL and reduced motion get the still image or video instead. Product pages use Shopify's native 3D media (`model_viewer_tag`) when a product has a GLB model.
+- 3D: the hero cloth is hand written WebGL2 (`assets/hero-cloth.js`, no library, about 8 KB) because three.js would add 150 KB+ for one mesh. three.js (minified ES module in `assets/`) stays approved for the craft story's carved block if raw WebGL gets too complex. Two signature moments only: the hero cloth (a printed runner unfurling onto the table) and the craft story's carved wooden block. Load it only after the hero image (the LCP) has painted, and only on the home page. Low power phones, no WebGL and reduced motion get the still image or video instead. Product pages use Shopify's native 3D media (`model_viewer_tag`) when a product has a GLB model.
 - Every animation respects `prefers-reduced-motion: reduce`: show the end state with no movement.
 - No hijacking the scroll, no autoplay sound, no layout jumps caused by animation, and no animation that blocks reading or clicking.
 

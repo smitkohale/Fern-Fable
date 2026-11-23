@@ -1,0 +1,255 @@
+/* Hero. Prefix: .hero */
+
+.hero {
+  position: relative;
+  display: grid;
+  grid-template-rows: auto auto;
+  overflow: hidden;
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+}
+
+/* ---------- Media layer ---------- */
+.hero__media {
+  position: relative;
+  height: 56svh;
+  min-height: 320px;
+}
+
+.hero__picture,
+.hero__image {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.hero__image {
+  object-fit: cover;
+}
+
+.hero__cloth {
+  position: absolute;
+  inset: 0;
+  display: block;
+}
+
+.hero__canvas {
+  width: 100%;
+  height: 100%;
+}
+
+/* Fade the 3D in once WebGL has its first frame. */
+.js .hero__cloth {
+  opacity: 0;
+  transition: opacity var(--dur-move) var(--ease-out);
+}
+
+.js .hero__cloth.is-ready,
+.js .hero.is-fallback .hero__cloth {
+  opacity: 1;
+}
+
+/* Fallback without WebGL: a flat drawing of the runner, laid at an angle. */
+.hero__flat-runner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: auto;
+  height: 100%;
+  max-width: none;
+  box-shadow: var(--shadow-float);
+  transform: translate(-50%, -50%) rotate(-62deg);
+}
+
+@media (min-width: 990px) {
+  .hero__flat-runner {
+    top: 32%;
+    left: 74%;
+    height: 72%;
+  }
+}
+
+/* With 3D on, the photo is only the fallback (no WebGL, low power, Save Data). */
+.js .hero--3d .hero__picture {
+  display: none;
+}
+
+.js .hero--3d.is-fallback .hero__picture {
+  display: block;
+}
+
+.hero.is-fallback.hero--has-image .hero__canvas {
+  display: none;
+}
+
+/* ---------- Text ---------- */
+.hero__content {
+  position: relative;
+  z-index: 2;
+  padding-block: var(--space-300) var(--space-700);
+}
+
+.hero__text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-300);
+}
+
+.hero__heading {
+  max-width: var(--text-column);
+  color: var(--color-heading);
+}
+
+.hero__line {
+  display: block;
+}
+
+.hero__word {
+  display: inline-block;
+}
+
+.hero__subheading {
+  max-width: var(--text-column);
+  color: var(--color-muted-text);
+}
+
+.hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-100);
+}
+
+.hero__button .icon {
+  width: var(--space-200);
+  height: var(--space-200);
+  transition: transform var(--dur-hover) var(--ease-out);
+}
+
+.hero__button:hover .icon {
+  transform: translateX(var(--space-50));
+}
+
+.hero__proof {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-75);
+  color: var(--color-muted-text);
+}
+
+.hero__proof-mark {
+  width: var(--space-75);
+  height: var(--space-75);
+  background-color: var(--color-accent);
+  transform: rotate(45deg);
+}
+
+/* ---------- Desktop: runner in the top right, words bottom left ---------- */
+@media (min-width: 990px) {
+  .hero {
+    grid-template-rows: 1fr;
+    min-height: min(100svh, 1000px);
+  }
+
+  .hero__media {
+    position: absolute;
+    inset: 0;
+    height: auto;
+  }
+
+  .hero__content {
+    display: flex;
+    align-items: flex-end;
+    padding-block: calc(var(--header-height) + var(--space-700)) var(--space-800);
+  }
+
+  .hero__heading {
+    max-width: 1080px;
+  }
+
+  .hero__subheading {
+    max-width: 520px;
+  }
+
+  /* A plain photo hero gets a scrim so the words stay readable. */
+  .hero--has-image:not(.hero--3d) .hero__media::after,
+  .hero--has-image.is-fallback .hero__media::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-color: color-mix(in srgb, var(--color-background) 55%, transparent);
+  }
+}
+
+/* ---------- Entrance: words rise one by one, then the rest ---------- */
+@keyframes hero-rise {
+  from {
+    opacity: 0;
+    transform: translateY(0.35em);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .js .hero__word,
+  .js .hero__subheading,
+  .js .hero__actions,
+  .js .hero__proof {
+    animation: hero-rise 900ms var(--ease-out) both;
+    animation-delay: calc(150ms + var(--i, 0) * 70ms);
+  }
+}
+
+/* ---------- Festive stars: slow drift, hero only ---------- */
+.hero__stars {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.hero__star {
+  position: absolute;
+  top: 0;
+  left: var(--x);
+  width: var(--size);
+  height: var(--size);
+  opacity: 0.7;
+  fill: var(--color-accent);
+  transform: translateY(-10vh);
+}
+
+.hero__star:nth-child(even) {
+  fill: var(--color-kora);
+  opacity: 0.45;
+}
+
+.hero__star svg {
+  width: 100%;
+  height: 100%;
+}
+
+@keyframes hero-star-drift {
+  from {
+    transform: translateY(-10vh) rotate(0deg);
+  }
+  to {
+    transform: translateY(110vh) rotate(180deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .hero__star {
+    animation: hero-star-drift var(--duration) cubic-bezier(0.45, 0.05, 0.55, 0.95) var(--delay) infinite;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero__stars {
+    display: none;
+  }
+}
