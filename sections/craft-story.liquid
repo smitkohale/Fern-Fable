@@ -1,0 +1,140 @@
+{%- comment -%}
+  The craft story (signature moment 4). Three steps (blocks) scroll past
+  normally while a 3D panel stays on screen: the carved block turns to show
+  its relief (carve), dips into indigo (dye), then stamps the cloth and lifts
+  to reveal the print (print). The scene follows the scroll position, never
+  takes it over (assets/craft-block.js). Reduced motion: the finished print,
+  no movement. No WebGL: a flat drawing of the stamped print.
+{%- endcomment -%}
+
+{{ 'section-craft-story.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'craft-story.js' | asset_url }}" type="module"></script>
+{%- if section.settings.show_3d -%}
+  <script src="{{ 'craft-block.js' | asset_url }}" type="module"></script>
+{%- endif -%}
+
+<craft-story class="craft full-width color-{{ section.settings.color_scheme }}">
+  <div class="craft__intro page-width" data-reveal="rise">
+    {%- if section.settings.caption != blank -%}
+      <p class="caption-3 text-muted">{{ section.settings.caption }}</p>
+    {%- endif -%}
+    {%- if section.settings.heading != blank -%}
+      <h2 class="craft__heading heading-2">{{ section.settings.heading }}</h2>
+    {%- endif -%}
+  </div>
+
+  <div class="craft__layout page-width">
+    <div class="craft__stage" aria-hidden="true">
+      <div class="craft__stage-inner">
+        {%- if section.settings.show_3d -%}
+          <craft-block class="craft__block" data-steps="{{ section.blocks.size }}">
+            <canvas class="craft__canvas"></canvas>
+          </craft-block>
+        {%- endif -%}
+        <ol class="craft__progress" role="list">
+          {%- for block in section.blocks -%}
+            <li class="craft__progress-step{% if forloop.first %} is-active{% endif %}" data-progress-step>
+              <span class="caption-3">{{ forloop.index | prepend: '0' }}</span>
+            </li>
+          {%- endfor -%}
+        </ol>
+      </div>
+    </div>
+
+    <ol class="craft__steps" role="list">
+      {%- for block in section.blocks -%}
+        <li class="craft__step{% if forloop.first %} is-active{% endif %}" data-step {{ block.shopify_attributes }}>
+          <div class="craft__step-inner">
+            <span class="craft__step-number display-2" aria-hidden="true">{{ forloop.index | prepend: '0' }}</span>
+            <h3 class="craft__step-title heading-3">{{ block.settings.title }}</h3>
+            {%- if block.settings.text != blank -%}
+              <p class="craft__step-text body-3">{{ block.settings.text }}</p>
+            {%- endif -%}
+          </div>
+        </li>
+      {%- endfor -%}
+    </ol>
+  </div>
+</craft-story>
+
+{% schema %}
+{
+  "name": "t:sections.craft_story.name",
+  "class": "section-craft-story",
+  "max_blocks": 3,
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:settings.colors.scheme",
+      "default": "scheme-indigo"
+    },
+    {
+      "type": "text",
+      "id": "caption",
+      "label": "t:sections.craft_story.caption",
+      "default": "The craft"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "t:sections.craft_story.heading",
+      "default": "Three pairs of hands"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_3d",
+      "label": "t:sections.craft_story.show_3d",
+      "info": "t:sections.craft_story.show_3d_info",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "step",
+      "name": "t:sections.craft_story.step",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "t:sections.craft_story.title",
+          "default": "Carve"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "t:sections.craft_story.text"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.craft_story.name",
+      "blocks": [
+        {
+          "type": "step",
+          "settings": {
+            "title": "Carve",
+            "text": "A printer's block starts as a slab of sheesham, carved by hand over days."
+          }
+        },
+        {
+          "type": "step",
+          "settings": {
+            "title": "Dye",
+            "text": "Indigo, madder and turmeric are mixed in small batches."
+          }
+        },
+        {
+          "type": "step",
+          "settings": {
+            "title": "Print",
+            "text": "Each length of cloth is stamped one block at a time, so no two are quite the same."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -141,7 +141,7 @@ Fern & Fable picks (from START.md): ★ hero with a three.js cloth unfurling ont
 - [x] Hero (built as: WebGL2 runner that drops and unrolls, words rise in CSS, festive stars, flat runner fallback). Original idea: headline that animates in letter by letter (GSAP SplitText) over a full-width video or image, or one huge product photo with layers that move at different speeds as you scroll
 - [x] Tagline reveal (skill B11): words light up in reading order over half a screen of scrolling, accent words with *stars*
 - [ ] Scrolling strip of brand claims or press quotes (CSS only; it stops on hover and for people who turn off motion)
-- [ ] Scroll story: the section stays on screen while the product changes as you scroll, in 3–4 steps (GSAP ScrollTrigger)
+- [x] Craft story: steps scroll past a pinned 3D carved block that turns (carve), dips in indigo (dye) and stamps the cloth (print); follows scroll, never hijacks it; flat print fallback
 - [ ] Featured collection as a sideways-scrolling row (CSS scroll-snap) with quick add
 - [ ] Magazine-style image + text with huge numbers and mixed type sizes
 - [x] Shop the look, The Indigo Table: numbered dots open product cards with quick add (bottom sheet on phones), matching list, total and "Add the whole look" (items[] form, works without JS)

@@ -226,6 +226,16 @@
       "y": "Down (from the top)",
       "include_in_look": "Include in the whole look",
       "include_in_look_info": "Turn off for things like gift boxes that already contain the other pieces."
+    },
+    "craft_story": {
+      "name": "Craft story",
+      "caption": "Caption",
+      "heading": "Heading",
+      "show_3d": "Show the 3D block",
+      "show_3d_info": "The block follows the reader's scroll through the three steps. Phones on low power and Save Data see a flat drawing.",
+      "step": "Step",
+      "title": "Title",
+      "text": "Text"
     }
   }
 }

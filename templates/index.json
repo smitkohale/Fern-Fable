@@ -185,6 +185,43 @@
         "text": "Runner, napkins, placemats and coasters, styled for six.",
         "button_label": "Add the whole look"
       }
+    },
+    "craft-story": {
+      "type": "craft-story",
+      "blocks": {
+        "step-carve": {
+          "type": "step",
+          "settings": {
+            "title": "Carve",
+            "text": "A printer's block starts as a slab of sheesham, carved by hand over days."
+          }
+        },
+        "step-dye": {
+          "type": "step",
+          "settings": {
+            "title": "Dye",
+            "text": "Indigo, madder and turmeric are mixed in small batches."
+          }
+        },
+        "step-print": {
+          "type": "step",
+          "settings": {
+            "title": "Print",
+            "text": "Each length of cloth is stamped one block at a time, so no two are quite the same."
+          }
+        }
+      },
+      "block_order": [
+        "step-carve",
+        "step-dye",
+        "step-print"
+      ],
+      "settings": {
+        "color_scheme": "scheme-indigo",
+        "caption": "The craft",
+        "heading": "Three pairs of hands",
+        "show_3d": true
+      }
     }
   },
   "order": [
@@ -192,6 +229,7 @@
     "collection-tiles",
     "product-tabs",
     "tagline-reveal",
-    "shop-the-look"
+    "shop-the-look",
+    "craft-story"
   ]
 }
