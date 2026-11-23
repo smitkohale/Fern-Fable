@@ -1,0 +1,73 @@
+{%- comment -%}
+  Rich text: caption, a large heading, text and up to two buttons, left or
+  centred. Used to open the About page and anywhere a statement is needed.
+  On a page with no hero it gives the page its h1 (setting "Use as page title").
+{%- endcomment -%}
+
+{{ 'section-editorial.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  if section.settings.as_title
+    assign heading_tag = 'h1'
+  else
+    assign heading_tag = 'h2'
+  endif
+-%}
+
+<div class="rich-text full-width color-{{ section.settings.color_scheme }} rich-text--{{ section.settings.alignment }}">
+  <div class="rich-text__inner page-width" data-reveal="rise">
+    {%- if section.settings.caption != blank -%}
+      <p class="caption-3 rich-text__caption">{{ section.settings.caption }}</p>
+    {%- endif -%}
+    {%- if section.settings.heading != blank -%}
+      <{{ heading_tag }} class="rich-text__heading {{ section.settings.heading_size }}">{{ section.settings.heading | newline_to_br }}</{{ heading_tag }}>
+    {%- endif -%}
+    {%- if section.settings.text != blank -%}
+      <div class="rich-text__text rte body-3">{{ section.settings.text }}</div>
+    {%- endif -%}
+    {%- if section.settings.button_label != blank or section.settings.button_label_2 != blank -%}
+      <div class="rich-text__buttons">
+        {%- if section.settings.button_label != blank -%}
+          <a href="{{ section.settings.button_link | default: routes.all_products_collection_url }}" class="button">{{ section.settings.button_label }}</a>
+        {%- endif -%}
+        {%- if section.settings.button_label_2 != blank -%}
+          <a href="{{ section.settings.button_link_2 | default: routes.root_url }}" class="button button--secondary">{{ section.settings.button_label_2 }}</a>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.rich_text.name",
+  "class": "section-rich-text",
+  "settings": [
+    { "type": "color_scheme", "id": "color_scheme", "label": "t:settings.colors.scheme", "default": "scheme-kora" },
+    {
+      "type": "select", "id": "alignment", "label": "t:sections.rich_text.alignment", "default": "left",
+      "options": [
+        { "value": "left", "label": "t:options.alignment.left" },
+        { "value": "center", "label": "t:options.alignment.center" }
+      ]
+    },
+    { "type": "text", "id": "caption", "label": "t:sections.rich_text.caption", "default": "Our story" },
+    { "type": "textarea", "id": "heading", "label": "t:sections.rich_text.heading", "info": "t:sections.rich_text.heading_info", "default": "Three pairs of hands,\none block at a time" },
+    {
+      "type": "select", "id": "heading_size", "label": "t:sections.rich_text.heading_size", "default": "heading-1",
+      "options": [
+        { "value": "display-2", "label": "t:sections.rich_text.size_display" },
+        { "value": "heading-1", "label": "t:sections.rich_text.size_large" },
+        { "value": "heading-2", "label": "t:sections.rich_text.size_medium" }
+      ]
+    },
+    { "type": "checkbox", "id": "as_title", "label": "t:sections.rich_text.as_title", "default": false },
+    { "type": "richtext", "id": "text", "label": "t:sections.rich_text.text" },
+    { "type": "text", "id": "button_label", "label": "t:sections.rich_text.button_label" },
+    { "type": "url", "id": "button_link", "label": "t:sections.rich_text.button_link" },
+    { "type": "text", "id": "button_label_2", "label": "t:sections.rich_text.button_label_2" },
+    { "type": "url", "id": "button_link_2", "label": "t:sections.rich_text.button_link_2" }
+  ],
+  "presets": [{ "name": "t:sections.rich_text.name" }]
+}
+{% endschema %}

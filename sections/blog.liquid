@@ -1,35 +1,79 @@
-{% comment %}
-  This section is used in the blog template to render the blog page listing all
-  articles within a blog.
+{%- comment -%}
+  Blog list ("Hosting notes"). Title and intro, tag chips to filter, the
+  newest article as a large magazine feature, the rest in a grid, then page
+  links. A designed empty state while there are no posts yet.
+{%- endcomment -%}
 
-  https://shopify.dev/docs/storefronts/themes/architecture/templates/blog
-{% endcomment %}
+{{ 'section-editorial.css' | asset_url | stylesheet_tag }}
 
-<h1>{{ blog.title }}</h1>
+<div class="blog full-width color-{{ section.settings.color_scheme }}">
+  <div class="page-width">
+    <header class="blog__header">
+      <p class="caption-3 text-muted">{{ section.settings.caption }}</p>
+      <h1 class="blog__title display-2">{{ blog.title }}</h1>
+      {%- if section.settings.text != blank -%}
+        <p class="body-3 text-muted blog__intro">{{ section.settings.text }}</p>
+      {%- endif -%}
+      {%- if blog.all_tags.size > 0 -%}
+        <nav aria-label="{{ 'blog.tags' | t }}">
+          <ul class="search-modal__chips blog__tags" role="list">
+            <li><a href="{{ blog.url }}" class="search-modal__chip body-5" {% unless current_tags %}aria-current="page"{% endunless %}>{{ 'blog.all' | t }}</a></li>
+            {%- for tag in blog.all_tags -%}
+              <li>
+                <a href="{{ blog.url }}/tagged/{{ tag | handleize }}" class="search-modal__chip body-5" {% if current_tags contains tag %}aria-current="page"{% endif %}>{{ tag }}</a>
+              </li>
+            {%- endfor -%}
+          </ul>
+        </nav>
+      {%- endif -%}
+    </header>
 
-{% paginate blog.articles by 5 %}
-  {% for article in blog.articles %}
-    <div>
-      {% if article.image %}
-        {{ article.image | image_url: width: 1000 | image_tag }}
-      {% endif %}
-      <h2>
-        {{ article.title | link_to: article.url }}
-      </h2>
-      {% assign date = article.published_at | time_tag: format: 'date' %}
-      <p>{{ 'blog.article_metadata_html' | t: date: date, author: article.author }}</p>
-      <p>{{ article.excerpt }}</p>
-    </div>
-  {% endfor %}
+    {%- paginate blog.articles by 9 -%}
+      {%- if blog.articles.size > 0 -%}
+        <ul class="blog__grid" role="list" data-reveal-group>
+          {%- for article in blog.articles -%}
+            {%- liquid
+              assign featured = false
+              if forloop.first and paginate.current_page == 1 and current_tags == blank
+                assign featured = true
+              endif
+            -%}
+            <li class="blog__item{% if featured %} blog__item--featured{% endif %}" data-reveal="rise">
+              {%- if featured -%}
+                {%- render 'article-card', article: article, featured: true, sizes: '(min-width: 990px) 60vw, 100vw' -%}
+              {%- else -%}
+                {%- render 'article-card', article: article -%}
+              {%- endif -%}
+            </li>
+          {%- endfor -%}
+        </ul>
 
-  {%- if paginate.pages > 1 -%}
-    {{- paginate | default_pagination -}}
-  {%- endif -%}
-{% endpaginate %}
+        {%- if paginate.pages > 1 -%}
+          <nav class="search-page__pagination" aria-label="{{ 'blog.pagination' | t }}">
+            {%- if paginate.previous -%}<a href="{{ paginate.previous.url }}" class="button button--secondary">{{ 'search.page.previous' | t }}</a>{%- endif -%}
+            <span class="caption-2 text-muted">{{ 'search.page.page_of' | t: current: paginate.current_page, total: paginate.pages }}</span>
+            {%- if paginate.next -%}<a href="{{ paginate.next.url }}" class="button button--secondary">{{ 'search.page.next' | t }}</a>{%- endif -%}
+          </nav>
+        {%- endif -%}
+      {%- else -%}
+        <div class="cart-page__empty blog__empty">
+          <p class="heading-4">{{ 'blog.empty_title' | t }}</p>
+          <p class="body-3 text-muted">{{ 'blog.empty_text' | t }}</p>
+          <a href="{{ routes.all_products_collection_url }}" class="button">{{ 'cart.drawer.empty_cta_all' | t }}</a>
+        </div>
+      {%- endif -%}
+    {%- endpaginate -%}
+  </div>
+</div>
 
 {% schema %}
 {
   "name": "t:general.blog",
-  "settings": []
+  "class": "section-blog",
+  "settings": [
+    { "type": "color_scheme", "id": "color_scheme", "label": "t:settings.colors.scheme", "default": "scheme-kora" },
+    { "type": "text", "id": "caption", "label": "t:sections.blog.caption", "default": "From our table" },
+    { "type": "text", "id": "text", "label": "t:sections.blog.text", "default": "How we set the table, what to cook for eight, and how to look after hand printed cotton." }
+  ]
 }
 {% endschema %}

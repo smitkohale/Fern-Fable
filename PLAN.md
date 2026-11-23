@@ -176,8 +176,8 @@ Switch to plan mode (Shift+Tab) before starting the product page and the cart dr
 
 ## Phase 5: Content pages (2–3 days)
 
-- [ ] About: the brand story as a page that unfolds as you scroll (reuse your signature sections)
-- [ ] Blog list and article pages with a magazine layout
+- [x] About: template page.about (rich text intro, 3D craft story, image with text, tagline reveal, newsletter)
+- [x] Blog list and article pages with a magazine layout (featured post, tag chips, drop cap, share, comments, more notes); drafts in docs/hosting-notes-drafts.md
 - [x] Contact page (contact form): template page.contact, inline validation
 - [x] Search results page (built with predictive search)
 - [x] 404 page with personality (misprinted block)

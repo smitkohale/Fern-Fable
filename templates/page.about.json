@@ -1,0 +1,120 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "intro": {
+      "type": "rich-text",
+      "settings": {
+        "color_scheme": "scheme-kora",
+        "alignment": "left",
+        "caption": "Our story",
+        "heading": "Linen that carries\nthe hand that made it",
+        "heading_size": "display-2",
+        "as_title": true,
+        "text": "<p>Fern & Fable began with one carved fern block and a simple question: why do the cloths we lay out for guests feel so anonymous? Every piece we sell is stamped by hand, one block at a time, in indigo, madder and turmeric.</p>",
+        "button_label": "Shop the table",
+        "button_link": "",
+        "button_label_2": "",
+        "button_link_2": ""
+      }
+    },
+    "craft": {
+      "type": "craft-story",
+      "blocks": {
+        "step-carve": {
+          "type": "step",
+          "settings": {
+            "title": "Carve",
+            "text": "A printer's block starts as a slab of sheesham, carved by hand over days."
+          }
+        },
+        "step-dye": {
+          "type": "step",
+          "settings": {
+            "title": "Dye",
+            "text": "Indigo, madder and turmeric are mixed in small batches."
+          }
+        },
+        "step-print": {
+          "type": "step",
+          "settings": {
+            "title": "Print",
+            "text": "Each length of cloth is stamped one block at a time, so no two are quite the same."
+          }
+        }
+      },
+      "block_order": [
+        "step-carve",
+        "step-dye",
+        "step-print"
+      ],
+      "settings": {
+        "color_scheme": "scheme-indigo",
+        "caption": "The craft",
+        "heading": "How a print is made",
+        "show_3d": true
+      }
+    },
+    "why": {
+      "type": "image-with-text",
+      "settings": {
+        "color_scheme": "scheme-kora",
+        "image_position": "left",
+        "number": "01",
+        "caption": "Why we do it",
+        "heading": "Tables are where people remember you",
+        "text": "<p>A hand printed runner turns a weekday dinner into an occasion and a housewarming gift into something kept for years. We make fewer things, and make them to be used, washed and passed on.</p>",
+        "link_label": "Shop bestsellers",
+        "link": ""
+      }
+    },
+    "tagline": {
+      "type": "tagline-reveal",
+      "settings": {
+        "color_scheme": "scheme-kora-2",
+        "caption": "What we believe",
+        "text": "Made slowly,\nso it can be *used every day*.",
+        "link_label": "",
+        "link": ""
+      }
+    },
+    "care": {
+      "type": "image-with-text",
+      "settings": {
+        "color_scheme": "scheme-kora",
+        "image_position": "right",
+        "number": "02",
+        "caption": "Looking after it",
+        "heading": "Wash cold, dry in shade, use often",
+        "text": "<p>Hand printed cotton softens with every wash. Wash it cold and separately the first time, dry it out of direct sun, and iron while slightly damp. That is all it asks.</p>",
+        "link_label": "Read our care notes",
+        "link": ""
+      }
+    },
+    "newsletter": {
+      "type": "newsletter",
+      "settings": {
+        "color_scheme": "scheme-turmeric",
+        "caption": "Hosting notes",
+        "heading": "Table ideas, new prints, first look at sales",
+        "text": "A short letter every other Sunday: how we set the table this week and what just came off the blocks.",
+        "fine_print": "One email a fortnight. Unsubscribe with one click."
+      }
+    }
+  },
+  "order": [
+    "intro",
+    "craft",
+    "why",
+    "tagline",
+    "care",
+    "newsletter"
+  ]
+}

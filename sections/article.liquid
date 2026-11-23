@@ -1,68 +1,168 @@
-{% comment %}
-  This section is used in the article template to render the article page, which
-  displays the full content of the blog post and can optionally include a
-  comments section for customers (not shown in this example).
+{%- comment -%}
+  Article ("Hosting notes" post), laid out like a magazine feature: back link,
+  tags, big title, date, author and reading time, a wide image, the text in a
+  reading column with a turmeric drop cap, share links, comments (when the
+  blog allows them) and three more notes.
+{%- endcomment -%}
 
-  https://shopify.dev/docs/storefronts/themes/architecture/templates/article
-{% endcomment %}
+{{ 'section-editorial.css' | asset_url | stylesheet_tag }}
+{{ 'section-content-pages.css' | asset_url | stylesheet_tag }}
+{%- if blog.comments_enabled? -%}
+  <script src="{{ 'validated-form.js' | asset_url }}" type="module"></script>
+{%- endif -%}
 
-{% if article.image %}
-  {{ article.image | image_url: width: 1000 | image_tag }}
-{% endif %}
+{%- liquid
+  assign words = article.content | strip_html | split: ' ' | size
+  assign minutes = words | divided_by: 200 | at_least: 1
+  assign share_url = shop.url | append: article.url
+  assign share_text = article.title | append: ' ' | append: share_url | url_encode
+-%}
 
-<h1>{{ article.title }}</h1>
+<article class="article full-width color-{{ section.settings.color_scheme }}">
+  <div class="page-width">
+    <header class="article__header">
+      <a href="{{ blog.url }}" class="article__back body-5">
+        {%- render 'icon', name: 'caret-left' -%}
+        {{ blog.title }}
+      </a>
+      {%- if article.tags.size > 0 -%}
+        <p class="caption-3 article__tags">{{ article.tags | join: ' · ' }}</p>
+      {%- endif -%}
+      <h1 class="article__title display-2">{{ article.title }}</h1>
+      <p class="article__meta body-6 text-muted">
+        {{ article.published_at | time_tag: format: 'date' }}
+        · {{ 'blog.by' | t: author: article.author }}
+        · {{ 'blog.read_time' | t: count: minutes }}
+      </p>
+    </header>
 
-{% assign date = article.published_at | time_tag: format: 'date' %}
-<p>{{ 'blog.article_metadata_html' | t: date: date, author: article.author }}</p>
+    {%- if article.image -%}
+      <figure class="article__image">
+        {{
+          article.image
+          | image_url: width: 2400
+          | image_tag:
+            widths: '720, 1200, 1600, 2000, 2400',
+            sizes: '(min-width: 1440px) 1344px, 100vw',
+            loading: 'eager',
+            fetchpriority: 'high',
+            alt: article.image.alt
+        }}
+      </figure>
+    {%- endif -%}
 
-{{ article.content }}
+    <div class="article__content rte body-3">
+      {{ article.content }}
+    </div>
 
-{% if blog.comments_enabled? %}
-  <h2>{{ 'blog.article_comments' | t }}</h2>
+    <div class="article__share">
+      <p class="caption-3 text-muted">{{ 'blog.share' | t }}</p>
+      <div class="article__share-links">
+        <a href="https://wa.me/?text={{ share_text }}" class="search-modal__chip body-5" target="_blank" rel="noopener">
+          {%- render 'icon', name: 'whatsapp-logo' -%} WhatsApp
+          <span class="visually-hidden">{{ 'general.whatsapp.new_tab' | t }}</span>
+        </a>
+        <button type="button" class="search-modal__chip body-5 article__copy" data-copy-link="{{ share_url }}" data-copied="{{ 'gift_card.copied' | t }}">
+          {{- 'blog.copy_link' | t -}}
+        </button>
+        <span class="visually-hidden" aria-live="polite" data-copy-status></span>
+      </div>
+    </div>
 
-  <div id="comments">
-    {% paginate article.comments by 10 %}
-      {% for comment in article.comments %}
-        <div>
-          <p>{{ comment.author }}</p>
-          <p>
-            {{- comment.created_at | time_tag: format: 'date' -}}
-          </p>
-          <p>{{ comment.content }}</p>
-        </div>
-      {% endfor %}
+    {%- if blog.comments_enabled? -%}
+      <section class="article__comments" id="comments" aria-labelledby="CommentsHeading">
+        <h2 class="heading-4" id="CommentsHeading">{{ 'blog.comments' | t: count: article.comments_count }}</h2>
+        {%- paginate article.comments by 10 -%}
+          {%- if article.comments.size > 0 -%}
+            <ul class="article__comment-list" role="list">
+              {%- for comment in article.comments -%}
+                <li class="article__comment">
+                  <p class="body-4">{{ comment.author }} <span class="caption-2 text-muted">{{ comment.created_at | time_tag: format: 'date' }}</span></p>
+                  <div class="rte body-6">{{ comment.content }}</div>
+                </li>
+              {%- endfor -%}
+            </ul>
+          {%- endif -%}
+          {%- if paginate.pages > 1 -%}{{ paginate | default_pagination: anchor: 'comments' }}{%- endif -%}
+        {%- endpaginate -%}
 
-      {{ paginate | default_pagination: anchor: 'comments' }}
-    {% endpaginate %}
+        <validated-form>
+          {%- form 'new_comment', article, class: 'contact__form article__comment-form', novalidate: 'novalidate' -%}
+            <h3 class="heading-5">{{ 'blog.comment_form_title' | t }}</h3>
+            {%- if form.posted_successfully? -%}
+              <p class="contact__success body-5" role="status" tabindex="-1" data-focus-on-load>
+                {%- render 'icon', name: 'check' -%}
+                {%- if blog.moderated? %}{{ 'blog.comment_moderated' | t }}{% else %}{{ 'blog.comment_posted' | t }}{% endif -%}
+              </p>
+            {%- elsif form.errors -%}
+              <div class="contact__errors body-6" role="alert">{{ form.errors | default_errors }}</div>
+            {%- endif -%}
+            <div class="contact__row">
+              <div class="field">
+                <label class="field__label caption-1" for="CommentAuthor">{{ 'blog.comment_form_name' | t }} <span aria-hidden="true">*</span></label>
+                <input class="field__input body-3" type="text" id="CommentAuthor" name="comment[author]" value="{{ form.author }}" required autocomplete="name" aria-describedby="CommentAuthor-error" data-error-required="{{ 'blog.error_name' | t }}">
+                <p class="field__error body-6" id="CommentAuthor-error" hidden></p>
+              </div>
+              <div class="field">
+                <label class="field__label caption-1" for="CommentEmail">{{ 'blog.comment_form_email' | t }} <span aria-hidden="true">*</span></label>
+                <input class="field__input body-3" type="email" id="CommentEmail" name="comment[email]" value="{{ form.email }}" required autocomplete="email" aria-describedby="CommentEmail-error" data-error-required="{{ 'contact.error_email_required' | t }}" data-error-email="{{ 'newsletter.error_email' | t }}">
+                <p class="field__error body-6" id="CommentEmail-error" hidden></p>
+              </div>
+            </div>
+            <div class="field">
+              <label class="field__label caption-1" for="CommentBody">{{ 'blog.comment_form_body' | t }} <span aria-hidden="true">*</span></label>
+              <textarea class="field__input body-3" id="CommentBody" name="comment[body]" rows="5" required aria-describedby="CommentBody-error" data-error-required="{{ 'blog.error_body' | t }}">{{ form.body }}</textarea>
+              <p class="field__error body-6" id="CommentBody-error" hidden></p>
+            </div>
+            <button type="submit" class="button contact__submit">{{ 'blog.comment_form_submit' | t }}</button>
+          {%- endform -%}
+        </validated-form>
+      </section>
+    {%- endif -%}
+
+    {%- liquid
+      assign more_count = 0
+      for other in blog.articles
+        if other.id != article.id
+          assign more_count = more_count | plus: 1
+        endif
+      endfor
+    -%}
+    {%- if more_count > 0 -%}
+      <aside class="article__more" aria-labelledby="MoreNotes">
+        <h2 class="heading-3" id="MoreNotes">{{ 'blog.more' | t: blog: blog.title }}</h2>
+        <ul class="blog__grid blog__grid--three" role="list">
+          {%- assign shown = 0 -%}
+          {%- for other in blog.articles -%}
+            {%- if other.id == article.id or shown >= 3 -%}{%- continue -%}{%- endif -%}
+            {%- assign shown = shown | plus: 1 -%}
+            <li class="blog__item">{%- render 'article-card', article: other -%}</li>
+          {%- endfor -%}
+        </ul>
+      </aside>
+    {%- endif -%}
   </div>
+</article>
 
-  {% form 'new_comment', article %}
-    <h2>{{ 'blog.comment_form_title' | t }}</h2>
-
-    {{ form.errors | default_errors }}
-
-    <div>
-      <label for="author">{{ 'blog.comment_form_name' | t }}</label>
-      <input type="text" name="comment[author]" id="author" value="{{ form.author }}" required>
-    </div>
-
-    <div>
-      <label for="email">{{ 'blog.comment_form_email' | t }}</label>
-      <input type="email" name="comment[email]" id="email" value="{{ form.email }}" required>
-    </div>
-
-    <div>
-      <label for="body">{{ 'blog.comment_form_body' | t }}</label>
-      <textarea name="comment[body]" id="body" required>{{ form.body }}</textarea>
-    </div>
-
-    <input type="submit" value="{{ 'blog.comment_form_submit' | t }}">
-  {% endform %}
-{% endif %}
+<script>
+  document.querySelector('[data-copy-link]')?.addEventListener('click', async (event) => {
+    const button = event.currentTarget;
+    try {
+      await navigator.clipboard.writeText(button.dataset.copyLink);
+      button.textContent = button.dataset.copied;
+      document.querySelector('[data-copy-status]').textContent = button.dataset.copied;
+    } catch (error) {
+      window.prompt('', button.dataset.copyLink);
+    }
+  });
+</script>
 
 {% schema %}
 {
   "name": "t:general.article",
-  "settings": []
+  "class": "section-article",
+  "settings": [
+    { "type": "color_scheme", "id": "color_scheme", "label": "t:settings.colors.scheme", "default": "scheme-kora" }
+  ]
 }
 {% endschema %}

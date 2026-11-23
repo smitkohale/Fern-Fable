@@ -14,7 +14,28 @@
     "comment_form_email": "Email",
     "comment_form_name": "Name",
     "comment_form_submit": "Post",
-    "comment_form_title": "Add a comment"
+    "comment_form_title": "Add a comment",
+    "read_time": {
+      "one": "{{ count }} min read",
+      "other": "{{ count }} min read"
+    },
+    "tags": "Filter notes by topic",
+    "all": "All notes",
+    "pagination": "Blog pages",
+    "empty_title": "First notes are on the way",
+    "empty_text": "Table settings, recipes for a crowd and care tips, written from our own dinners. Check back soon.",
+    "by": "by {{ author }}",
+    "share": "Share this note",
+    "copy_link": "Copy link",
+    "comments": {
+      "one": "{{ count }} comment",
+      "other": "{{ count }} comments"
+    },
+    "comment_moderated": "Thanks. Your comment will show once it is approved.",
+    "comment_posted": "Thanks. Your comment is posted.",
+    "error_name": "Enter your name.",
+    "error_body": "Write a comment before posting.",
+    "more": "More from {{ blog }}"
   },
   "cart": {
     "checkout": "Checkout",
