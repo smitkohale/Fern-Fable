@@ -282,7 +282,9 @@ class CraftBlock extends HTMLElement {
 
     const saveData = navigator.connection && navigator.connection.saveData;
     const lowPower = navigator.hardwareConcurrency && navigator.hardwareConcurrency < 4;
-    if (saveData || lowPower) {
+    // Theme setting "Show the 3D block on phones": off means phones get the flat print.
+    const phoneOff = this.getAttribute('data-phone-3d') === 'false' && !window.matchMedia('(min-width: 990px)').matches;
+    if (saveData || lowPower || phoneOff) {
       this.fallback();
       return;
     }

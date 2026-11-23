@@ -20,7 +20,8 @@
         "proof": "Printed by hand, one block at a time",
         "show_3d": true,
         "print": "auto",
-        "show_stars": true
+        "show_stars": true,
+        "show_3d_mobile": true
       }
     },
     "collection-tiles": {
@@ -220,7 +221,8 @@
         "color_scheme": "scheme-indigo",
         "caption": "The craft",
         "heading": "Three pairs of hands",
-        "show_3d": true
+        "show_3d": true,
+        "show_3d_mobile": true
       }
     },
     "product-reels": {

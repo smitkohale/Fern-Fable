@@ -68,6 +68,7 @@
       <hero-cloth
         class="hero__cloth"
         data-print="{{ print }}"
+        data-phone-3d="{{ section.settings.show_3d_mobile }}"
         data-back="#E6DCC8"
       >
         <canvas class="hero__canvas" aria-hidden="true"></canvas>
@@ -186,6 +187,13 @@
       "id": "show_3d",
       "label": "t:sections.hero.show_3d",
       "info": "t:sections.hero.show_3d_info",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_3d_mobile",
+      "label": "t:sections.hero.show_3d_mobile",
+      "info": "t:sections.hero.show_3d_mobile_info",
       "default": true
     },
     {

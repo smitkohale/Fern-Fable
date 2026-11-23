@@ -195,7 +195,9 @@
       "image_info": "Used when the 3D runner is off or cannot run. 16:9 works best.",
       "image_mobile": "Mobile image",
       "show_stars": "Show drifting stars",
-      "show_stars_info": "Only while festive mode is on."
+      "show_stars_info": "Only while festive mode is on.",
+      "show_3d_mobile": "Show the 3D runner on phones",
+      "show_3d_mobile_info": "Turn off for a faster mobile score: phones then show the flat runner (or the image), desktops keep the 3D."
     },
     "collection_tiles": {
       "name": "Shop by collection",
@@ -255,7 +257,9 @@
       "show_3d_info": "The block follows the reader's scroll through the three steps. Phones on low power and Save Data see a flat drawing.",
       "step": "Step",
       "title": "Title",
-      "text": "Text"
+      "text": "Text",
+      "show_3d_mobile": "Show the 3D block on phones",
+      "show_3d_mobile_info": "Turn off for a faster mobile score: phones then show a flat drawing of the print."
     },
     "product_reels": {
       "name": "Product reels",

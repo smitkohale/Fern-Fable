@@ -283,7 +283,9 @@ class HeroCloth extends HTMLElement {
 
     const saveData = navigator.connection && navigator.connection.saveData;
     const lowPower = navigator.hardwareConcurrency && navigator.hardwareConcurrency < 4;
-    if (saveData || lowPower) {
+    // Theme setting "Show the 3D runner on phones": off means phones get the flat runner.
+    const phoneOff = this.getAttribute('data-phone-3d') === 'false' && !desktop.matches;
+    if (saveData || lowPower || phoneOff) {
       this.fallback();
       return;
     }

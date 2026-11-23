@@ -27,7 +27,7 @@
     <div class="craft__stage" aria-hidden="true">
       <div class="craft__stage-inner">
         {%- if section.settings.show_3d -%}
-          <craft-block class="craft__block" data-steps="{{ section.blocks.size }}">
+          <craft-block class="craft__block" data-steps="{{ section.blocks.size }}" data-phone-3d="{{ section.settings.show_3d_mobile }}">
             <canvas class="craft__canvas"></canvas>
           </craft-block>
         {%- endif -%}
@@ -86,6 +86,13 @@
       "id": "show_3d",
       "label": "t:sections.craft_story.show_3d",
       "info": "t:sections.craft_story.show_3d_info",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_3d_mobile",
+      "label": "t:sections.craft_story.show_3d_mobile",
+      "info": "t:sections.craft_story.show_3d_mobile_info",
       "default": true
     }
   ],
