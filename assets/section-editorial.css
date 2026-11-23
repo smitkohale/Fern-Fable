@@ -430,3 +430,32 @@
     transition: none;
   }
 }
+
+/* ---------- All collections page ---------- */
+.collections-page {
+  padding-block: var(--space-500) var(--section-space);
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+}
+
+.collections-page__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-500) var(--space-200);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media (min-width: 750px) {
+  .collections-page__grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-600) var(--space-300);
+  }
+}
+
+@media (min-width: 1200px) {
+  .collections-page__grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}

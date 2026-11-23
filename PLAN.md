@@ -203,7 +203,7 @@ Switch to plan mode (Shift+Tab) before starting the product page and the cart dr
 ## Phase 7: Ship the portfolio (1–2 days)
 
 - [ ] Push to a public GitHub repo and connect it in the admin (Online Store → Themes → Add theme → Connect from GitHub)
-- [ ] README: what it is, list of features, list of sections and blocks, key technical decisions, screenshots or GIFs, Lighthouse scores, how to run it locally
+- [x] README written (add screenshots, preview link and real-store Lighthouse scores later). Original: what it is, list of features, list of sections and blocks, key technical decisions, screenshots or GIFs, Lighthouse scores, how to run it locally
 - [ ] 60–90 second video: editing in the theme editor → phone view → add to cart → cart drawer → checkout
 - [ ] Resume and LinkedIn: store link + password, GitHub repo, video
 
