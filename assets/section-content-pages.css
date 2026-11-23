@@ -79,6 +79,7 @@ textarea.field__input {
 }
 
 .not-found__text {
+  min-width: 0;
   display: flex;
   flex-direction: column;
   align-items: flex-start;

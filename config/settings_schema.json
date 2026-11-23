@@ -8,6 +8,23 @@
     "theme_support_url": "https://help.shopify.com/"
   },
   {
+    "name": "t:settings.brand.name",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "favicon",
+        "label": "t:settings.brand.favicon",
+        "info": "t:settings.brand.favicon_info"
+      },
+      {
+        "type": "image_picker",
+        "id": "share_image",
+        "label": "t:settings.brand.share_image",
+        "info": "t:settings.brand.share_image_info"
+      }
+    ]
+  },
+  {
     "name": "t:settings.colors.name",
     "settings": [
       {

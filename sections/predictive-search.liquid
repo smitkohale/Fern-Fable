@@ -18,8 +18,8 @@
         {%- if resources.queries.size > 0 or resources.collections.size > 0 or resources.pages.size > 0 -%}
           <div class="predictive__side">
             {%- if resources.queries.size > 0 -%}
-              <div class="predictive__group" role="group" aria-labelledby="PredictiveQueries">
-                <h3 class="predictive__heading caption-3" id="PredictiveQueries">{{ 'search.predictive.suggestions' | t }}</h3>
+              <div class="predictive__group" role="group" aria-label="{{ 'search.predictive.suggestions' | t }}">
+                <p class="predictive__heading caption-3" aria-hidden="true">{{ 'search.predictive.suggestions' | t }}</p>
                 <ul class="predictive__list" role="presentation">
                   {%- for query in resources.queries -%}
                     {%- assign option_index = option_index | plus: 1 -%}
@@ -35,8 +35,8 @@
             {%- endif -%}
 
             {%- if resources.collections.size > 0 -%}
-              <div class="predictive__group" role="group" aria-labelledby="PredictiveCollections">
-                <h3 class="predictive__heading caption-3" id="PredictiveCollections">{{ 'search.predictive.collections' | t }}</h3>
+              <div class="predictive__group" role="group" aria-label="{{ 'search.predictive.collections' | t }}">
+                <p class="predictive__heading caption-3" aria-hidden="true">{{ 'search.predictive.collections' | t }}</p>
                 <ul class="predictive__list" role="presentation">
                   {%- for collection in resources.collections -%}
                     {%- assign option_index = option_index | plus: 1 -%}
@@ -51,8 +51,8 @@
             {%- endif -%}
 
             {%- if resources.pages.size > 0 -%}
-              <div class="predictive__group" role="group" aria-labelledby="PredictivePages">
-                <h3 class="predictive__heading caption-3" id="PredictivePages">{{ 'search.predictive.pages' | t }}</h3>
+              <div class="predictive__group" role="group" aria-label="{{ 'search.predictive.pages' | t }}">
+                <p class="predictive__heading caption-3" aria-hidden="true">{{ 'search.predictive.pages' | t }}</p>
                 <ul class="predictive__list" role="presentation">
                   {%- for page in resources.pages -%}
                     {%- assign option_index = option_index | plus: 1 -%}
@@ -69,8 +69,8 @@
         {%- endif -%}
 
         {%- if resources.products.size > 0 -%}
-          <div class="predictive__group predictive__products" role="group" aria-labelledby="PredictiveProducts">
-            <h3 class="predictive__heading caption-3" id="PredictiveProducts">{{ 'search.predictive.products' | t }}</h3>
+          <div class="predictive__group predictive__products" role="group" aria-label="{{ 'search.predictive.products' | t }}">
+            <p class="predictive__heading caption-3" aria-hidden="true">{{ 'search.predictive.products' | t }}</p>
             <ul class="predictive__product-list" role="presentation">
               {%- for product in resources.products -%}
                 {%- assign option_index = option_index | plus: 1 -%}
@@ -100,7 +100,7 @@
         {%- endif -%}
       </div>
     {%- else -%}
-      <p class="predictive__empty body-5">{{ 'search.predictive.none' | t: terms: terms_escaped }}</p>
+      <p class="predictive__empty body-5" aria-hidden="true">{{ 'search.predictive.none' | t: terms: terms_escaped }}</p>
     {%- endif -%}
 
     {%- assign option_index = option_index | plus: 1 -%}

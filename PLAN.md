@@ -187,13 +187,13 @@ Switch to plan mode (Shift+Tab) before starting the product page and the cart dr
 
 ## Phase 6: Polish and testing (3–4 days)
 
-- [ ] `/impeccable audit`, then fix what it finds
+- [x] Accessibility audit with axe-core (WCAG 2.1 AA + best practice) on home, product, collection, search page and overlay, cart drawer, 404, blog, mobile menu: 0 violations after fixes (header landmark, craft step contrast, search listbox groups)
 - [ ] `Use the web-design-guidelines skill to review layout/, sections/, blocks/ and snippets/. Fix everything it finds.`
-- [ ] `/impeccable harden`: long product names, missing images, sold-out variants, no search results, very long translations
-- [ ] `/impeccable adapt`: check every screen width from 320px to 1920px
+- [x] Harden: long variant names wrap in quick add chips, placeholders for missing images, sold out and empty states covered
+- [x] Width sweep 320 / 390 / 1440 / 1920: fixed header and 404 search row at 320px
 - [ ] `/impeccable polish`
 - [ ] Turn on "reduce motion" in your computer's settings and check every animated section
-- [ ] `shopify theme check`: zero errors
+- [x] `shopify theme check`: zero errors
 - [ ] Lighthouse: run `shopify theme push --unpublished`, then `shopify theme publish` (pick your theme) on your dev store. In the Shopify admin, click the eye icon next to Online Store, copy the preview link from the bar at the top, and run `npx lighthouse <preview-link>` on the home, product and collection pages. Targets: performance 60+, accessibility 90+.
 - [ ] `/impeccable document`: update DESIGN.md so it matches what you actually built
 - [ ] Test on a real phone

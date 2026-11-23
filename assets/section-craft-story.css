@@ -131,13 +131,14 @@
   color: var(--color-accent);
 }
 
+/* Full text colour: dimmed steps (opacity) must still pass 4.5:1. */
 .craft__step-text {
-  color: var(--color-muted-text);
+  color: var(--color-foreground);
 }
 
 /* The current step is full strength; the others wait in a quieter tone. */
 .js .craft__step {
-  opacity: 0.35;
+  opacity: 0.62;
   transition: opacity var(--dur-move) var(--ease-out);
 }
 

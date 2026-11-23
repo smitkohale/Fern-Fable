@@ -108,3 +108,14 @@
     padding-inline: var(--space-100);
   }
 }
+
+/* Smallest phones: the button drops under the field instead of pushing past the edge. */
+@media (max-width: 399px) {
+  .search-page__form {
+    flex-wrap: wrap;
+  }
+
+  .search-page__form .button {
+    flex: 1 1 100%;
+  }
+}

@@ -132,6 +132,34 @@
   display: none;
 }
 
+/* ---------- Very small phones (320 to 399px): everything on one line ---------- */
+@media (max-width: 399px) {
+  .site-header__wrap {
+    padding-inline: var(--space-75);
+  }
+
+  .site-header__bar {
+    gap: var(--space-50);
+    padding-inline: var(--space-50);
+  }
+
+  .site-header__logo {
+    min-width: 0;
+  }
+
+  .site-header__wordmark {
+    overflow: hidden;
+    font-size: var(--text-lg);
+    line-height: var(--leading-lg);
+    text-overflow: ellipsis;
+  }
+
+  /* Account stays reachable from the menu panel. */
+  .site-header__account {
+    display: none;
+  }
+}
+
 /* ---------- Menu icon: two lines that turn into an X ---------- */
 .menu-icon {
   position: relative;

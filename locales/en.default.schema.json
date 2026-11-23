@@ -47,6 +47,13 @@
       "open_on_add": "Open the cart drawer after adding to cart",
       "free_shipping": "Free shipping from (₹)",
       "free_shipping_info": "Shows a progress bar in the cart drawer. Set 0 to hide it."
+    },
+    "brand": {
+      "name": "Brand",
+      "favicon": "Favicon",
+      "favicon_info": "Square, at least 180 x 180 px. Leave empty to use the fern block icon.",
+      "share_image": "Social sharing image",
+      "share_image_info": "Shown when a page without its own image is shared, 1200 x 630 px works best."
     }
   },
   "general": {
