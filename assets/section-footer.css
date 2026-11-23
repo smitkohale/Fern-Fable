@@ -1,0 +1,170 @@
+/* Footer. Prefix: .site-footer */
+
+.site-footer {
+  margin-block-start: var(--section-space);
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  overflow: hidden;
+}
+
+.site-footer__inner {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-700);
+  padding-block: var(--space-700) var(--space-400);
+}
+
+.site-footer__top {
+  display: grid;
+  gap: var(--space-600);
+}
+
+.site-footer__intro {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-200);
+  max-width: 480px;
+}
+
+.site-footer__columns {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-500) var(--space-300);
+}
+
+.site-footer__column-heading {
+  margin-block-end: var(--space-200);
+  font-family: var(--font-body);
+  font-variation-settings: normal;
+  color: var(--color-muted-text);
+}
+
+.site-footer__links {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-75);
+  padding: 0;
+  list-style: none;
+}
+
+.site-footer__link {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--space-400);
+  text-decoration: none;
+}
+
+.site-footer__link:hover,
+.site-footer__link[aria-current='page'] {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+}
+
+.site-footer__social {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-75);
+  padding: 0;
+  list-style: none;
+}
+
+.site-footer__social-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--tap-target);
+  height: var(--tap-target);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  transition: background-color var(--dur-hover) var(--ease-out),
+    color var(--dur-hover) var(--ease-out),
+    transform var(--dur-hover) var(--ease-out);
+}
+
+.site-footer__social-link:hover {
+  background-color: var(--color-foreground);
+  color: var(--color-background);
+}
+
+.site-footer__social-link:active {
+  transform: scale(0.98);
+}
+
+.site-footer__social-link .icon {
+  width: var(--space-300);
+  height: var(--space-300);
+}
+
+/* Huge store name: the brand signs off the page. */
+.site-footer__wordmark {
+  color: var(--color-heading);
+  white-space: nowrap;
+  text-wrap: nowrap;
+}
+
+.site-footer__bottom {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-300);
+  padding-block-start: var(--space-300);
+  border-block-start: 1px solid var(--color-border);
+}
+
+.site-footer__fine-print {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-50);
+}
+
+.site-footer__policies {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-75) var(--space-300);
+  padding: 0;
+  list-style: none;
+}
+
+.site-footer__payment-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-75);
+  padding: 0;
+  list-style: none;
+}
+
+.site-footer__payment-icon {
+  width: auto;
+  height: var(--space-300);
+}
+
+@media (min-width: 750px) {
+  .site-footer__columns {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 990px) {
+  .site-footer__inner {
+    padding-block: var(--space-900) var(--space-500);
+  }
+
+  .site-footer__top {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    gap: var(--space-800);
+  }
+
+  .site-footer__bottom {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+/* Between tablet and wide desktop the 128px wordmark can outgrow the page: step down to 96px. */
+@media (min-width: 750px) and (max-width: 1279px) {
+  .site-footer__wordmark {
+    font-size: var(--text-8xl);
+    line-height: var(--leading-8xl);
+  }
+}

@@ -13,8 +13,35 @@
   "sections": {
     "footer": {
       "type": "footer",
+      "blocks": {
+        "menu-shop": {
+          "type": "menu",
+          "settings": {
+            "heading": "Shop",
+            "menu": "main-menu"
+          }
+        },
+        "menu-help": {
+          "type": "menu",
+          "settings": {
+            "heading": "Help",
+            "menu": "footer"
+          }
+        }
+      },
+      "block_order": [
+        "menu-shop",
+        "menu-help"
+      ],
       "settings": {
-        "menu": "",
+        "color_scheme": "scheme-indigo-deep",
+        "newsletter_heading": "Hosting notes, in your inbox",
+        "newsletter_text": "New prints, table ideas and first look at sales. One email a fortnight.",
+        "show_newsletter": true,
+        "show_social": true,
+        "show_wordmark": true,
+        "demo_note": "Demo store: a portfolio project. Fern & Fable is not a real brand.",
+        "show_policies": true,
         "show_payment_icons": true
       }
     }

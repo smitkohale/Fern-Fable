@@ -1,56 +1,242 @@
-<footer>
-  <div class="footer__copyright">
-    &copy;
-    {{ 'now' | date: '%Y' }}
-    {{ shop.name | link_to: routes.root_url }}, {{ powered_by_link }}
-  </div>
+{%- comment -%}
+  Footer: brand line and newsletter, menu columns (blocks), social icons,
+  a huge store name that inks in, then fine print, policies and payment icons.
+{%- endcomment -%}
 
-  <div class="footer__links">
-    {% for link in section.settings.menu.links %}
-      {{ link.title | link_to: link.url }}
-    {% endfor %}
-  </div>
+{{ 'section-footer.css' | asset_url | stylesheet_tag }}
+{%- if section.settings.show_newsletter -%}
+  <script src="{{ 'newsletter-form.js' | asset_url }}" type="module"></script>
+{%- endif -%}
 
-  <div class="footer__payment">
-    {% if section.settings.show_payment_icons %}
-      {% for type in shop.enabled_payment_types %}
-        {{ type | payment_type_svg_tag }}
-      {% endfor %}
-    {% endif %}
+{%- liquid
+  assign social_networks = 'instagram,pinterest,youtube,facebook' | split: ','
+  assign has_social = false
+  for network in social_networks
+    assign setting_id = 'social_' | append: network | append: '_link'
+    if settings[setting_id] != blank
+      assign has_social = true
+    endif
+  endfor
+-%}
+
+<footer class="site-footer full-width color-{{ section.settings.color_scheme }}" aria-label="{{ 'sections.footer.label' | t }}">
+  <div class="site-footer__inner page-width">
+    <div class="site-footer__top">
+      <div class="site-footer__intro" data-reveal="rise">
+        {%- if section.settings.newsletter_heading != blank -%}
+          <h2 class="site-footer__heading heading-3">{{ section.settings.newsletter_heading }}</h2>
+        {%- endif -%}
+        {%- if section.settings.newsletter_text != blank -%}
+          <p class="body-3 text-muted">{{ section.settings.newsletter_text }}</p>
+        {%- endif -%}
+        {%- if section.settings.show_newsletter -%}
+          {% render 'newsletter-form', form_id: 'FooterNewsletter' %}
+        {%- endif -%}
+      </div>
+
+      {%- if section.blocks.size > 0 or has_social -%}
+        <div class="site-footer__columns" data-reveal-group>
+          {%- for block in section.blocks -%}
+            {%- if block.settings.menu.links.size > 0 -%}
+              <nav
+                class="site-footer__column"
+                aria-label="{{ block.settings.heading | default: block.settings.menu.title | escape }}"
+                data-reveal="rise"
+                {{ block.shopify_attributes }}
+              >
+                {%- if block.settings.heading != blank -%}
+                  <h2 class="site-footer__column-heading caption-3 text-muted">{{ block.settings.heading }}</h2>
+                {%- endif -%}
+                <ul class="site-footer__links" role="list">
+                  {%- for link in block.settings.menu.links -%}
+                    <li>
+                      <a
+                        href="{{ link.url }}"
+                        class="site-footer__link body-5"
+                        {% if link.active %}aria-current="page"{% endif %}
+                      >
+                        {{- link.title -}}
+                      </a>
+                    </li>
+                  {%- endfor -%}
+                </ul>
+              </nav>
+            {%- endif -%}
+          {%- endfor -%}
+
+          {%- if section.settings.show_social and has_social -%}
+            <div class="site-footer__column" data-reveal="rise">
+              <h2 class="site-footer__column-heading caption-3 text-muted">{{ 'sections.footer.social' | t }}</h2>
+              <ul class="site-footer__social" role="list">
+                {%- for network in social_networks -%}
+                  {%- assign setting_id = 'social_' | append: network | append: '_link' -%}
+                  {%- if settings[setting_id] != blank -%}
+                    {%- assign icon_name = network | append: '-logo' -%}
+                    {%- assign network_label = network | capitalize -%}
+                    {%- if network == 'youtube' %}{% assign network_label = 'YouTube' %}{% endif -%}
+                    <li>
+                      <a
+                        href="{{ settings[setting_id] }}"
+                        class="site-footer__social-link"
+                        target="_blank"
+                        rel="noopener"
+                      >
+                        {%- render 'icon', name: icon_name -%}
+                        <span class="visually-hidden">{{ 'sections.footer.social_link' | t: shop: shop.name, network: network_label }}</span>
+                      </a>
+                    </li>
+                  {%- endif -%}
+                {%- endfor -%}
+              </ul>
+            </div>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    </div>
+
+    {%- if section.settings.show_wordmark -%}
+      <p class="site-footer__wordmark display-1" aria-hidden="true" data-reveal="ink">{{ shop.name }}</p>
+    {%- endif -%}
+
+    <div class="site-footer__bottom">
+      <div class="site-footer__fine-print">
+        {%- assign current_year = 'now' | date: '%Y' -%}
+        <p class="caption-2">
+          {{- 'sections.footer.copyright' | t: year: current_year, shop: shop.name -}}
+        </p>
+        {%- if section.settings.demo_note != blank -%}
+          <p class="caption-2 text-muted">{{ section.settings.demo_note }}</p>
+        {%- endif -%}
+      </div>
+
+      {%- if section.settings.show_policies and shop.policies.size > 0 -%}
+        <ul class="site-footer__policies" role="list">
+          {%- for policy in shop.policies -%}
+            <li>
+              <a href="{{ policy.url }}" class="site-footer__link caption-2">{{ policy.title }}</a>
+            </li>
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+
+      {%- if section.settings.show_payment_icons and shop.enabled_payment_types.size > 0 -%}
+        <div class="site-footer__payment">
+          <span class="visually-hidden">{{ 'sections.footer.payment' | t }}</span>
+          <ul class="site-footer__payment-list" role="list">
+            {%- for type in shop.enabled_payment_types -%}
+              <li>{{ type | payment_type_svg_tag: class: 'site-footer__payment-icon' }}</li>
+            {%- endfor -%}
+          </ul>
+        </div>
+      {%- endif -%}
+    </div>
   </div>
 </footer>
 
-{% stylesheet %}
-  footer {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 2rem;
-  }
-  footer a {
-    text-decoration: none;
-    color: var(--color-foreground);
-  }
-  footer .footer__links,
-  footer .footer__payment {
-    display: flex;
-    gap: 1rem;
-  }
-{% endstylesheet %}
-
 {% schema %}
 {
-  "name": "t:general.footer",
+  "name": "t:sections.footer.name",
+  "class": "section-footer",
+  "max_blocks": 4,
+  "enabled_on": {
+    "groups": ["footer"]
+  },
   "settings": [
     {
-      "type": "link_list",
-      "id": "menu",
-      "label": "t:labels.menu"
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:settings.colors.scheme",
+      "default": "scheme-indigo-deep"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_heading",
+      "label": "t:sections.footer.newsletter_heading",
+      "default": "Hosting notes, in your inbox"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_text",
+      "label": "t:sections.footer.newsletter_text",
+      "default": "New prints, table ideas and first look at sales. One email a fortnight."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_newsletter",
+      "label": "t:sections.footer.show_newsletter",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_social",
+      "label": "t:sections.footer.show_social",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_wordmark",
+      "label": "t:sections.footer.show_wordmark",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "demo_note",
+      "label": "t:sections.footer.demo_note",
+      "info": "t:sections.footer.demo_note_info",
+      "default": "Demo store: a portfolio project. Fern & Fable is not a real brand."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_policies",
+      "label": "t:sections.footer.show_policies",
+      "default": true
     },
     {
       "type": "checkbox",
       "id": "show_payment_icons",
-      "label": "t:labels.show_payment_icons",
+      "label": "t:sections.footer.show_payment_icons",
       "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "menu",
+      "name": "t:sections.footer.menu.name",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "t:sections.footer.menu.heading",
+          "default": "Shop"
+        },
+        {
+          "type": "link_list",
+          "id": "menu",
+          "label": "t:sections.footer.menu.menu",
+          "default": "main-menu"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.footer.name",
+      "blocks": [
+        {
+          "type": "menu",
+          "settings": {
+            "heading": "Shop",
+            "menu": "main-menu"
+          }
+        },
+        {
+          "type": "menu",
+          "settings": {
+            "heading": "Help",
+            "menu": "footer"
+          }
+        }
+      ]
     }
   ]
 }

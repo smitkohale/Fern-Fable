@@ -1,0 +1,79 @@
+{%- doc -%}
+  Newsletter signup using Shopify's customer form (tags the customer "newsletter").
+  Works without JavaScript (browser validation). With JavaScript,
+  <newsletter-form> shows specific inline errors instead (skill B9, B10).
+
+  @param {string} form_id - Unique id for the form, used for the anchor after posting.
+  @param {string} [button_class] - Extra classes for the submit button.
+
+  @example
+  {% render 'newsletter-form', form_id: 'FooterNewsletter' %}
+{%- enddoc -%}
+
+{{ 'component-newsletter-form.css' | asset_url | stylesheet_tag }}
+
+{%- assign error_id = form_id | append: '-error' -%}
+{%- assign success_id = form_id | append: '-success' -%}
+
+<newsletter-form class="newsletter-form">
+  {%- form 'customer', id: form_id, class: 'newsletter-form__form', novalidate: 'novalidate' -%}
+    <input type="hidden" name="contact[tags]" value="newsletter">
+
+    {%- liquid
+      assign has_error = false
+      if form.errors
+        assign has_error = true
+      endif
+    -%}
+
+    <div class="newsletter-form__row">
+      <label class="newsletter-form__label caption-1" for="{{ form_id }}-email">
+        {{- 'newsletter.email' | t -}}
+      </label>
+      <div class="newsletter-form__field">
+        <input
+          class="newsletter-form__input body-3"
+          id="{{ form_id }}-email"
+          type="email"
+          name="contact[email]"
+          autocomplete="email"
+          autocapitalize="off"
+          spellcheck="false"
+          placeholder="name@example.com"
+          required
+          {% if has_error %}
+            aria-invalid="true"
+          {% endif %}
+          aria-describedby="{{ error_id }}"
+          data-error-required="{{ 'newsletter.error_required' | t }}"
+          data-error-email="{{ 'newsletter.error_email' | t }}"
+        >
+        <button type="submit" class="button newsletter-form__button {{ button_class }}">
+          {{- 'newsletter.submit' | t -}}
+        </button>
+      </div>
+    </div>
+
+    <p class="newsletter-form__message newsletter-form__message--error body-6" id="{{ error_id }}" role="alert" {% unless has_error %}hidden{% endunless %}>
+      {%- render 'icon', name: 'x' -%}
+      <span data-error-text>
+        {%- if form.errors contains 'email' -%}
+          {%- if form.errors.messages.email contains 'taken' -%}
+            {{ 'newsletter.error_taken' | t }}
+          {%- else -%}
+            {{ 'newsletter.error_email' | t }}
+          {%- endif -%}
+        {%- elsif has_error -%}
+          {{ 'newsletter.error_generic' | t }}
+        {%- endif -%}
+      </span>
+    </p>
+
+    {%- if form.posted_successfully? -%}
+      <p class="newsletter-form__message newsletter-form__message--success body-6" id="{{ success_id }}" role="status" tabindex="-1">
+        {%- render 'icon', name: 'check' -%}
+        <span>{{ 'newsletter.success' | t }}</span>
+      </p>
+    {%- endif -%}
+  {%- endform -%}
+</newsletter-form>

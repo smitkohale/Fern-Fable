@@ -26,6 +26,14 @@
       "name": "Festive mode",
       "intro": "A light Christmas layer: the Festive Edit message, the Winter Berry print in the hero and a few slow drifting stars. Turn it off in January.",
       "festive_mode": "Turn on festive mode"
+    },
+    "social": {
+      "name": "Social media",
+      "intro": "Links show as icons in the footer. Leave a field empty to hide that icon.",
+      "instagram": "Instagram",
+      "pinterest": "Pinterest",
+      "youtube": "YouTube",
+      "facebook": "Facebook"
     }
   },
   "general": {
@@ -128,6 +136,24 @@
         "text": "Text",
         "link": "Link",
         "link_info": "Leave empty to use the menu item's link."
+      }
+    },
+    "footer": {
+      "name": "Footer",
+      "show_newsletter": "Show newsletter signup",
+      "newsletter_heading": "Newsletter heading",
+      "newsletter_text": "Newsletter text",
+      "about": "About text",
+      "show_social": "Show social icons",
+      "show_payment_icons": "Show payment icons",
+      "show_policies": "Show policy links",
+      "demo_note": "Fine print",
+      "demo_note_info": "Shown at the bottom of every page.",
+      "show_wordmark": "Show large store name",
+      "menu": {
+        "name": "Menu",
+        "heading": "Heading",
+        "menu": "Menu"
       }
     }
   }

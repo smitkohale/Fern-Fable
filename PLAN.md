@@ -121,7 +121,7 @@ Phase 1 is done when PRODUCT.md and DESIGN.md exist and you'd be proud to show t
 - [x] **Tokens + fonts**: `Turn DESIGN.md into CSS custom properties in one snippet loaded from layout/theme.liquid. Add our two self-hosted fonts. Add color schemes to config/settings_schema.json so a store owner can recolor sections.`
 - [x] **Layout** (View Transitions done in CSS with `@view-transition`; section scripts load as `type="module"` from their own section, so no loader helper is needed): `Set up layout/theme.liquid with: critical CSS, deferred global JS, a small helper that loads a section's script only when that section is on the page, a skip-to-content link, and smooth page-to-page transitions using the View Transitions API (only in browsers that support it).`
 - [x] **Header**: announcement bar with rotating messages; header with a large dropdown (mega) menu on desktop and a full-screen animated menu on mobile; header hides when scrolling down and comes back when scrolling up.
-- [ ] **Footer**: huge brand name, newsletter signup (Shopify's customer form), menus, social links, payment icons.
+- [x] **Footer**: huge brand name, newsletter signup (Shopify's customer form), menus, social links, payment icons.
 
 Use this prompt for every section, here and in later phases:
 ```

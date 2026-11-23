@@ -138,5 +138,38 @@
         "default": true
       }
     ]
+  },
+  {
+    "name": "t:settings.social.name",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "t:settings.social.intro"
+      },
+      {
+        "type": "text",
+        "id": "social_instagram_link",
+        "label": "t:settings.social.instagram",
+        "placeholder": "https://instagram.com/"
+      },
+      {
+        "type": "text",
+        "id": "social_pinterest_link",
+        "label": "t:settings.social.pinterest",
+        "placeholder": "https://pinterest.com/"
+      },
+      {
+        "type": "text",
+        "id": "social_youtube_link",
+        "label": "t:settings.social.youtube",
+        "placeholder": "https://youtube.com/"
+      },
+      {
+        "type": "text",
+        "id": "social_facebook_link",
+        "label": "t:settings.social.facebook",
+        "placeholder": "https://facebook.com/"
+      }
+    ]
   }
 ]

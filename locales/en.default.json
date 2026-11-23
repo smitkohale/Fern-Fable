@@ -77,6 +77,22 @@
       "next": "Next message",
       "pause": "Pause messages",
       "play": "Play messages"
+    },
+    "footer": {
+      "label": "Footer",
+      "social": "Follow us",
+      "social_link": "{{ shop }} on {{ network }}",
+      "payment": "Payment methods we accept",
+      "copyright": "© {{ year }} {{ shop }}"
     }
+  },
+  "newsletter": {
+    "email": "Email",
+    "submit": "Sign me up",
+    "success": "You're on the list. Check your inbox.",
+    "error_email": "Enter an email like name@example.com.",
+    "error_required": "Enter your email to sign up.",
+    "error_taken": "This email is already on our list.",
+    "error_generic": "Sign up failed. Try again in a moment."
   }
 }
