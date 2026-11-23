@@ -1,0 +1,91 @@
+{%- comment -%}
+  Tagline reveal (landing-page-design skill B11). A large two or more line
+  statement; each word goes from a muted tone to full colour as it crosses a
+  line 60% down the screen, in reading order (assets/tagline-reveal.js).
+  Each line of the text setting is a line on the page. Wrap words in *stars*
+  to give them the accent colour. Without JavaScript or with reduced motion
+  the words show at full colour straight away.
+{%- endcomment -%}
+
+{{ 'section-tagline-reveal.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'tagline-reveal.js' | asset_url }}" type="module"></script>
+
+{%- assign lines = section.settings.text | strip | newline_to_br | split: '<br />' -%}
+
+<tagline-reveal class="tagline-reveal full-width color-{{ section.settings.color_scheme }}">
+  <div class="tagline-reveal__inner page-width">
+    {%- if section.settings.caption != blank -%}
+      <p class="tagline-reveal__caption caption-3 text-muted">{{ section.settings.caption }}</p>
+    {%- endif -%}
+
+    <h2 class="tagline-reveal__text display-2">
+      {%- for line in lines -%}
+        <span class="tagline-reveal__line">
+          {%- assign parts = line | strip | split: '*' -%}
+          {%- for part in parts -%}
+            {%- liquid
+              assign is_accent = forloop.index0 | modulo: 2
+              assign words = part | strip | split: ' '
+            -%}
+            {%- for word in words -%}
+              <span class="tagline-reveal__word{% if is_accent == 1 %} tagline-reveal__word--accent{% endif %}" data-word>{{ word }}</span>
+              {{- ' ' -}}
+            {%- endfor -%}
+          {%- endfor -%}
+        </span>
+        {{- ' ' -}}
+      {%- endfor -%}
+    </h2>
+
+    {%- if section.settings.link_label != blank -%}
+      <a href="{{ section.settings.link | default: routes.root_url }}" class="tagline-reveal__link body-2">
+        {{- section.settings.link_label -}}
+        {%- render 'icon', name: 'arrow-right' -%}
+      </a>
+    {%- endif -%}
+  </div>
+</tagline-reveal>
+
+{% schema %}
+{
+  "name": "t:sections.tagline_reveal.name",
+  "class": "section-tagline-reveal",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:settings.colors.scheme",
+      "default": "scheme-kora"
+    },
+    {
+      "type": "text",
+      "id": "caption",
+      "label": "t:sections.tagline_reveal.caption",
+      "default": "How it's made"
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "t:sections.tagline_reveal.text",
+      "info": "t:sections.tagline_reveal.text_info",
+      "default": "Every pattern starts as\na *block of wood*\nand ends up on your table."
+    },
+    {
+      "type": "text",
+      "id": "link_label",
+      "label": "t:sections.tagline_reveal.link_label",
+      "default": "Read the craft story"
+    },
+    {
+      "type": "url",
+      "id": "link",
+      "label": "t:sections.tagline_reveal.link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.tagline_reveal.name"
+    }
+  ]
+}
+{% endschema %}

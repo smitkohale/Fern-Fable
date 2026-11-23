@@ -202,6 +202,14 @@
       "title": "Tab title",
       "collection": "Collection",
       "collection_info": "Leave empty to show the newest products."
+    },
+    "tagline_reveal": {
+      "name": "Tagline reveal",
+      "caption": "Caption",
+      "text": "Text",
+      "text_info": "Each line here is a line on the page (two lines or more). Wrap words in *stars* to give them the accent colour.",
+      "link_label": "Link label",
+      "link": "Link"
     }
   }
 }

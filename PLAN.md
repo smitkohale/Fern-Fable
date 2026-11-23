@@ -139,6 +139,7 @@ Go big on 2–3 of these. Keep the rest clean and simple.
 Fern & Fable picks (from START.md): ★ hero with a three.js cloth unfurling onto the table, ★ product reels, ★ Shop the look "The Indigo Table", and the sticky craft story with a 3D carved block. Plus the landing-page-design skill's tagline reveal section, and the `festive_mode` Christmas hint (see CLAUDE.md).
 
 - [x] Hero (built as: WebGL2 runner that drops and unrolls, words rise in CSS, festive stars, flat runner fallback). Original idea: headline that animates in letter by letter (GSAP SplitText) over a full-width video or image, or one huge product photo with layers that move at different speeds as you scroll
+- [x] Tagline reveal (skill B11): words light up in reading order over half a screen of scrolling, accent words with *stars*
 - [ ] Scrolling strip of brand claims or press quotes (CSS only; it stops on hover and for people who turn off motion)
 - [ ] Scroll story: the section stays on screen while the product changes as you scroll, in 3–4 steps (GSAP ScrollTrigger)
 - [ ] Featured collection as a sideways-scrolling row (CSS scroll-snap) with quick add

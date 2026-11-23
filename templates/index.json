@@ -110,11 +110,22 @@
         "products_to_show": 8,
         "show_quick_add": true
       }
+    },
+    "tagline-reveal": {
+      "type": "tagline-reveal",
+      "settings": {
+        "color_scheme": "scheme-kora",
+        "caption": "How it's made",
+        "text": "Every pattern starts as\na *block of wood*\nand ends up on your table.",
+        "link_label": "Read the craft story",
+        "link": ""
+      }
     }
   },
   "order": [
     "hero",
     "collection-tiles",
-    "product-tabs"
+    "product-tabs",
+    "tagline-reveal"
   ]
 }

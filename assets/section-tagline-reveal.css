@@ -1,0 +1,84 @@
+/* Tagline reveal. Prefix: .tagline-reveal */
+
+.tagline-reveal {
+  display: block;
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+}
+
+.tagline-reveal__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-400);
+  padding-block: var(--space-800);
+}
+
+.tagline-reveal__text {
+  max-width: 1080px;
+  color: var(--color-heading);
+}
+
+.tagline-reveal__line {
+  display: block;
+}
+
+.tagline-reveal__word {
+  display: inline-block;
+  color: var(--color-heading);
+}
+
+.tagline-reveal__word--accent {
+  color: var(--color-accent);
+}
+
+/* Muted until lit: about 30% of the heading colour (skill B11). Only with JS. */
+.tagline-reveal.is-interactive .tagline-reveal__word {
+  color: color-mix(in srgb, var(--color-heading) 30%, var(--color-background));
+  transition: color var(--dur-move) var(--ease-out);
+}
+
+.tagline-reveal.is-interactive .tagline-reveal__word.is-lit {
+  color: var(--color-heading);
+}
+
+.tagline-reveal.is-interactive .tagline-reveal__word--accent.is-lit {
+  color: var(--color-accent);
+}
+
+.tagline-reveal__link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-75);
+  min-height: var(--tap-target);
+  color: var(--color-heading);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+}
+
+.tagline-reveal__link:hover {
+  text-decoration-thickness: 2px;
+}
+
+.tagline-reveal__link .icon {
+  width: var(--space-200);
+  height: var(--space-200);
+  transition: transform var(--dur-hover) var(--ease-out);
+}
+
+.tagline-reveal__link:hover .icon {
+  transform: translateX(var(--space-50));
+}
+
+@media (min-width: 990px) {
+  .tagline-reveal__inner {
+    padding-block: var(--space-900);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tagline-reveal__word {
+    transition: none;
+  }
+}
