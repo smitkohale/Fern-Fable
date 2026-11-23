@@ -1,4 +1,32 @@
 {
+  "settings": {
+    "colors": {
+      "name": "Colors",
+      "background": "Background",
+      "surface": "Raised surface",
+      "text": "Text",
+      "heading": "Headings",
+      "muted": "Secondary text",
+      "accent": "Accent (sale prices, highlights)",
+      "button": "Button",
+      "button_label": "Button label",
+      "button_hover": "Button on hover",
+      "secondary_button": "Outline button",
+      "border": "Borders",
+      "focus": "Keyboard focus outline"
+    },
+    "layout": {
+      "name": "Layout",
+      "page_width": "Maximum page width",
+      "paper_grain": "Paper grain texture",
+      "paper_grain_info": "Adds a faint raw cotton grain to light backgrounds."
+    },
+    "festive": {
+      "name": "Festive mode",
+      "intro": "A light Christmas layer: the Festive Edit message, the Winter Berry print in the hero and a few slow drifting stars. Turn it off in January.",
+      "festive_mode": "Turn on festive mode"
+    }
+  },
   "general": {
     "404": "Not found",
     "article": "Article",
@@ -71,6 +99,6 @@
       "title": "Title",
       "subtitle": "Subtitle",
       "normal": "Normal text"
-    },
+    }
   }
 }

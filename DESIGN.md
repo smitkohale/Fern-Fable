@@ -60,7 +60,7 @@ A store owner picks one per section.
 | `kora-2` | kora 2 | ink | indigo | indigo / kora | madder |
 | `indigo` | indigo | kora | kora | turmeric / indigo | turmeric |
 | `indigo-deep` | indigo deep | kora | kora | turmeric / indigo | turmeric |
-| `turmeric` | turmeric | ink | indigo | indigo / kora | madder |
+| `turmeric` | turmeric | ink | indigo | indigo / kora | deep madder `#7E221D` (madder on turmeric is only 3.3:1) |
 | `madder` | madder | kora | kora | kora / madder | turmeric |
 
 Backgrounds are always flat. No gradients on any background (skill B4).

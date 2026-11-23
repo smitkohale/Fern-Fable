@@ -1,22 +1,32 @@
 <!doctype html>
-<html lang="{{ request.locale.iso_code }}">
+<html class="no-js" lang="{{ request.locale.iso_code }}">
   <head>
-    {% # Inlined CSS Variables %}
+    {% render 'meta-tags' %}
+
+    <script>
+      document.documentElement.className = document.documentElement.className.replace('no-js', 'js');
+    </script>
+
+    {% # Preload only the hero font (DESIGN.md section 3) %}
+    {{ 'fraunces-display.woff2' | asset_url | preload_tag: as: 'font', type: 'font/woff2', crossorigin: 'anonymous' }}
+
     {% render 'css-variables' %}
 
-    {% # Load and preload the critical CSS %}
     {{ 'critical.css' | asset_url | stylesheet_tag: preload: true }}
 
-    {% # Social, title, etc. %}
-    {% render 'meta-tags' %}
+    <script src="{{ 'theme.js' | asset_url }}" type="module" defer></script>
 
     {{ content_for_header }}
   </head>
 
-  <body>
+  <body class="{% for scheme in settings.color_schemes limit: 1 %}color-{{ scheme.id }}{% endfor %}{% if settings.festive_mode %} is-festive{% endif %}">
+    <a class="skip-link button-sm" href="#MainContent">{{ 'accessibility.skip_to_content' | t }}</a>
+
     {% sections 'header-group' %}
 
-    {{ content_for_layout }}
+    <main id="MainContent" tabindex="-1">
+      {{ content_for_layout }}
+    </main>
 
     {% sections 'footer-group' %}
   </body>

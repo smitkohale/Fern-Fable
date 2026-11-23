@@ -44,8 +44,8 @@ Left out on purpose:
 - [x] Theme lives at the root of the `Fern & Fable` folder, copied from Skeleton **v1.0.0** (sections + JSON templates; see CLAUDE.md "Base theme" for why not v2). Git initialised on `main`.
 - [x] `CLAUDE.md`, `PLAN.md`, `START.md` and `products.csv` in this folder. Brand set to Fern & Fable.
 - [x] `landing-page-design` skill installed at `.claude/skills/landing-page-design/SKILL.md`.
-- [ ] Create a free Shopify Partner account and a development store (only I can do this).
-- [ ] Open a second terminal, start the dev server, and leave it running:
+- [x] Create a free Shopify Partner account and a development store (only I can do this).
+- [x] Open a second terminal, start the dev server, and leave it running:
   ```bash
   shopify theme dev --store your-store --store-password "your-store-password"
   ```
@@ -118,8 +118,8 @@ Phase 1 is done when PRODUCT.md and DESIGN.md exist and you'd be proud to show t
 
 ## Phase 2: Foundation (2–3 days)
 
-- [ ] **Tokens + fonts**: `Turn DESIGN.md into CSS custom properties in one snippet loaded from layout/theme.liquid. Add our two self-hosted fonts. Add color schemes to config/settings_schema.json so a store owner can recolor sections.`
-- [ ] **Layout**: `Set up layout/theme.liquid with: critical CSS, deferred global JS, a small helper that loads a section's script only when that section is on the page, a skip-to-content link, and smooth page-to-page transitions using the View Transitions API (only in browsers that support it).`
+- [x] **Tokens + fonts**: `Turn DESIGN.md into CSS custom properties in one snippet loaded from layout/theme.liquid. Add our two self-hosted fonts. Add color schemes to config/settings_schema.json so a store owner can recolor sections.`
+- [x] **Layout** (View Transitions done in CSS with `@view-transition`; section scripts load as `type="module"` from their own section, so no loader helper is needed): `Set up layout/theme.liquid with: critical CSS, deferred global JS, a small helper that loads a section's script only when that section is on the page, a skip-to-content link, and smooth page-to-page transitions using the View Transitions API (only in browsers that support it).`
 - [ ] **Header**: announcement bar with rotating messages; header with a large dropdown (mega) menu on desktop and a full-screen animated menu on mobile; header hides when scrolling down and comes back when scrolling up.
 - [ ] **Footer**: huge brand name, newsletter signup (Shopify's customer form), menus, social links, payment icons.
 

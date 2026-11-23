@@ -59,6 +59,7 @@ Read these before any design work:
 - **web-design-guidelines**: accessibility and usability audit at the end of each phase.
 
 ## Commands
+- Dev store: `fern-and-fable-61nqell6.myshopify.com`. Dev server: `shopify theme dev --store fern-and-fable-61nqell6.myshopify.com` (the CLI asks for the storefront password itself).
 - At the start of every session, run `git pull`. Shopify commits theme-editor changes to the connected GitHub branch.
 - I run the dev server myself in another terminal (`shopify theme dev`). Preview: http://127.0.0.1:9292. If it isn't responding, ask me. Don't start a second one, and never write the store password into any file.
 - Lint: `shopify theme check`. It must show zero errors before every commit.

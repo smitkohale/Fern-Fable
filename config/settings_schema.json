@@ -1,82 +1,141 @@
 [
   {
     "name": "theme_info",
-    "theme_name": "Skeleton",
+    "theme_name": "Fern & Fable",
     "theme_version": "0.1.0",
-    "theme_author": "Shopify",
+    "theme_author": "Fern & Fable",
     "theme_documentation_url": "https://help.shopify.com/manual/online-store/themes",
-    "theme_support_url": "https://support.shopify.com/"
+    "theme_support_url": "https://help.shopify.com/"
   },
   {
-    "name": "t:general.typography",
+    "name": "t:settings.colors.name",
     "settings": [
       {
-        "type": "header",
-        "content": "t:general.fonts"
-      },
-      {
-        "type": "font_picker",
-        "id": "type_primary_font",
-        "default": "work_sans_n4",
-        "label": "t:general.primary"
-      },
-    ]
-  },
-  {
-    "name": "t:general.layout",
-    "settings": [
-      {
-        "type": "select",
-        "id": "max_page_width",
-        "label": "t:labels.page_width",
-        "options": [
+        "type": "color_scheme_group",
+        "id": "color_schemes",
+        "definition": [
           {
-            "value": "90rem",
-            "label": "t:options.page_width.narrow"
+            "type": "color",
+            "id": "background",
+            "label": "t:settings.colors.background",
+            "default": "#F5EFE4"
           },
           {
-            "value": "110rem",
-            "label": "t:options.page_width.wide"
+            "type": "color",
+            "id": "surface",
+            "label": "t:settings.colors.surface",
+            "default": "#EBE2D1"
+          },
+          {
+            "type": "color",
+            "id": "text",
+            "label": "t:settings.colors.text",
+            "default": "#1A1A22"
+          },
+          {
+            "type": "color",
+            "id": "heading",
+            "label": "t:settings.colors.heading",
+            "default": "#1C2754"
+          },
+          {
+            "type": "color",
+            "id": "muted",
+            "label": "t:settings.colors.muted",
+            "default": "#5D5A66"
+          },
+          {
+            "type": "color",
+            "id": "accent",
+            "label": "t:settings.colors.accent",
+            "default": "#A3302A"
+          },
+          {
+            "type": "color",
+            "id": "button",
+            "label": "t:settings.colors.button",
+            "default": "#1C2754"
+          },
+          {
+            "type": "color",
+            "id": "button_label",
+            "label": "t:settings.colors.button_label",
+            "default": "#F5EFE4"
+          },
+          {
+            "type": "color",
+            "id": "button_hover",
+            "label": "t:settings.colors.button_hover",
+            "default": "#121A3B"
+          },
+          {
+            "type": "color",
+            "id": "secondary_button",
+            "label": "t:settings.colors.secondary_button",
+            "default": "#1C2754"
+          },
+          {
+            "type": "color",
+            "id": "border",
+            "label": "t:settings.colors.border",
+            "default": "#D6CBB6"
+          },
+          {
+            "type": "color",
+            "id": "focus",
+            "label": "t:settings.colors.focus",
+            "default": "#1C2754"
           }
         ],
-        "default": "90rem"
-      },
-      {
-        "type": "range",
-        "id": "min_page_margin",
-        "min": 10,
-        "max": 100,
-        "step": 1,
-        "unit": "px",
-        "label": "t:labels.page_margin",
-        "default": 20
+        "role": {
+          "background": "background",
+          "text": "text",
+          "primary_button": "button",
+          "on_primary_button": "button_label",
+          "primary_button_border": "button",
+          "secondary_button": "background",
+          "on_secondary_button": "secondary_button",
+          "secondary_button_border": "secondary_button",
+          "icons": "text",
+          "links": "heading"
+        }
       }
     ]
   },
   {
-    "name": "t:general.colors",
+    "name": "t:settings.layout.name",
     "settings": [
       {
-        "type": "color",
-        "id": "background_color",
-        "default": "#FFFFFF",
-        "label": "t:labels.background"
-      },
-      {
-        "type": "color",
-        "id": "foreground_color",
-        "default": "#333333",
-        "label": "t:labels.foreground"
-      },
-      {
         "type": "range",
-        "id": "input_corner_radius",
-        "min": 0,
-        "max": 10,
-        "step": 1,
+        "id": "page_width",
+        "min": 1200,
+        "max": 1600,
+        "step": 40,
         "unit": "px",
-        "label": "t:labels.input_corner_radius",
-        "default": 4
+        "label": "t:settings.layout.page_width",
+        "default": 1440
+      },
+      {
+        "type": "checkbox",
+        "id": "paper_grain",
+        "label": "t:settings.layout.paper_grain",
+        "info": "t:settings.layout.paper_grain_info",
+        "default": false
+      }
+    ]
+  },
+  {
+    "name": "t:settings.festive.name",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "t:settings.festive.intro"
+      },
+      {
+        "type": "checkbox",
+        "id": "festive_mode",
+        "label": "t:settings.festive.festive_mode",
+        "default": true
       }
     ]
   }
