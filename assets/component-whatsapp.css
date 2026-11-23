@@ -1,0 +1,81 @@
+/* Floating WhatsApp button. Prefix: .whatsapp-button */
+
+.whatsapp-button {
+  position: fixed;
+  right: var(--page-gutter);
+  bottom: var(--space-200);
+  z-index: 40;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-75);
+  min-width: var(--space-700);
+  height: var(--space-700);
+  padding: 0 var(--space-200);
+  border-radius: var(--radius-full);
+  background-color: var(--color-forest);
+  color: var(--color-kora);
+  box-shadow: var(--shadow-float);
+  text-decoration: none;
+  transition: transform var(--dur-hover) var(--ease-out),
+    background-color var(--dur-hover) var(--ease-out);
+}
+
+.whatsapp-button .icon {
+  flex: 0 0 auto;
+  width: var(--space-400);
+  height: var(--space-400);
+}
+
+.whatsapp-button:hover {
+  background-color: color-mix(in srgb, var(--color-forest) 85%, black);
+  transform: translateY(calc(var(--space-25) * -1));
+}
+
+.whatsapp-button:active {
+  transform: scale(0.98);
+}
+
+.whatsapp-button:focus-visible {
+  outline: 2px solid var(--color-turmeric);
+  outline-offset: 3px;
+}
+
+/* Phones: just the round icon so it covers as little as possible. */
+@media (max-width: 749px) {
+  .whatsapp-button {
+    justify-content: center;
+    width: var(--space-700);
+    padding: 0;
+  }
+
+  /* The Shop the look sheet uses the same corner on phones. */
+  html:has(.look__card.is-visible) .whatsapp-button {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .whatsapp-button__label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+}
+
+/* Step aside while a full screen panel (menu, sheet) is open. */
+html:has(dialog[open]) .whatsapp-button {
+  opacity: 0;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .whatsapp-button {
+    transition: background-color var(--dur-hover) var(--ease-out);
+  }
+
+  .whatsapp-button:hover {
+    transform: none;
+  }
+}

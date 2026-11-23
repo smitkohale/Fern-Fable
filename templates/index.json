@@ -330,6 +330,76 @@
         "heading": "Gifts they'll actually use",
         "text": "Every order ships in a cotton wrap with a handwritten note, free."
       }
+    },
+    "reviews": {
+      "type": "reviews",
+      "blocks": {
+        "review-1": {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "quote": "Washed it three times and the indigo is still as deep as the day it came. Guests keep asking where the runner is from.",
+            "name": "Ananya Rao",
+            "location": "Bengaluru",
+            "product": "ajrakh-table-runner",
+            "product_name": "Ajrakh Table Runner"
+          }
+        },
+        "review-2": {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "quote": "Bought the Dinner Party Box for my sister's new flat. It arrived wrapped in cotton with a note, which made her cry a little.",
+            "name": "Kabir Mehta",
+            "location": "Pune",
+            "product": "the-dinner-party-box",
+            "product_name": "The Dinner Party Box"
+          }
+        },
+        "review-3": {
+          "type": "review",
+          "settings": {
+            "rating": 4,
+            "quote": "The mulmul sheets are softer every wash. Took a star off only because the King size sold out for a week.",
+            "name": "Meera Iyer",
+            "location": "Chennai",
+            "product": "monsoon-mulmul-bedsheet-set",
+            "product_name": "Monsoon Mulmul Bedsheet Set"
+          }
+        },
+        "review-4": {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "quote": "The apron has pockets deep enough for my phone and a whisk. Finally an apron I leave out on the hook.",
+            "name": "Rohan D'Souza",
+            "location": "Goa",
+            "product": "kantha-stripe-apron",
+            "product_name": "Kantha Stripe Apron"
+          }
+        }
+      },
+      "block_order": [
+        "review-1",
+        "review-2",
+        "review-3",
+        "review-4"
+      ],
+      "settings": {
+        "color_scheme": "scheme-kora-2",
+        "heading": "What people say",
+        "label": "Sample reviews for this demo store"
+      }
+    },
+    "newsletter": {
+      "type": "newsletter",
+      "settings": {
+        "color_scheme": "scheme-turmeric",
+        "caption": "Hosting notes",
+        "heading": "Table ideas, new prints, first look at sales",
+        "text": "A short letter every other Sunday: how we set the table this week and what just came off the blocks.",
+        "fine_print": "One email a fortnight. Unsubscribe with one click."
+      }
     }
   },
   "order": [
@@ -340,6 +410,8 @@
     "tagline-reveal",
     "shop-the-look",
     "craft-story",
-    "gift-finder"
+    "gift-finder",
+    "reviews",
+    "newsletter"
   ]
 }

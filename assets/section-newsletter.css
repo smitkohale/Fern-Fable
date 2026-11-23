@@ -1,0 +1,56 @@
+/* Newsletter banner. Prefix: .newsletter-banner */
+
+.newsletter-banner {
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+}
+
+.newsletter-banner__inner {
+  display: grid;
+  gap: var(--space-500);
+  padding-block: var(--space-800);
+}
+
+.newsletter-banner__text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-200);
+  max-width: var(--text-column);
+}
+
+.newsletter-banner__heading {
+  color: var(--color-heading);
+}
+
+.newsletter-banner__form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-200);
+}
+
+.newsletter-banner__fine-print {
+  color: var(--color-muted-text);
+}
+
+@media (min-width: 990px) {
+  .newsletter-banner__inner {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    align-items: end;
+    gap: var(--space-800);
+    padding-block: var(--space-900);
+  }
+}
+
+/* One signup per page: hide the footer's signup block when this banner is present. */
+body:has(.newsletter-banner) .site-footer__intro {
+  display: none;
+}
+
+body:has(.newsletter-banner) .site-footer__top {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+/* With no footer form, the footer has no margin above it from this banner. */
+body:has(.newsletter-banner) .site-footer {
+  margin-block-start: 0;
+}

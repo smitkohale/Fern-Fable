@@ -1,0 +1,76 @@
+{%- comment -%}
+  Newsletter banner: large statement and the signup form (snippets/newsletter-form).
+  When this section is on a page, the footer's own signup hides
+  (section-newsletter.css) so a page never shows two forms.
+{%- endcomment -%}
+
+{{ 'section-newsletter.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'newsletter-form.js' | asset_url }}" type="module"></script>
+
+<div class="newsletter-banner full-width color-{{ section.settings.color_scheme }}">
+  <div class="newsletter-banner__inner page-width" data-reveal="rise">
+    <div class="newsletter-banner__text">
+      {%- if section.settings.caption != blank -%}
+        <p class="caption-3">{{ section.settings.caption }}</p>
+      {%- endif -%}
+      {%- if section.settings.heading != blank -%}
+        <h2 class="newsletter-banner__heading heading-1">{{ section.settings.heading }}</h2>
+      {%- endif -%}
+      {%- if section.settings.text != blank -%}
+        <p class="newsletter-banner__copy body-3">{{ section.settings.text }}</p>
+      {%- endif -%}
+    </div>
+
+    <div class="newsletter-banner__form">
+      {%- assign form_id = 'NewsletterBanner-' | append: section.id -%}
+      {% render 'newsletter-form', form_id: form_id %}
+      {%- if section.settings.fine_print != blank -%}
+        <p class="newsletter-banner__fine-print caption-2">{{ section.settings.fine_print }}</p>
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.newsletter.name",
+  "class": "section-newsletter",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:settings.colors.scheme",
+      "default": "scheme-turmeric"
+    },
+    {
+      "type": "text",
+      "id": "caption",
+      "label": "t:sections.newsletter.caption",
+      "default": "Hosting notes"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "t:sections.newsletter.heading",
+      "default": "Table ideas, new prints, first look at sales"
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "t:sections.newsletter.text",
+      "default": "A short letter every other Sunday: how we set the table this week and what just came off the blocks."
+    },
+    {
+      "type": "text",
+      "id": "fine_print",
+      "label": "t:sections.newsletter.fine_print",
+      "default": "One email a fortnight. Unsubscribe with one click."
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.newsletter.name"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,33 @@
+{%- doc -%}
+  Floating WhatsApp chat button, bottom right on every page.
+  Shows only when a number is set in Theme settings, WhatsApp.
+  Opens wa.me in a new tab with an optional pre written message.
+
+  @example
+  {% render 'whatsapp-button' %}
+{%- enddoc -%}
+
+{%- liquid
+  assign number = settings.whatsapp_number | remove: '+' | remove: ' ' | remove: '-' | remove: '(' | remove: ')'
+-%}
+
+{%- if settings.whatsapp_show and number != blank -%}
+  {{ 'component-whatsapp.css' | asset_url | stylesheet_tag }}
+  {%- liquid
+    assign whatsapp_url = 'https://wa.me/' | append: number
+    if settings.whatsapp_message != blank
+      assign message = settings.whatsapp_message | url_encode
+      assign whatsapp_url = whatsapp_url | append: '?text=' | append: message
+    endif
+  -%}
+  <a
+    href="{{ whatsapp_url }}"
+    class="whatsapp-button"
+    target="_blank"
+    rel="noopener"
+  >
+    {%- render 'icon', name: 'whatsapp-logo' -%}
+    <span class="whatsapp-button__label button-sm">{{ 'general.whatsapp.label' | t }}</span>
+    <span class="visually-hidden">{{ 'general.whatsapp.new_tab' | t }}</span>
+  </a>
+{%- endif -%}

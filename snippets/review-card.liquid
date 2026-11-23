@@ -1,0 +1,41 @@
+{%- doc -%}
+  One review: stars, quote and who wrote it.
+
+  @param {object} block - The review block (settings: rating, quote, name, location, product, product_name).
+  @param {boolean} [featured] - Large quote styling.
+
+  @example
+  {% render 'review-card', block: block, featured: true %}
+{%- enddoc -%}
+
+{%- assign rating = block.settings.rating -%}
+
+<figure class="review{% if featured %} review--featured{% endif %}">
+  <div class="review__stars" role="img" aria-label="{{ 'sections.reviews.rating' | t: rating: rating }}">
+    {%- for i in (1..5) -%}
+      {%- if i <= rating -%}
+        {%- render 'icon', name: 'star-fill' -%}
+      {%- else -%}
+        {%- render 'icon', name: 'star' -%}
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+  <blockquote class="review__quote {% if featured %}heading-3{% else %}body-3{% endif %}">
+    <p>{{ block.settings.quote }}</p>
+  </blockquote>
+  <figcaption class="review__author">
+    <span class="review__name body-4">{{ block.settings.name }}</span>
+    {%- if block.settings.location != blank -%}
+      <span class="review__location body-6 text-muted">{{ block.settings.location }}</span>
+    {%- endif -%}
+    {%- if block.settings.product != blank -%}
+      <a href="{{ block.settings.product.url }}" class="review__product body-6">
+        {{- 'sections.reviews.bought' | t: title: block.settings.product.title -}}
+      </a>
+    {%- elsif block.settings.product_name != blank -%}
+      <span class="review__product body-6 text-muted">
+        {{- 'sections.reviews.bought' | t: title: block.settings.product_name -}}
+      </span>
+    {%- endif -%}
+  </figcaption>
+</figure>

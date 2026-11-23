@@ -1,0 +1,131 @@
+{%- comment -%}
+  Reviews. The first review is shown large; the rest sit beside it (desktop)
+  or in a swipeable row (phones). This is a demo store, so the section always
+  carries a visible "sample reviews" label and outputs no review structured
+  data: search engines must never read made up reviews as real ones.
+{%- endcomment -%}
+
+{{ 'section-reviews.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign sample_label = 'sections.reviews.sample_label' | t
+-%}
+
+<div class="reviews full-width color-{{ section.settings.color_scheme }} section-space">
+  <div class="page-width">
+    <div class="reviews__header" data-reveal="rise">
+      {%- if section.settings.heading != blank -%}
+        <h2 class="reviews__heading heading-2" id="ReviewsHeading-{{ section.id }}">{{ section.settings.heading }}</h2>
+      {%- endif -%}
+      <p class="reviews__label caption-3">
+        {%- render 'icon', name: 'quotes-fill' -%}
+        {{- section.settings.label | default: sample_label -}}
+      </p>
+    </div>
+
+    {%- if section.blocks.size > 0 -%}
+      <div class="reviews__layout">
+        {%- for block in section.blocks limit: 1 -%}
+          <div class="reviews__featured" data-reveal="rise" {{ block.shopify_attributes }}>
+            {%- render 'review-card', block: block, featured: true -%}
+          </div>
+        {%- endfor -%}
+
+        {%- if section.blocks.size > 1 -%}
+          <ul class="reviews__list" role="list" data-reveal-group>
+            {%- for block in section.blocks offset: 1 -%}
+              <li class="reviews__item" data-reveal="rise" {{ block.shopify_attributes }}>
+                {%- render 'review-card', block: block -%}
+              </li>
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.reviews.name",
+  "class": "section-reviews",
+  "max_blocks": 6,
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:settings.colors.scheme",
+      "default": "scheme-kora-2"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "t:sections.reviews.heading",
+      "default": "What people say"
+    },
+    {
+      "type": "text",
+      "id": "label",
+      "label": "t:sections.reviews.label",
+      "info": "t:sections.reviews.label_info",
+      "default": "Sample reviews for this demo store"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "review",
+      "name": "t:sections.reviews.review",
+      "settings": [
+        {
+          "type": "range",
+          "id": "rating",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "label": "t:sections.reviews.rating_setting",
+          "default": 5
+        },
+        {
+          "type": "textarea",
+          "id": "quote",
+          "label": "t:sections.reviews.quote",
+          "default": "Washed it three times and the indigo is still as deep as the day it came."
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "t:sections.reviews.name_setting",
+          "default": "Ananya Rao"
+        },
+        {
+          "type": "text",
+          "id": "location",
+          "label": "t:sections.reviews.location",
+          "default": "Bengaluru"
+        },
+        {
+          "type": "product",
+          "id": "product",
+          "label": "t:sections.reviews.product"
+        },
+        {
+          "type": "text",
+          "id": "product_name",
+          "label": "t:sections.reviews.product_name",
+          "info": "t:sections.reviews.product_name_info"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.reviews.name",
+      "blocks": [
+        { "type": "review" },
+        { "type": "review" },
+        { "type": "review" }
+      ]
+    }
+  ]
+}
+{% endschema %}

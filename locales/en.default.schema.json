@@ -34,6 +34,13 @@
       "pinterest": "Pinterest",
       "youtube": "YouTube",
       "facebook": "Facebook"
+    },
+    "whatsapp": {
+      "name": "WhatsApp",
+      "show": "Show the floating chat button",
+      "number": "WhatsApp number",
+      "number_info": "Country code and number, digits only, for example 919876543210. The button hides while this is empty.",
+      "message": "Pre written message"
     }
   },
   "general": {
@@ -270,6 +277,27 @@
       "tone_forest": "Forest (festive)",
       "festive_only": "Festive only",
       "festive_only_info": "Hidden while festive mode is off."
+    },
+    "reviews": {
+      "name": "Reviews",
+      "heading": "Heading",
+      "label": "Label",
+      "label_info": "Keep this visible on a demo store so nobody mistakes sample reviews for real ones.",
+      "review": "Review",
+      "rating_setting": "Stars",
+      "quote": "Review",
+      "name_setting": "Name",
+      "location": "City",
+      "product": "Product",
+      "product_name": "Product name",
+      "product_name_info": "Shown when no product is picked, or the product is not in the store yet."
+    },
+    "newsletter": {
+      "name": "Newsletter",
+      "caption": "Caption",
+      "heading": "Heading",
+      "text": "Text",
+      "fine_print": "Fine print"
     }
   }
 }

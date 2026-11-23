@@ -148,7 +148,8 @@ Fern & Fable picks (from START.md): ★ hero with a three.js cloth unfurling ont
 - [x] Shop the look, The Indigo Table: numbered dots open product cards with quick add (bottom sheet on phones), matching list, total and "Add the whole look" (items[] form, works without JS)
 - [x] Shop by collection: staggered row of 5 tiles, hover and focus react, swipe row on phones
 - [x] Bestsellers / New arrivals tabs: product card (second photo on hover, sale badge from compare at price, sold out), quick add with variant chips, header cart count
-- [ ] Newsletter block with a playful small animation
+- [x] Reviews (always labelled as sample reviews, no review structured data)
+- [x] Newsletter banner (footer signup hides when it is on the page) + floating WhatsApp button (Theme settings, shows once a number is set)
 
 For each section:
 1. Build it with the section prompt above.

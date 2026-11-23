@@ -124,6 +124,11 @@
         "other": "{{ count }} gifts"
       },
       "browse": "Browse gifts"
+    },
+    "reviews": {
+      "rating": "Rated {{ rating }} out of 5",
+      "bought": "Bought: {{ title }}",
+      "sample_label": "Sample reviews"
     }
   },
   "newsletter": {
@@ -153,6 +158,12 @@
       "options": "Options",
       "announce": "{{ title }} added to your cart.",
       "error": "Could not add this to your cart. Try again."
+    }
+  },
+  "general": {
+    "whatsapp": {
+      "label": "Chat with us",
+      "new_tab": "on WhatsApp, opens in a new tab"
     }
   }
 }

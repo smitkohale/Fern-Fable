@@ -171,5 +171,29 @@
         "placeholder": "https://facebook.com/"
       }
     ]
+  },
+  {
+    "name": "t:settings.whatsapp.name",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "whatsapp_show",
+        "label": "t:settings.whatsapp.show",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "whatsapp_number",
+        "label": "t:settings.whatsapp.number",
+        "info": "t:settings.whatsapp.number_info",
+        "placeholder": "919876543210"
+      },
+      {
+        "type": "text",
+        "id": "whatsapp_message",
+        "label": "t:settings.whatsapp.message",
+        "default": "Hi Fern & Fable, I have a question about"
+      }
+    ]
   }
 ]
