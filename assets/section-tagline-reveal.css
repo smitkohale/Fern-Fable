@@ -32,9 +32,10 @@
   color: var(--color-accent);
 }
 
-/* Muted until lit: about 30% of the heading colour (skill B11). Only with JS. */
+/* Muted until lit. The skill suggests about 30%, but that is 1.8:1; 52% is the
+   lightest tone that still passes WCAG's 3:1 for large text. Only with JS. */
 .tagline-reveal.is-interactive .tagline-reveal__word {
-  color: color-mix(in srgb, var(--color-heading) 30%, var(--color-background));
+  color: color-mix(in srgb, var(--color-heading) 52%, var(--color-background));
   transition: color var(--dur-move) var(--ease-out);
 }
 

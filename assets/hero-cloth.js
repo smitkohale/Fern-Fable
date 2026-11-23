@@ -12,7 +12,7 @@
  *   .is-fallback and shows its photo, or a flat drawing of the runner.
  */
 
-import { compile, drawBerry, drawFern, hexToRgb, lookAt, multiply, perspective, seeded } from './gl-kit.js';
+import { compile, drawBerry, drawFern, hexToRgb, isSoftwareRenderer, lookAt, multiply, perspective, seeded } from './gl-kit.js';
 
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 const desktop = window.matchMedia('(min-width: 990px)');
@@ -59,11 +59,17 @@ const PRINTS = {
   },
 };
 
+/* Hand control back to the browser between drawing steps so no single task blocks input. */
+const yieldToMain = () =>
+  window.scheduler && window.scheduler.yield
+    ? window.scheduler.yield()
+    : new Promise((resolve) => window.setTimeout(resolve, 0));
+
 /* ---------- The print: drawn like a block printer would stamp it ---------- */
-function makePrint(name) {
+async function makePrint(name) {
   const palette = PRINTS[name] || PRINTS.dabu;
   const random = seeded(name === 'winter_berry' ? 2412 : 1907);
-  const width = 768;
+  const width = 640;
   const height = Math.round((width * CLOTH_LENGTH) / CLOTH_WIDTH);
 
   const canvas = document.createElement('canvas');
@@ -74,10 +80,11 @@ function makePrint(name) {
   /* Raw cotton with a little slub. */
   ctx.fillStyle = palette.base;
   ctx.fillRect(0, 0, width, height);
-  for (let i = 0; i < 9000; i += 1) {
+  for (let i = 0; i < 3500; i += 1) {
     ctx.fillStyle = random() > 0.5 ? 'rgba(120, 96, 60, 0.05)' : 'rgba(255, 255, 255, 0.08)';
     ctx.fillRect(random() * width, random() * height, 1 + random() * 3, 1);
   }
+  await yieldToMain();
 
   /* Ink layer: stamped, then speckled so it reads as hand printed. */
   const ink = document.createElement('canvas');
@@ -108,6 +115,7 @@ function makePrint(name) {
         ictx.fill();
       }
     }
+    if (row % 4 === 3) await yieldToMain();
   }
   ictx.globalAlpha = 1;
 
@@ -146,14 +154,16 @@ function makePrint(name) {
   };
   borders(false);
   borders(true);
+  await yieldToMain();
 
   /* Speckle: little gaps where the block did not take the dye. */
   ictx.globalCompositeOperation = 'destination-out';
-  for (let i = 0; i < 26000; i += 1) {
+  // Squares, not arcs: identical at this size and far cheaper to draw.
+  for (let i = 0; i < 7000; i += 1) {
     ictx.globalAlpha = 0.25 + random() * 0.6;
-    ictx.beginPath();
-    ictx.arc(random() * width, random() * height, 0.4 + random() * 1.3, 0, Math.PI * 2);
-    ictx.fill();
+    const size = 0.8 + random() * 2;
+    ictx.fillRect(random() * width, random() * height, size, size);
+    if (i % 2000 === 1999) await yieldToMain();
   }
 
   ctx.globalCompositeOperation = 'multiply';
@@ -257,8 +267,8 @@ void main() {
 }`;
 
 /* ---------- Fallback: a flat drawing of the runner ---------- */
-function showFlatRunner(host, print) {
-  const image = makePrint(print);
+async function showFlatRunner(host, print) {
+  const image = await makePrint(print);
   image.className = 'hero__flat-runner';
   image.setAttribute('aria-hidden', 'true');
   host.replaceChildren(image);
@@ -312,9 +322,9 @@ class HeroCloth extends HTMLElement {
     this.visibility.observe(this);
   }
 
-  init() {
+  async init() {
     const gl = this.canvas.getContext('webgl2', { antialias: true, alpha: true, premultipliedAlpha: true });
-    if (!gl) {
+    if (!gl || isSoftwareRenderer(gl)) {
       this.fallback();
       return;
     }
@@ -363,7 +373,7 @@ class HeroCloth extends HTMLElement {
     /* The print, as a mipmapped texture. */
     const texture = gl.createTexture();
     gl.bindTexture(gl.TEXTURE_2D, texture);
-    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, makePrint(this.print));
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, await makePrint(this.print));
     gl.generateMipmap(gl.TEXTURE_2D);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);

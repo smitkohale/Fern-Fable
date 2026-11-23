@@ -18,6 +18,7 @@ import {
   perspective,
   rotationX,
   rotationY,
+  isSoftwareRenderer,
   scaling,
   seeded,
   translation,
@@ -320,7 +321,7 @@ class CraftBlock extends HTMLElement {
 
   init() {
     const gl = this.canvas.getContext('webgl2', { antialias: true, alpha: true });
-    if (!gl) {
+    if (!gl || isSoftwareRenderer(gl)) {
       this.fallback();
       return;
     }

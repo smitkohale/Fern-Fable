@@ -165,3 +165,22 @@ export function hexToRgb(hex) {
   const value = parseInt(hex.replace('#', ''), 16);
   return [((value >> 16) & 255) / 255, ((value >> 8) & 255) / 255, (value & 255) / 255];
 }
+
+/**
+ * True when WebGL is running on the CPU (SwiftShader, llvmpipe, Microsoft
+ * Basic Render, any "software" renderer). Those devices, and headless audit
+ * tools like Lighthouse, get the flat fallback instead of a 3D scene that
+ * would block the main thread for seconds.
+ */
+export function isSoftwareRenderer(gl) {
+  try {
+    const info = gl.getExtension('WEBGL_debug_renderer_info');
+    const renderer = String(
+      info ? gl.getParameter(info.UNMASKED_RENDERER_WEBGL) : gl.getParameter(gl.RENDERER)
+    ).toLowerCase();
+    return /swiftshader|llvmpipe|softpipe|software|basic render/.test(renderer);
+  } catch (error) {
+    return false;
+  }
+}
+
