@@ -11,7 +11,12 @@
   "sections": {
     "main": {
       "type": "collection",
-      "settings": {}
+      "settings": {
+        "color_scheme": "scheme-kora",
+        "show_image": true,
+        "show_description": true,
+        "per_page": 12
+      }
     }
   },
   "order": [

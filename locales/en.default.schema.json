@@ -344,6 +344,12 @@
       "pairs_collection": "Pairs well collection",
       "pairs_collection_info": "Items already in the cart are skipped. Leave empty to use all products.",
       "empty_collection": "Collection to suggest when the cart is empty"
+    },
+    "collection": {
+      "name": "Collection",
+      "show_image": "Show collection image",
+      "show_description": "Show collection description",
+      "per_page": "Products per page"
     }
   }
 }

@@ -61,7 +61,33 @@
     }
   },
   "collections": {
-    "title": "Collections"
+    "title": "Collections",
+    "page": {
+      "eyebrow": "Collection",
+      "count": {
+        "one": "{{ count }} piece",
+        "other": "{{ count }} pieces"
+      },
+      "filter": "Filter",
+      "close_filters": "Close filters",
+      "sort": "Sort by",
+      "price_from": "From (₹)",
+      "price_to": "To (₹)",
+      "to": "to",
+      "price_pill": "{{ min }} to {{ max }}",
+      "apply": "Apply filters",
+      "clear_all": "Clear all",
+      "show_results": {
+        "one": "Show {{ count }} result",
+        "other": "Show {{ count }} results"
+      },
+      "active_filters": "Active filters",
+      "remove_filter": "Remove filter",
+      "showing": "Showing {{ shown }} of {{ total }}",
+      "load_more": "Load more",
+      "empty_title": "Nothing matches these filters",
+      "empty_text": "Try removing a filter or two, or browse the whole collection."
+    }
   },
   "gift_card": {
     "add_to_apple_wallet": "Add to Apple Wallet",

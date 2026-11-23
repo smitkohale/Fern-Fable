@@ -303,29 +303,10 @@
   color: var(--color-muted-text);
 }
 
-.variant-chip__swatch {
-  width: var(--space-300);
-  height: var(--space-300);
-  border: 1px solid color-mix(in srgb, var(--color-foreground) 25%, transparent);
-  border-radius: var(--radius-full);
-  background-color: var(--color-surface);
-}
-
-/* Colours for the catalogue's colour options */
-.swatch--indigo { background-color: #1c2754; }
-.swatch--rust { background-color: #a4532f; }
-.swatch--sage { background-color: #9baa8c; }
-.swatch--ivory { background-color: #efe8da; }
-.swatch--blush { background-color: #e2b9ae; }
-.swatch--charcoal { background-color: #3a3a40; }
-
 .variant-chip--swatch {
   padding-inline-start: var(--space-75);
 }
 
-.variant-picker__select-wrap {
-  position: relative;
-}
 
 .variant-picker__select {
   width: 100%;
@@ -339,15 +320,6 @@
   cursor: pointer;
 }
 
-.variant-picker__caret {
-  position: absolute;
-  top: 50%;
-  right: var(--space-100);
-  width: var(--space-200);
-  height: var(--space-200);
-  transform: translateY(-50%);
-  pointer-events: none;
-}
 
 /* ---------- Buy ---------- */
 .product__stock {
