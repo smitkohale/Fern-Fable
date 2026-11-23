@@ -222,11 +222,72 @@
         "heading": "Three pairs of hands",
         "show_3d": true
       }
+    },
+    "product-reels": {
+      "type": "product-reels",
+      "blocks": {
+        "reel-1": {
+          "type": "reel",
+          "settings": {
+            "product": "ajrakh-table-runner",
+            "caption": "Runner, laid for six"
+          }
+        },
+        "reel-2": {
+          "type": "reel",
+          "settings": {
+            "product": "indigo-dabu-napkins-set-of-4",
+            "caption": "Napkins, folded for dinner"
+          }
+        },
+        "reel-3": {
+          "type": "reel",
+          "settings": {
+            "product": "kantha-stripe-apron",
+            "caption": "Apron, on a Sunday"
+          }
+        },
+        "reel-4": {
+          "type": "reel",
+          "settings": {
+            "product": "monsoon-mulmul-bedsheet-set",
+            "caption": "Mulmul, made up for the night"
+          }
+        },
+        "reel-5": {
+          "type": "reel",
+          "settings": {
+            "product": "winter-berry-table-runner",
+            "caption": "Winter Berry, set for Christmas"
+          }
+        },
+        "reel-6": {
+          "type": "reel",
+          "settings": {
+            "product": "the-dinner-party-box",
+            "caption": "Unboxing the Dinner Party Box"
+          }
+        }
+      },
+      "block_order": [
+        "reel-1",
+        "reel-2",
+        "reel-3",
+        "reel-4",
+        "reel-5",
+        "reel-6"
+      ],
+      "settings": {
+        "color_scheme": "scheme-indigo",
+        "caption": "In use",
+        "heading": "See it on the table"
+      }
     }
   },
   "order": [
     "hero",
     "collection-tiles",
+    "product-reels",
     "product-tabs",
     "tagline-reveal",
     "shop-the-look",

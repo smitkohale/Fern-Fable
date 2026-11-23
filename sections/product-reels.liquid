@@ -1,0 +1,220 @@
+{%- comment -%}
+  Product reels (signature moment 2). A swipeable row of short vertical videos
+  (9:16), each tied to a product with quick add. Videos are muted, loop, and
+  play only while mostly on screen (assets/product-reels.js); each has its own
+  pause button. Reduced motion or Save Data: posters only, play on request.
+  Video source per reel: the block's video, else the product's first video,
+  else the product photo as a still.
+{%- endcomment -%}
+
+{{ 'component-product-card.css' | asset_url | stylesheet_tag }}
+{{ 'section-product-reels.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'product-reels.js' | asset_url }}" type="module"></script>
+<script src="{{ 'quick-add.js' | asset_url }}" type="module"></script>
+
+{%- liquid
+  assign reel_count = 0
+  for block in section.blocks
+    if block.settings.product != blank or block.settings.video != blank
+      assign reel_count = reel_count | plus: 1
+    endif
+  endfor
+-%}
+
+{%- if reel_count > 0 -%}
+<product-reels class="reels full-width color-{{ section.settings.color_scheme }} section-space">
+  <div class="reels__header page-width" data-reveal="rise">
+    <div class="reels__titles">
+      {%- if section.settings.caption != blank -%}
+        <p class="caption-3 text-muted">{{ section.settings.caption }}</p>
+      {%- endif -%}
+      {%- if section.settings.heading != blank -%}
+        <h2 class="reels__heading heading-2" id="ReelsHeading-{{ section.id }}">{{ section.settings.heading }}</h2>
+      {%- endif -%}
+    </div>
+    <div class="reels__arrows">
+      <button type="button" class="reels__arrow" data-scroll="-1" aria-label="{{ 'sections.product_reels.previous' | t }}" aria-controls="ReelsList-{{ section.id }}">
+        {%- render 'icon', name: 'caret-left' -%}
+      </button>
+      <button type="button" class="reels__arrow" data-scroll="1" aria-label="{{ 'sections.product_reels.next' | t }}" aria-controls="ReelsList-{{ section.id }}">
+        {%- render 'icon', name: 'caret-right' -%}
+      </button>
+    </div>
+  </div>
+
+  <ul
+    class="reels__list"
+    id="ReelsList-{{ section.id }}"
+    role="list"
+    {% if section.settings.heading != blank %}
+      aria-labelledby="ReelsHeading-{{ section.id }}"
+    {% endif %}
+    data-reels-list
+  >
+    {%- for block in section.blocks -%}
+      {%- liquid
+        assign product = block.settings.product
+        assign video = block.settings.video
+        if video == blank and product != blank
+          for media in product.media
+            if media.media_type == 'video'
+              assign video = media
+              break
+            endif
+          endfor
+        endif
+        assign poster = block.settings.poster | default: video.preview_image | default: product.featured_image
+        assign card_id = 'Reel-' | append: section.id | append: '-' | append: forloop.index
+        assign reel_title = block.settings.caption | default: product.title
+        assign reel_title_escaped = reel_title | escape
+      -%}
+      {%- if product == blank and video == blank -%}
+        {%- continue -%}
+      {%- endif -%}
+      <li class="reels__item" data-reveal="ink" {{ block.shopify_attributes }}>
+        <article class="reel" aria-labelledby="{{ card_id }}-title" data-reel>
+          <div class="reel__media">
+            {%- if video != blank -%}
+              {{
+                video
+                | video_tag:
+                  class: 'reel__video',
+                  muted: true,
+                  loop: true,
+                  playsinline: true,
+                  preload: 'none',
+                  image_size: '720x',
+                  aria-hidden: 'true'
+              }}
+            {%- elsif poster != blank -%}
+              {{
+                poster
+                | image_url: width: 900
+                | image_tag:
+                  widths: '360, 540, 720, 900',
+                  sizes: '(min-width: 990px) 22vw, (min-width: 750px) 34vw, 64vw',
+                  loading: 'lazy',
+                  class: 'reel__still',
+                  alt: ''
+              }}
+            {%- else -%}
+              {{ 'lifestyle-1' | placeholder_svg_tag: 'reel__placeholder' }}
+            {%- endif -%}
+
+            {%- if video != blank -%}
+              <button
+                type="button"
+                class="reel__toggle"
+                data-reel-toggle
+                aria-pressed="false"
+                data-label-pause="{{ 'sections.product_reels.pause' | t: title: reel_title_escaped }}"
+                data-label-play="{{ 'sections.product_reels.play' | t: title: reel_title_escaped }}"
+                aria-label="{{ 'sections.product_reels.play' | t: title: reel_title_escaped }}"
+              >
+                {%- render 'icon', name: 'play', class: 'icon-play' -%}
+                {%- render 'icon', name: 'pause', class: 'icon-pause' -%}
+              </button>
+            {%- endif -%}
+          </div>
+
+          <div class="reel__panel">
+            {%- if product != blank -%}
+              <p class="reel__title title-4" id="{{ card_id }}-title">
+                <a href="{{ product.url }}" class="reel__link">{{ reel_title }}</a>
+              </p>
+              <p class="reel__price body-6">
+                {%- if product.compare_at_price > product.price -%}
+                  <span class="text-accent">{{ product.price | money_without_trailing_zeros }}</span>
+                  <s class="text-muted">{{ product.compare_at_price | money_without_trailing_zeros }}</s>
+                {%- elsif product.price_varies -%}
+                  {%- assign price_from = product.price_min | money_without_trailing_zeros -%}
+                  {{ 'products.card.from' | t: price: price_from }}
+                {%- else -%}
+                  {{ product.price | money_without_trailing_zeros }}
+                {%- endif -%}
+              </p>
+              {%- if product.available -%}
+                {%- render 'quick-add', product: product, card_id: card_id -%}
+              {%- else -%}
+                <p class="body-6 text-muted">{{ 'products.card.sold_out' | t }}</p>
+              {%- endif -%}
+            {%- else -%}
+              <p class="reel__title title-4" id="{{ card_id }}-title">{{ reel_title }}</p>
+            {%- endif -%}
+          </div>
+        </article>
+      </li>
+    {%- endfor -%}
+  </ul>
+</product-reels>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "t:sections.product_reels.name",
+  "class": "section-product-reels",
+  "max_blocks": 8,
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:settings.colors.scheme",
+      "default": "scheme-indigo"
+    },
+    {
+      "type": "text",
+      "id": "caption",
+      "label": "t:sections.product_reels.caption",
+      "default": "In use"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "t:sections.product_reels.heading",
+      "default": "See it on the table"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "reel",
+      "name": "t:sections.product_reels.reel",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "t:sections.product_reels.product"
+        },
+        {
+          "type": "video",
+          "id": "video",
+          "label": "t:sections.product_reels.video",
+          "info": "t:sections.product_reels.video_info"
+        },
+        {
+          "type": "image_picker",
+          "id": "poster",
+          "label": "t:sections.product_reels.poster",
+          "info": "t:sections.product_reels.poster_info"
+        },
+        {
+          "type": "text",
+          "id": "caption",
+          "label": "t:sections.product_reels.reel_caption",
+          "info": "t:sections.product_reels.reel_caption_info"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.product_reels.name",
+      "blocks": [
+        { "type": "reel" },
+        { "type": "reel" },
+        { "type": "reel" },
+        { "type": "reel" }
+      ]
+    }
+  ]
+}
+{% endschema %}

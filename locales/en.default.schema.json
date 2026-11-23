@@ -236,6 +236,19 @@
       "step": "Step",
       "title": "Title",
       "text": "Text"
+    },
+    "product_reels": {
+      "name": "Product reels",
+      "caption": "Caption",
+      "heading": "Heading",
+      "reel": "Reel",
+      "product": "Product",
+      "video": "Video",
+      "video_info": "A short vertical clip (9:16), 6 to 15 seconds, no sound needed. Leave empty to use the product's own video or photo.",
+      "poster": "Poster image",
+      "poster_info": "Shown before the video plays and to people who turn off motion.",
+      "reel_caption": "Caption",
+      "reel_caption_info": "Leave empty to show the product title."
     }
   }
 }

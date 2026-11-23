@@ -111,6 +111,12 @@
         "other": "{{ count }} pieces added to your cart."
       },
       "some_sold_out": "Sold out pieces are left out of the total."
+    },
+    "product_reels": {
+      "previous": "Previous reels",
+      "next": "Next reels",
+      "play": "Play video: {{ title }}",
+      "pause": "Pause video: {{ title }}"
     }
   },
   "newsletter": {
