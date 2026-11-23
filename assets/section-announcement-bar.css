@@ -1,0 +1,103 @@
+/* Announcement bar. Prefix: .announcement-bar */
+
+.announcement-bar {
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+}
+
+.announcement-bar__inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-75);
+  min-height: var(--space-500);
+}
+
+.announcement-bar__track {
+  display: grid;
+  flex: 1 1 auto;
+  max-width: var(--text-column);
+  text-align: center;
+}
+
+.announcement-bar__slide {
+  grid-area: 1 / 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-block: var(--space-75);
+  opacity: 0;
+  transform: translateY(var(--space-50));
+  transition: opacity var(--dur-move) var(--ease-out),
+    transform var(--dur-move) var(--ease-out);
+}
+
+.announcement-bar__slide.is-active {
+  opacity: 1;
+  transform: none;
+}
+
+.announcement-bar__link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-50);
+  text-decoration: none;
+}
+
+.announcement-bar__link:hover {
+  text-decoration: underline;
+}
+
+.announcement-bar__arrow {
+  width: var(--space-200);
+  height: var(--space-200);
+  transition: transform var(--dur-hover) var(--ease-out);
+}
+
+.announcement-bar__link:hover .announcement-bar__arrow {
+  transform: translateX(var(--space-25));
+}
+
+.announcement-bar__control {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: var(--space-500);
+  height: var(--space-500);
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--color-muted-text);
+  transition: color var(--dur-hover) var(--ease-out);
+}
+
+.announcement-bar__control:hover {
+  color: var(--color-foreground);
+}
+
+.announcement-bar__control .icon {
+  width: var(--space-200);
+  height: var(--space-200);
+}
+
+.announcement-bar__toggle .icon-play,
+.announcement-bar__toggle[aria-pressed='true'] .icon-pause {
+  display: none;
+}
+
+.announcement-bar__toggle[aria-pressed='true'] .icon-play {
+  display: block;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .announcement-bar__slide {
+    transform: none;
+    transition: opacity 200ms var(--ease-out);
+  }
+
+  .announcement-bar__toggle {
+    display: none;
+  }
+}

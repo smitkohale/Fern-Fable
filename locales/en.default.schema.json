@@ -13,7 +13,8 @@
       "button_hover": "Button on hover",
       "secondary_button": "Outline button",
       "border": "Borders",
-      "focus": "Keyboard focus outline"
+      "focus": "Keyboard focus outline",
+      "scheme": "Color scheme"
     },
     "layout": {
       "name": "Layout",
@@ -99,6 +100,35 @@
       "title": "Title",
       "subtitle": "Subtitle",
       "normal": "Normal text"
+    }
+  },
+  "sections": {
+    "announcement_bar": {
+      "name": "Announcement bar",
+      "interval": "Change message every",
+      "message": "Message",
+      "text": "Text",
+      "link": "Link",
+      "festive_only": "Festive only",
+      "festive_only_info": "Shows only while festive mode is on (Theme settings, Festive mode)."
+    },
+    "header": {
+      "name": "Header",
+      "logo": "Logo",
+      "logo_info": "Leave empty to show the store name in the display font.",
+      "logo_width": "Logo width",
+      "menu_setting": "Menu",
+      "menu_color_scheme": "Mega menu color scheme",
+      "feature": {
+        "name": "Menu feature",
+        "menu_item": "Menu item title",
+        "menu_item_info": "Type the title of a top level menu item exactly, for example Table. Its mega menu shows this photo.",
+        "image": "Image",
+        "heading": "Heading",
+        "text": "Text",
+        "link": "Link",
+        "link_info": "Leave empty to use the menu item's link."
+      }
     }
   }
 }

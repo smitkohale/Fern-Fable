@@ -51,5 +51,32 @@
     "submit": "Search",
     "no_results_html": "No results found for {{ terms }}",
     "results_for_html": "{{ count }} results found for {{ terms }}"
+  },
+  "sections": {
+    "header": {
+      "main_navigation": "Main",
+      "menu": "Menu",
+      "close_menu": "Close menu",
+      "search": "Search",
+      "account": "Account",
+      "log_in": "Log in",
+      "cart_empty": "Cart, empty",
+      "cart_count": {
+        "one": "Cart, {{ count }} item",
+        "other": "Cart, {{ count }} items"
+      },
+      "shop_all": "Shop all {{ title }}",
+      "popular_in": "Popular in {{ title }}"
+    },
+    "announcement_bar": {
+      "label": "Announcements",
+      "carousel": "carousel",
+      "slide": "message",
+      "slide_count": "{{ index }} of {{ count }}",
+      "previous": "Previous message",
+      "next": "Next message",
+      "pause": "Pause messages",
+      "play": "Play messages"
+    }
   }
 }

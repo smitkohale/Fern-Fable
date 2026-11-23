@@ -11,12 +11,80 @@
   "type": "header",
   "name": "t:general.header",
   "sections": {
+    "announcement-bar": {
+      "type": "announcement-bar",
+      "blocks": {
+        "festive": {
+          "type": "message",
+          "settings": {
+            "text": "The Festive Edit is here",
+            "link": "",
+            "festive_only": true
+          }
+        },
+        "shipping": {
+          "type": "message",
+          "settings": {
+            "text": "Free shipping over ₹1,499",
+            "link": "",
+            "festive_only": false
+          }
+        },
+        "wrap": {
+          "type": "message",
+          "settings": {
+            "text": "Free gift wrap on every order",
+            "link": "",
+            "festive_only": false
+          }
+        }
+      },
+      "block_order": [
+        "festive",
+        "shipping",
+        "wrap"
+      ],
+      "settings": {
+        "color_scheme": "scheme-indigo-deep",
+        "interval": 5
+      }
+    },
     "header": {
       "type": "header",
-      "settings": {}
+      "blocks": {
+        "feature-table": {
+          "type": "feature",
+          "settings": {
+            "menu_item": "Table",
+            "heading": "The Indigo Table",
+            "text": "Runner, napkins and placemats, styled for six.",
+            "link": ""
+          }
+        },
+        "feature-gifts": {
+          "type": "feature",
+          "settings": {
+            "menu_item": "Gifts",
+            "heading": "The Festive Edit",
+            "text": "Host boxes, star ornaments and Winter Berry linen.",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "feature-table",
+        "feature-gifts"
+      ],
+      "settings": {
+        "menu": "main-menu",
+        "logo_width": 144,
+        "color_scheme": "scheme-kora",
+        "menu_color_scheme": "scheme-kora-2"
+      }
     }
   },
   "order": [
+    "announcement-bar",
     "header"
-  ],
+  ]
 }

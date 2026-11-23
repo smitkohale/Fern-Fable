@@ -1,65 +1,409 @@
-<header>
-  <h2 class="header__title">
-    {{ shop.name | link_to: routes.root_url }}
-  </h2>
+{%- comment -%}
+  Site header: a compact bar that floats off the top edge (translucent, blurred),
+  hides when scrolling down and returns when scrolling up.
+  Desktop: logo, main menu with mega menus, search, account, cart.
+  A menu item opens a mega menu when it has child links, links to a collection,
+  or has a "Menu feature" block (featured photo) whose title matches it.
+  Mobile: full height menu panel in a <dialog> (see DESIGN.md section 9).
+{%- endcomment -%}
 
-  <div class="header__menu">
-    {% for link in section.settings.menu.links %}
-      {{ link.title | link_to: link.url }}
-    {% endfor %}
+{{ 'section-header.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'header.js' | asset_url }}" type="module"></script>
+
+{%- liquid
+  assign menu = section.settings.menu
+  if cart.item_count > 0
+    assign cart_label = 'sections.header.cart_count' | t: count: cart.item_count
+  else
+    assign cart_label = 'sections.header.cart_empty' | t
+  endif
+  if customer
+    assign account_label = 'sections.header.account' | t
+  else
+    assign account_label = 'sections.header.log_in' | t
+  endif
+-%}
+
+<site-header class="site-header full-width color-{{ section.settings.color_scheme }}">
+  <div class="site-header__wrap">
+    <div class="site-header__bar">
+      <button
+        type="button"
+        class="site-header__icon-button site-header__menu-toggle"
+        aria-haspopup="dialog"
+        aria-controls="MobileMenu-{{ section.id }}"
+        aria-expanded="false"
+        data-mobile-menu-open
+      >
+        <span class="menu-icon" aria-hidden="true"><span></span><span></span></span>
+        <span class="visually-hidden">{{ 'sections.header.menu' | t }}</span>
+      </button>
+
+      <a href="{{ routes.root_url }}" class="site-header__logo" {% if request.page_type == 'index' %}aria-current="page"{% endif %}>
+        {%- if section.settings.logo != blank -%}
+          {%- liquid
+            assign logo_width_2x = section.settings.logo_width | times: 2
+            assign logo_style = 'width: ' | append: section.settings.logo_width | append: 'px;'
+          -%}
+          {{
+            section.settings.logo
+            | image_url: width: logo_width_2x
+            | image_tag:
+              class: 'site-header__logo-image',
+              alt: shop.name,
+              loading: 'eager',
+              style: logo_style
+          }}
+        {%- else -%}
+          <span class="site-header__wordmark">{{ shop.name }}</span>
+        {%- endif -%}
+      </a>
+
+      {%- if menu.links.size > 0 -%}
+        <nav class="site-header__nav" aria-label="{{ 'sections.header.main_navigation' | t }}">
+          <ul class="site-header__menu" role="list">
+            {%- for link in menu.links -%}
+              {%- liquid
+                assign link_handle = link.title | handleize
+                assign feature = null
+                for block in section.blocks
+                  assign block_handle = block.settings.menu_item | handleize
+                  if block.type == 'feature' and block_handle == link_handle
+                    assign feature = block
+                    break
+                  endif
+                endfor
+
+                assign has_mega = false
+                if link.links.size > 0 or link.type == 'collection_link' or feature
+                  assign has_mega = true
+                endif
+
+                assign is_current = false
+                if link.active or link.child_active
+                  assign is_current = true
+                endif
+              -%}
+              <li class="site-header__item"{% if has_mega %} data-mega-item{% endif %}>
+                {%- if has_mega -%}
+                  <button
+                    type="button"
+                    class="site-header__link title-3"
+                    aria-expanded="false"
+                    aria-controls="MegaMenu-{{ section.id }}-{{ forloop.index }}"
+                    {% if is_current %}data-current{% endif %}
+                    data-mega-trigger
+                  >
+                    {{- link.title -}}
+                    {%- render 'icon', name: 'caret-down', class: 'site-header__caret' -%}
+                  </button>
+
+                  <div
+                    class="mega-menu color-{{ section.settings.menu_color_scheme }}"
+                    id="MegaMenu-{{ section.id }}-{{ forloop.index }}"
+                    data-mega-panel
+                    hidden
+                  >
+                    <div class="mega-menu__inner">
+                      <div class="mega-menu__links">
+                        <a
+                          href="{{ link.url }}"
+                          class="mega-menu__all heading-4"
+                          {% if link.active %}aria-current="page"{% endif %}
+                        >
+                          {{- 'sections.header.shop_all' | t: title: link.title -}}
+                          {%- render 'icon', name: 'arrow-right' -%}
+                        </a>
+
+                        {%- if link.links.size > 0 -%}
+                          <ul class="mega-menu__list" role="list">
+                            {%- for child in link.links -%}
+                              <li>
+                                <a
+                                  href="{{ child.url }}"
+                                  class="mega-menu__link title-2"
+                                  {% if child.active %}aria-current="page"{% endif %}
+                                >
+                                  {{- child.title -}}
+                                </a>
+                                {%- if child.links.size > 0 -%}
+                                  <ul class="mega-menu__sublist" role="list">
+                                    {%- for grandchild in child.links -%}
+                                      <li>
+                                        <a
+                                          href="{{ grandchild.url }}"
+                                          class="mega-menu__sublink body-6"
+                                          {% if grandchild.active %}aria-current="page"{% endif %}
+                                        >
+                                          {{- grandchild.title -}}
+                                        </a>
+                                      </li>
+                                    {%- endfor -%}
+                                  </ul>
+                                {%- endif -%}
+                              </li>
+                            {%- endfor -%}
+                          </ul>
+                        {%- elsif link.type == 'collection_link' and link.object.products_count > 0 -%}
+                          <p class="mega-menu__eyebrow caption-3 text-muted">
+                            {{ 'sections.header.popular_in' | t: title: link.title }}
+                          </p>
+                          <ul class="mega-menu__list" role="list">
+                            {%- for product in link.object.products limit: 4 -%}
+                              <li>
+                                <a href="{{ product.url }}" class="mega-menu__product">
+                                  <span class="title-2">{{ product.title }}</span>
+                                  <span class="body-6 text-muted">{{ product.price | money }}</span>
+                                </a>
+                              </li>
+                            {%- endfor -%}
+                          </ul>
+                        {%- endif -%}
+                      </div>
+
+                      {%- liquid
+                        assign feature_image = feature.settings.image
+                        if feature_image == blank and link.type == 'collection_link'
+                          assign feature_image = link.object.featured_image
+                        endif
+                        assign feature_link = feature.settings.link | default: link.url
+                      -%}
+                      <a href="{{ feature_link }}" class="mega-menu__feature" tabindex="-1">
+                        <div class="mega-menu__media">
+                          {%- if feature_image != blank -%}
+                            {{
+                              feature_image
+                              | image_url: width: 1080
+                              | image_tag:
+                                widths: '360, 540, 720, 1080',
+                                sizes: '(min-width: 990px) 420px, 100vw',
+                                loading: 'lazy',
+                                class: 'mega-menu__image'
+                            }}
+                          {%- else -%}
+                            {{ 'collection-1' | placeholder_svg_tag: 'mega-menu__placeholder' }}
+                          {%- endif -%}
+                        </div>
+                        {%- if feature.settings.heading != blank -%}
+                          <p class="mega-menu__feature-heading title-2">{{ feature.settings.heading }}</p>
+                        {%- endif -%}
+                        {%- if feature.settings.text != blank -%}
+                          <p class="body-6 text-muted">{{ feature.settings.text }}</p>
+                        {%- endif -%}
+                      </a>
+                    </div>
+                  </div>
+                {%- else -%}
+                  <a
+                    href="{{ link.url }}"
+                    class="site-header__link title-3"
+                    {% if link.active %}aria-current="page"{% endif %}
+                  >
+                    {{- link.title -}}
+                  </a>
+                {%- endif -%}
+              </li>
+            {%- endfor -%}
+          </ul>
+        </nav>
+      {%- endif -%}
+
+      <div class="site-header__icons">
+        <a
+          href="{{ routes.search_url }}"
+          class="site-header__icon-button"
+          {% if request.page_type == 'search' %}aria-current="page"{% endif %}
+        >
+          {%- render 'icon', name: 'magnifying-glass' -%}
+          <span class="visually-hidden">{{ 'sections.header.search' | t }}</span>
+        </a>
+
+        {%- if shop.customer_accounts_enabled -%}
+          <a
+            href="{{ routes.account_url }}"
+            class="site-header__icon-button site-header__account"
+          >
+            {%- render 'icon', name: 'user' -%}
+            <span class="visually-hidden">{{ account_label }}</span>
+          </a>
+        {%- endif -%}
+
+        <a
+          href="{{ routes.cart_url }}"
+          class="site-header__icon-button site-header__cart"
+          {% if request.page_type == 'cart' %}aria-current="page"{% endif %}
+          data-cart-link
+        >
+          {%- render 'icon', name: 'handbag' -%}
+          <span class="site-header__cart-count caption-3" data-cart-count {% if cart.item_count == 0 %}hidden{% endif %}>
+            {{- cart.item_count -}}
+          </span>
+          <span class="visually-hidden" data-cart-label>{{ cart_label }}</span>
+        </a>
+      </div>
+    </div>
   </div>
 
-  <div class="header__icons">
-    {% if shop.customer_accounts_enabled %}
-      {{ 'icon-account.svg' | inline_asset_content | link_to: routes.account_url }}
-    {% endif %}
+  <dialog
+    class="mobile-menu color-{{ section.settings.color_scheme }}"
+    id="MobileMenu-{{ section.id }}"
+    aria-label="{{ 'sections.header.menu' | t }}"
+    scroll-lock
+    data-mobile-menu
+  >
+    <div class="mobile-menu__top">
+      <button type="button" class="site-header__icon-button mobile-menu__close" data-mobile-menu-close>
+        <span class="menu-icon" aria-hidden="true"><span></span><span></span></span>
+        <span class="visually-hidden">{{ 'sections.header.close_menu' | t }}</span>
+      </button>
+      <a href="{{ routes.root_url }}" class="site-header__wordmark">{{ shop.name }}</a>
+    </div>
 
-    <a href="{{ routes.cart_url }}">
-      {% if cart.item_count > 0 %}
-        <sup>{{ cart.item_count }}</sup>
-      {% endif %}
+    {%- if menu.links.size > 0 -%}
+      <nav class="mobile-menu__nav" aria-label="{{ 'sections.header.main_navigation' | t }}">
+        <ul class="mobile-menu__list" role="list">
+          {%- for link in menu.links -%}
+            <li class="mobile-menu__item" style="--i: {{ forloop.index0 }};">
+              {%- if link.links.size > 0 -%}
+                <details class="mobile-menu__details">
+                  <summary class="mobile-menu__link heading-3">
+                    {{- link.title -}}
+                    {%- render 'icon', name: 'plus', class: 'mobile-menu__plus' -%}
+                  </summary>
+                  <ul class="mobile-menu__sublist" role="list">
+                    <li>
+                      <a href="{{ link.url }}" class="mobile-menu__sublink title-2">
+                        {{- 'sections.header.shop_all' | t: title: link.title -}}
+                      </a>
+                    </li>
+                    {%- for child in link.links -%}
+                      <li>
+                        <a
+                          href="{{ child.url }}"
+                          class="mobile-menu__sublink title-2"
+                          {% if child.active %}aria-current="page"{% endif %}
+                        >
+                          {{- child.title -}}
+                        </a>
+                      </li>
+                    {%- endfor -%}
+                  </ul>
+                </details>
+              {%- else -%}
+                <a
+                  href="{{ link.url }}"
+                  class="mobile-menu__link heading-3"
+                  {% if link.active or link.child_active %}aria-current="page"{% endif %}
+                >
+                  {{- link.title -}}
+                </a>
+              {%- endif -%}
+            </li>
+          {%- endfor -%}
+        </ul>
+      </nav>
+    {%- endif -%}
 
-      {{ 'icon-cart.svg' | inline_asset_content }}
-    </a>
-  </div>
-</header>
-
-{% stylesheet %}
-  header {
-    height: 5rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  header a {
-    position: relative;
-    text-decoration: none;
-    color: var(--color-foreground);
-  }
-  header a sup {
-    position: absolute;
-    left: 100%;
-    overflow: hidden;
-    max-width: var(--page-margin);
-  }
-  header svg {
-    width: 2rem;
-  }
-  header .header__menu,
-  header .header__icons {
-    display: flex;
-    gap: 1rem;
-  }
-{% endstylesheet %}
+    <div class="mobile-menu__footer" style="--i: {{ menu.links.size }};">
+      <a href="{{ routes.search_url }}" class="mobile-menu__utility body-2">
+        {%- render 'icon', name: 'magnifying-glass' -%}
+        {{ 'sections.header.search' | t }}
+      </a>
+      {%- if shop.customer_accounts_enabled -%}
+        <a href="{{ routes.account_url }}" class="mobile-menu__utility body-2">
+          {%- render 'icon', name: 'user' -%}
+          {{ account_label }}
+        </a>
+      {%- endif -%}
+    </div>
+  </dialog>
+</site-header>
 
 {% schema %}
 {
-  "name": "t:general.header",
+  "name": "t:sections.header.name",
+  "class": "section-header",
+  "max_blocks": 8,
+  "enabled_on": {
+    "groups": ["header"]
+  },
   "settings": [
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "t:sections.header.logo",
+      "info": "t:sections.header.logo_info"
+    },
+    {
+      "type": "range",
+      "id": "logo_width",
+      "min": 80,
+      "max": 240,
+      "step": 8,
+      "unit": "px",
+      "label": "t:sections.header.logo_width",
+      "default": 144
+    },
     {
       "type": "link_list",
       "id": "menu",
-      "label": "t:labels.menu"
+      "label": "t:sections.header.menu_setting",
+      "default": "main-menu"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:settings.colors.scheme",
+      "default": "scheme-kora"
+    },
+    {
+      "type": "color_scheme",
+      "id": "menu_color_scheme",
+      "label": "t:sections.header.menu_color_scheme",
+      "default": "scheme-kora-2"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "t:sections.header.feature.name",
+      "settings": [
+        {
+          "type": "text",
+          "id": "menu_item",
+          "label": "t:sections.header.feature.menu_item",
+          "info": "t:sections.header.feature.menu_item_info",
+          "default": "Table"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "t:sections.header.feature.image"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "t:sections.header.feature.heading",
+          "default": "The Indigo Table"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "t:sections.header.feature.text",
+          "default": "Runner, napkins and placemats, styled for six."
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "t:sections.header.feature.link",
+          "info": "t:sections.header.feature.link_info"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.header.name"
     }
   ]
 }
