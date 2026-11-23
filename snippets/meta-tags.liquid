@@ -100,10 +100,12 @@
   {%- if current_tags %} &ndash; tagged "{{ current_tags | join: ', ' }}"{% endif -%}
   {%- if current_page != 1 %} &ndash; Page {{ current_page }}{% endif -%}
   {%- liquid
-    # page_title may arrive HTML-escaped ("Fern &amp; Fable"), so compare both forms.
-    assign shop_name_escaped = shop.name | escape
+    # The store name and page_title can each arrive escaped or not ("&" or "&amp;"),
+    # so compare the decoded forms. The home page title is the store name already.
+    assign shop_name_plain = shop.name | replace: '&amp;', '&'
+    assign page_title_plain = page_title | replace: '&amp;', '&'
     assign title_has_shop = false
-    if page_title contains shop.name or page_title contains shop_name_escaped
+    if request.page_type == 'index' or page_title_plain contains shop_name_plain
       assign title_has_shop = true
     endif
   -%}
