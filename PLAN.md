@@ -178,10 +178,10 @@ Switch to plan mode (Shift+Tab) before starting the product page and the cart dr
 
 - [ ] About: the brand story as a page that unfolds as you scroll (reuse your signature sections)
 - [ ] Blog list and article pages with a magazine layout
-- [ ] Contact page (contact form)
+- [x] Contact page (contact form): template page.contact, inline validation
 - [x] Search results page (built with predictive search)
-- [ ] 404 page with personality
-- [ ] Password page (the theme's own `password.liquid`)
+- [x] 404 page with personality (misprinted block)
+- [x] Password page (opening soon, signup, password entry) + gift card page + plain page template + full cart page
 
 ---
 

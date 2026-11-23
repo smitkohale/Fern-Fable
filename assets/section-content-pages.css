@@ -1,0 +1,389 @@
+/* Content pages: 404, plain page, contact, password, gift card.
+   Prefixes: .not-found, .page-content, .contact, .field, .password-page, .gift-card */
+
+/* ---------- Form fields (contact, password, gift card) ---------- */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-75);
+  min-width: 0;
+}
+
+.field__input {
+  width: 100%;
+  min-height: var(--tap-target);
+  padding: var(--space-75) var(--space-100);
+  border: 1px solid var(--color-muted-text);
+  border-radius: var(--radius-sm);
+  background-color: var(--color-surface);
+  color: var(--color-foreground);
+  transition: border-color var(--dur-hover) var(--ease-out);
+}
+
+.field__input:hover {
+  border-color: var(--color-foreground);
+}
+
+.field__input[aria-invalid='true'] {
+  border-color: var(--color-accent);
+}
+
+textarea.field__input {
+  resize: vertical;
+}
+
+.field__error {
+  color: var(--color-accent);
+}
+
+.field__error[hidden] {
+  display: none;
+}
+
+/* ---------- 404 ---------- */
+.not-found {
+  padding-block: var(--space-700) var(--section-space);
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+}
+
+.not-found__inner {
+  display: grid;
+  gap: var(--space-600);
+  align-items: center;
+}
+
+.not-found__art {
+  position: relative;
+  width: min(280px, 70vw);
+  aspect-ratio: 1;
+}
+
+/* Two stamps of the same block, one slipped: a misprint. */
+.not-found__stamp {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.not-found__stamp--1 {
+  color: var(--color-indigo);
+}
+
+.not-found__stamp--2 {
+  color: var(--color-madder);
+  opacity: 0.55;
+  mix-blend-mode: multiply;
+  transform: translate(var(--space-200), var(--space-100)) rotate(7deg);
+}
+
+.not-found__text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-200);
+  max-width: var(--text-column);
+}
+
+.not-found__code {
+  color: var(--color-accent);
+}
+
+.not-found__text h1 {
+  color: var(--color-heading);
+}
+
+.not-found__search {
+  width: 100%;
+}
+
+.not-found__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-100);
+}
+
+@media (min-width: 990px) {
+  .not-found__inner {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: var(--space-800);
+  }
+
+  .not-found__art {
+    width: 100%;
+    max-width: 420px;
+    justify-self: center;
+  }
+}
+
+/* ---------- Plain page ---------- */
+.page-content {
+  padding-block: var(--space-500) var(--section-space);
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+}
+
+.page-content__header {
+  margin-block-end: var(--space-500);
+}
+
+.page-content__title {
+  max-width: var(--text-column);
+  color: var(--color-heading);
+}
+
+.page-content__body {
+  max-width: 68ch;
+}
+
+.page-content__body h2,
+.page-content__body h3 {
+  margin-block: var(--space-500) var(--space-200);
+}
+
+.page-content__body img {
+  margin-block: var(--space-400);
+}
+
+/* ---------- Contact ---------- */
+.contact {
+  padding-block: var(--space-500) var(--section-space);
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+}
+
+.contact__inner {
+  display: grid;
+  gap: var(--space-600);
+}
+
+.contact__intro {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-200);
+  max-width: var(--text-column);
+}
+
+.contact__intro h1 {
+  color: var(--color-heading);
+}
+
+.contact__details {
+  padding: var(--space-200);
+  border: 1px solid var(--color-border);
+  background-color: var(--color-surface);
+}
+
+.contact__form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-300);
+}
+
+.contact__row {
+  display: grid;
+  gap: var(--space-300);
+}
+
+.contact__submit {
+  align-self: flex-start;
+}
+
+.contact__success,
+.contact__errors {
+  display: flex;
+  align-items: center;
+  gap: var(--space-75);
+  padding: var(--space-200);
+  border: 1px solid var(--color-border);
+}
+
+.contact__success {
+  background-color: var(--color-surface);
+  color: var(--color-success);
+}
+
+.contact__success .icon {
+  width: var(--space-300);
+  height: var(--space-300);
+}
+
+.contact__errors {
+  color: var(--color-accent);
+}
+
+@media (min-width: 750px) {
+  .contact__row {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (min-width: 990px) {
+  .contact__inner {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    gap: var(--space-800);
+    align-items: start;
+  }
+}
+
+/* ---------- Password ---------- */
+.password-page {
+  display: flex;
+  align-items: center;
+  min-height: 100svh;
+  padding-block: var(--space-700);
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+}
+
+.password-page__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-300);
+}
+
+.password-page__eyebrow {
+  color: var(--color-accent);
+}
+
+.password-page__wordmark {
+  color: var(--color-heading);
+}
+
+.password-page__message {
+  max-width: var(--text-column);
+  color: var(--color-muted-text);
+}
+
+.password-page__signup {
+  width: 100%;
+  max-width: 480px;
+}
+
+.password-page__entry {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-100);
+  width: 100%;
+  max-width: 480px;
+  margin-block-start: var(--space-400);
+  padding-block-start: var(--space-300);
+  border-block-start: 1px solid var(--color-border);
+}
+
+.password-page__form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-75);
+}
+
+.password-page__row {
+  display: flex;
+  gap: var(--space-75);
+}
+
+.password-page__error {
+  color: var(--color-accent);
+}
+
+.password-page__owner a {
+  color: var(--color-heading);
+}
+
+.password-page__demo {
+  margin-block-start: var(--space-400);
+  color: var(--color-muted-text);
+}
+
+/* ---------- Gift card ---------- */
+.gift-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-300);
+  max-width: 560px;
+  padding-block: var(--space-600);
+  text-align: center;
+}
+
+.gift-card__brand {
+  font-family: var(--font-display);
+  font-variation-settings: var(--font-display-variation);
+  color: var(--color-heading);
+  text-decoration: none;
+}
+
+.gift-card__card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-end;
+  gap: var(--space-75);
+  width: 100%;
+  aspect-ratio: 8 / 5;
+  padding: var(--space-400);
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  background-color: var(--color-indigo);
+  color: var(--color-kora);
+  text-align: start;
+  box-shadow: var(--shadow-float);
+}
+
+.gift-card__card.is-expired {
+  background-color: var(--color-muted);
+}
+
+.gift-card__balance {
+  color: var(--color-kora);
+}
+
+.gift-card__fern {
+  position: absolute;
+  top: var(--space-200);
+  right: var(--space-200);
+  width: 40%;
+  height: auto;
+  color: var(--color-turmeric);
+  opacity: 0.85;
+}
+
+.gift-card__notice {
+  color: var(--color-accent);
+}
+
+.gift-card__code {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-75);
+  width: 100%;
+  text-align: start;
+}
+
+.gift-card__code-row {
+  display: flex;
+  gap: var(--space-75);
+}
+
+.gift-card__code .field__input {
+  letter-spacing: 0.08em;
+  text-align: center;
+}
+
+.gift-card__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-100);
+}
+
+@media print {
+  .gift-card__actions,
+  .gift-card__code-row .button {
+    display: none;
+  }
+}

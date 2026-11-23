@@ -39,7 +39,8 @@ main {
 }
 
 /* A full bleed hero sits under the floating header instead. */
-main:has(> .section-hero:first-child) {
+main:has(> .section-hero:first-child),
+main:has(> .section-password) {
   padding-top: 0;
 }
 

@@ -356,6 +356,24 @@
     },
     "search": {
       "name": "Search results"
+    },
+    "not_found": {
+      "heading": "Heading",
+      "text": "Text",
+      "menu": "Suggested links"
+    },
+    "contact": {
+      "name": "Contact form",
+      "heading": "Heading",
+      "text": "Text",
+      "details": "Contact details"
+    },
+    "password_page": {
+      "message": "Message (when the store has no password message)",
+      "demo_note": "Fine print"
+    },
+    "cart_page": {
+      "summary_color_scheme": "Summary color scheme"
     }
   }
 }

@@ -1,17 +1,29 @@
-{% comment %}
-  This section is used in the page template to render store pages like About us
-  or Contact us.
+{%- comment -%}
+  Plain page (shipping, returns, any text page): title and the page content
+  in a comfortable reading column. Richer pages (About) are built from the
+  homepage sections in their own template.
+{%- endcomment -%}
 
-  https://shopify.dev/docs/storefronts/themes/architecture/templates/page
-{% endcomment %}
+{{ 'section-content-pages.css' | asset_url | stylesheet_tag }}
 
-<h1>{{ page.title }}</h1>
-
-{{ page.content }}
+<article class="page-content full-width color-{{ section.settings.color_scheme }}">
+  <div class="page-width">
+    <header class="page-content__header">
+      <h1 class="page-content__title heading-1">{{ page.title }}</h1>
+    </header>
+    <div class="page-content__body rte body-3">
+      {{ page.content }}
+    </div>
+  </div>
+</article>
 
 {% schema %}
 {
   "name": "t:general.page",
-  "settings": []
+  "class": "section-page",
+  "settings": [
+    { "type": "color_scheme", "id": "color_scheme", "label": "t:settings.colors.scheme", "default": "scheme-kora" }
+  ],
+  "presets": [{ "name": "t:general.page" }]
 }
 {% endschema %}
