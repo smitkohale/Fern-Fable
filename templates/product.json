@@ -11,10 +11,85 @@
   "sections": {
     "main": {
       "type": "product",
-      "settings": {}
+      "blocks": {
+        "title": {
+          "type": "title",
+          "settings": {
+            "show_vendor": false
+          }
+        },
+        "price": {
+          "type": "price",
+          "settings": {
+            "tax_note": "Inclusive of all taxes"
+          }
+        },
+        "variant_picker": {
+          "type": "variant_picker",
+          "settings": {}
+        },
+        "buy_buttons": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_dynamic_checkout": true,
+            "promise": "Free shipping over ₹1,499\nFree gift wrap and a handwritten note\nEasy 7 day returns"
+          }
+        },
+        "description": {
+          "type": "description",
+          "settings": {}
+        },
+        "craft_note": {
+          "type": "craft_note",
+          "settings": {
+            "color_scheme": "scheme-kora-2",
+            "heading": "Printed by hand",
+            "text": "Each piece is stamped one block at a time, so small shifts in the print are part of its character."
+          }
+        },
+        "care": {
+          "type": "collapsible",
+          "settings": {
+            "heading": "Care",
+            "content": "<p>Wash cold, separately the first time; natural dyes may bleed a little at first. Dry in shade and iron while slightly damp.</p>",
+            "open": false
+          }
+        },
+        "shipping": {
+          "type": "collapsible",
+          "settings": {
+            "heading": "Shipping and returns",
+            "content": "<p>Ships in 2 to 4 working days. Free shipping on orders over ₹1,499. Returns accepted within 7 days of delivery on unused pieces.</p>",
+            "open": false
+          }
+        }
+      },
+      "block_order": [
+        "title",
+        "price",
+        "variant_picker",
+        "buy_buttons",
+        "description",
+        "craft_note",
+        "care",
+        "shipping"
+      ],
+      "settings": {
+        "color_scheme": "scheme-kora"
+      }
+    },
+    "recommendations": {
+      "type": "product-recommendations",
+      "settings": {
+        "color_scheme": "scheme-kora",
+        "heading_complementary": "Complete the look",
+        "heading_related": "You might also like",
+        "products_to_show": 4
+      }
     }
   },
   "order": [
-    "main"
+    "main",
+    "recommendations"
   ]
 }

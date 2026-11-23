@@ -298,6 +298,37 @@
       "heading": "Heading",
       "text": "Text",
       "fine_print": "Fine print"
+    },
+    "product": {
+      "name": "Product",
+      "blocks": {
+        "title": "Title",
+        "price": "Price",
+        "variant_picker": "Variant picker",
+        "buy_buttons": "Buy buttons",
+        "description": "Description",
+        "collapsible": "Collapsible row",
+        "craft_note": "Craft note"
+      },
+      "show_vendor": "Show vendor",
+      "tax_note": "Tax note",
+      "show_dynamic_checkout": "Show dynamic checkout buttons",
+      "show_dynamic_checkout_info": "Shop Pay, UPI apps and other express checkouts your store has turned on.",
+      "promise": "Promises",
+      "promise_info": "One per line, shown with a tick under the button.",
+      "collapsible_heading": "Heading",
+      "collapsible_content": "Content",
+      "collapsible_page": "Or content from a page",
+      "collapsible_open": "Open by default",
+      "craft_heading": "Heading",
+      "craft_text": "Text"
+    },
+    "recommendations": {
+      "name": "Product recommendations",
+      "heading_complementary": "Heading for complementary products",
+      "heading_complementary_info": "Pick complementary products per product in the free Search & Discovery app.",
+      "heading_related": "Heading for related products",
+      "products_to_show": "Products to show"
     }
   }
 }

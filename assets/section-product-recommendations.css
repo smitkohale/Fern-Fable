@@ -1,0 +1,15 @@
+/* Complete the look. Prefix: .recommendations */
+
+.recommendations {
+  display: block;
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+}
+
+.recommendations__inner {
+  border-block-start: 1px solid var(--color-border);
+}
+
+.recommendations__heading {
+  margin-block-end: var(--space-500);
+}

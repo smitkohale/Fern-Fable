@@ -1,50 +1,462 @@
-{% comment %}
-  This section is used in the product template to render product page with
-  media, content, and add-to-cart form.
+{%- comment -%}
+  Main product. Gallery (swipe on phones, stacked on desktop, click to zoom,
+  video and 3D models with AR), and a sticky info column built from blocks:
+  title, price, variant picker, buy buttons, description, collapsible rows,
+  craft note. Picking a variant updates price, stock, photo, button and URL
+  without a reload (assets/product-page.js). A sticky add to cart bar appears
+  on phones once the main button scrolls away.
+{%- endcomment -%}
 
-  https://shopify.dev/docs/storefronts/themes/architecture/templates/product
-{% endcomment %}
+{{ 'section-product.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'product-page.js' | asset_url }}" type="module"></script>
 
-<div class="product-images">
-  {% for image in product.images %}
-    {% render 'image', class: 'product-image', image: image %}
-  {% endfor %}
-</div>
+{%- liquid
+  assign current_variant = product.selected_or_first_available_variant
+  assign featured_media = current_variant.featured_media | default: product.featured_media
+  assign form_id = 'ProductForm-' | append: section.id
+  assign has_model = false
+  for media in product.media
+    if media.media_type == 'model'
+      assign has_model = true
+    endif
+  endfor
+-%}
 
-<div class="product-info">
-  <h1>{{ product.title }}</h1>
-  <p>{{ product.price | money }}</p>
-  <p>{{ product.description }}</p>
-</div>
+<product-page
+  class="product full-width color-{{ section.settings.color_scheme }}"
+  data-section-id="{{ section.id }}"
+  data-product-url="{{ product.url }}"
+  data-label-unavailable="{{ 'products.page.unavailable' | t }}"
+  data-low-stock="{{ 'products.page.low_stock_template' | t }}"
+  data-added-suffix="{{ 'products.page.added_suffix' | t }}"
+>
+  <div class="product__inner page-width">
+    <nav class="product__breadcrumb caption-2" aria-label="{{ 'products.page.breadcrumb' | t }}">
+      <ol role="list">
+        <li><a href="{{ routes.root_url }}">{{ 'products.page.home' | t }}</a></li>
+        {%- if collection -%}
+          <li><a href="{{ collection.url }}">{{ collection.title }}</a></li>
+        {%- elsif product.collections.size > 0 -%}
+          {%- assign first_collection = product.collections | where: 'handle', product.type | first | default: product.collections.first -%}
+          <li><a href="{{ first_collection.url }}">{{ first_collection.title }}</a></li>
+        {%- endif -%}
+        <li><span aria-current="page">{{ product.title }}</span></li>
+      </ol>
+    </nav>
 
-<div class="product-form">
-  {% form 'product', product %}
-    {% assign current_variant = product.selected_or_first_available_variant %}
+    <div class="product__layout">
+      {%- comment -%} ---------- Gallery ---------- {%- endcomment -%}
+      <div class="product__gallery" data-gallery>
+        <ul class="product__media-list" role="list" data-media-list aria-label="{{ 'products.page.gallery' | t }}">
+          {%- for media in product.media -%}
+            <li
+              class="product__media-item product__media-item--{{ media.media_type }}"
+              data-media-id="{{ media.id }}"
+              {% if media.id == featured_media.id %}data-current{% endif %}
+            >
+              {%- case media.media_type -%}
+                {%- when 'image' -%}
+                  <button
+                    type="button"
+                    class="product__zoom"
+                    data-zoom="{{ forloop.index0 }}"
+                    aria-label="{{ 'products.page.zoom' | t: number: forloop.index }}"
+                  >
+                    {%- liquid
+                      if forloop.first
+                        assign media_loading = 'eager'
+                        assign media_priority = 'high'
+                      else
+                        assign media_loading = 'lazy'
+                        assign media_priority = 'auto'
+                      endif
+                      assign media_alt = media.alt | default: product.title
+                    -%}
+                    {{
+                      media
+                      | image_url: width: 1800
+                      | image_tag:
+                        widths: '480, 720, 960, 1200, 1500, 1800',
+                        sizes: '(min-width: 990px) 58vw, 100vw',
+                        loading: media_loading,
+                        fetchpriority: media_priority,
+                        class: 'product__image',
+                        alt: media_alt
+                    }}
+                    <span class="product__zoom-icon" aria-hidden="true">{%- render 'icon', name: 'plus' -%}</span>
+                  </button>
+                {%- when 'video' -%}
+                  {{ media | video_tag: controls: true, playsinline: true, muted: true, preload: 'metadata', class: 'product__video', image_size: '1200x' }}
+                {%- when 'external_video' -%}
+                  {{ media | external_video_tag: class: 'product__external-video', loading: 'lazy' }}
+                {%- when 'model' -%}
+                  <div class="product__model">
+                    {{ media | model_viewer_tag: image_size: '1200x', reveal: 'interaction', toggleable: true, class: 'product__model-viewer' }}
+                    <button
+                      type="button"
+                      class="button button--small product__ar"
+                      data-shopify-xr
+                      data-shopify-model3d-id="{{ media.id }}"
+                      data-shopify-title="{{ product.title | escape }}"
+                      data-shopify-xr-hidden
+                    >
+                      {{ 'products.page.view_in_space' | t }}
+                    </button>
+                  </div>
+              {%- endcase -%}
+            </li>
+          {%- else -%}
+            <li class="product__media-item">
+              {{ 'product-1' | placeholder_svg_tag: 'product__placeholder' }}
+            </li>
+          {%- endfor -%}
+        </ul>
+        {%- if product.media.size > 1 -%}
+          <p class="product__media-count caption-3" aria-hidden="true" data-media-count>
+            <span data-media-current>1</span> / {{ product.media.size }}
+          </p>
+        {%- endif -%}
+      </div>
 
-    <select name="id">
-      {% for variant in product.variants %}
-        <option
-          value="{{ variant.id }}"
-          {% if variant == current_variant %}
-            selected="selected"
-          {% endif %}
-        >
-          {{ variant.title }} - {{ variant.price | money }}
-        </option>
-      {% endfor %}
-    </select>
+      {%- comment -%} ---------- Info column (blocks) ---------- {%- endcomment -%}
+      <div class="product__info">
+        <div class="product__info-inner">
+          {%- for block in section.blocks -%}
+            {%- case block.type -%}
+              {%- when 'title' -%}
+                <div class="product__block product__block--title" {{ block.shopify_attributes }}>
+                  {%- if block.settings.show_vendor -%}
+                    <p class="caption-3 text-muted">{{ product.vendor }}</p>
+                  {%- endif -%}
+                  <h1 class="product__title heading-3">{{ product.title }}</h1>
+                </div>
 
-    <input type="text" name="quantity" min="1" value="1">
+              {%- when 'price' -%}
+                <div class="product__block product__block--price" {{ block.shopify_attributes }}>
+                  <div class="product__price" data-price>
+                    {%- render 'product-price', variant: current_variant -%}
+                  </div>
+                  {%- if block.settings.tax_note != blank -%}
+                    <p class="caption-2 text-muted">{{ block.settings.tax_note }}</p>
+                  {%- endif -%}
+                </div>
 
-    <input type="submit" value="Add to cart">
-    {{ form | payment_button }}
-  {% endform %}
-</div>
+              {%- when 'variant_picker' -%}
+                {%- unless product.has_only_default_variant -%}
+                  <div class="product__block product__block--variants" {{ block.shopify_attributes }}>
+                    <variant-picker class="variant-picker" data-form-id="{{ form_id }}">
+                      {%- for option in product.options_with_values -%}
+                        {%- liquid
+                          assign option_index = forloop.index0
+                          assign use_select = false
+                          for value in option.values
+                            if value.name.size > 14
+                              assign use_select = true
+                            endif
+                          endfor
+                          if option.values.size > 6
+                            assign use_select = true
+                          endif
+                          assign option_handle = option.name | handleize
+                          assign is_colour = false
+                          if option_handle == 'color' or option_handle == 'colour'
+                            assign is_colour = true
+                          endif
+                        -%}
+                        {%- if use_select -%}
+                          <div class="variant-picker__field">
+                            <label class="variant-picker__label caption-1" for="Option-{{ section.id }}-{{ option_index }}">
+                              {{ option.name }}
+                            </label>
+                            <div class="variant-picker__select-wrap">
+                              <select
+                                id="Option-{{ section.id }}-{{ option_index }}"
+                                class="variant-picker__select body-3"
+                                name="options[{{ option.name | escape }}]"
+                                data-option-index="{{ option_index }}"
+                              >
+                                {%- for value in option.values -%}
+                                  <option
+                                    value="{{ value.name | escape }}"
+                                    {% if value.selected %}selected{% endif %}
+                                    {% unless value.available %}data-unavailable{% endunless %}
+                                  >
+                                    {{ value.name }}{% unless value.available %} ({{ 'products.card.sold_out' | t }}){% endunless %}
+                                  </option>
+                                {%- endfor -%}
+                              </select>
+                              {%- render 'icon', name: 'caret-down', class: 'variant-picker__caret' -%}
+                            </div>
+                          </div>
+                        {%- else -%}
+                          <fieldset class="variant-picker__field">
+                            <legend class="variant-picker__label caption-1">
+                              {{ option.name }}:
+                              <span class="variant-picker__selected" data-selected-value>{{ option.selected_value }}</span>
+                            </legend>
+                            <div class="variant-picker__chips">
+                              {%- for value in option.values -%}
+                                {%- assign value_handle = value.name | handleize -%}
+                                <label class="variant-chip{% if is_colour %} variant-chip--swatch{% endif %}" data-value="{{ value_handle }}">
+                                  <input
+                                    type="radio"
+                                    class="visually-hidden"
+                                    name="options-{{ section.id }}-{{ option_index }}"
+                                    value="{{ value.name | escape }}"
+                                    data-option-index="{{ option_index }}"
+                                    {% if value.selected %}checked{% endif %}
+                                  >
+                                  {%- if is_colour -%}
+                                    <span class="variant-chip__swatch swatch--{{ value_handle }}" aria-hidden="true"></span>
+                                  {%- endif -%}
+                                  <span class="variant-chip__text button-sm">{{ value.name }}</span>
+                                  <span class="variant-chip__status visually-hidden" data-chip-status>
+                                    {%- unless value.available %}, {{ 'products.card.sold_out' | t }}{% endunless -%}
+                                  </span>
+                                </label>
+                              {%- endfor -%}
+                            </div>
+                          </fieldset>
+                        {%- endif -%}
+                      {%- endfor -%}
+
+                      <script type="application/json" data-variants>
+                        [
+                          {%- for variant in product.variants -%}
+                            {%- liquid
+                              assign low_stock = null
+                              if variant.inventory_management == 'shopify' and variant.inventory_policy == 'deny' and variant.inventory_quantity > 0 and variant.inventory_quantity <= 5
+                                assign low_stock = variant.inventory_quantity
+                              endif
+                            -%}
+                            {
+                              "id": {{ variant.id }},
+                              "options": {{ variant.options | json }},
+                              "available": {{ variant.available | json }},
+                              "media": {{ variant.featured_media.id | default: 'null' }},
+                              "low": {{ low_stock | default: 'null' }},
+                              "price": {% capture price_html %}{% render 'product-price', variant: variant %}{% endcapture %}{{ price_html | strip | json }}
+                            }{% unless forloop.last %},{% endunless %}
+                          {%- endfor -%}
+                        ]
+                      </script>
+                    </variant-picker>
+                  </div>
+                {%- endunless -%}
+
+              {%- when 'buy_buttons' -%}
+                <div class="product__block product__block--buy" {{ block.shopify_attributes }}>
+                  <p class="product__stock body-5" data-stock {% unless current_variant.inventory_quantity <= 5 and current_variant.inventory_quantity > 0 and current_variant.inventory_management == 'shopify' %}hidden{% endunless %}>
+                    <span class="product__stock-dot" aria-hidden="true"></span>
+                    <span data-stock-text>{{ 'products.page.low_stock' | t: count: current_variant.inventory_quantity }}</span>
+                  </p>
+
+                  {%- form 'product', product, id: form_id, class: 'product__form', novalidate: 'novalidate' -%}
+                    <input type="hidden" name="id" value="{{ current_variant.id }}" data-variant-id>
+
+                    <div class="product__buy-row">
+                      <div class="quantity" data-quantity>
+                        <button type="button" class="quantity__button" data-step="-1" aria-label="{{ 'products.page.decrease' | t }}">
+                          {%- render 'icon', name: 'minus' -%}
+                        </button>
+                        <label class="visually-hidden" for="Quantity-{{ section.id }}">{{ 'products.page.quantity' | t }}</label>
+                        <input
+                          class="quantity__input body-2"
+                          type="number"
+                          id="Quantity-{{ section.id }}"
+                          name="quantity"
+                          value="1"
+                          min="1"
+                          max="20"
+                          inputmode="numeric"
+                        >
+                        <button type="button" class="quantity__button" data-step="1" aria-label="{{ 'products.page.increase' | t }}">
+                          {%- render 'icon', name: 'plus' -%}
+                        </button>
+                      </div>
+
+                      <button
+                        type="submit"
+                        class="button product__add"
+                        data-add-button
+                        data-label-add="{{ 'products.quick_add.add' | t }}"
+                        data-label-sold-out="{{ 'products.card.sold_out' | t }}"
+                        data-label-adding="{{ 'products.quick_add.adding' | t }}"
+                        data-label-added="{{ 'products.quick_add.added' | t }}"
+                        {% unless current_variant.available %}disabled{% endunless %}
+                      >
+                        {%- render 'icon', name: 'handbag' -%}
+                        <span data-add-label>
+                          {%- if current_variant.available -%}
+                            {{ 'products.quick_add.add' | t }}
+                          {%- else -%}
+                            {{ 'products.card.sold_out' | t }}
+                          {%- endif -%}
+                        </span>
+                      </button>
+                    </div>
+
+                    {%- if block.settings.show_dynamic_checkout -%}
+                      <div class="product__dynamic-checkout">{{ form | payment_button }}</div>
+                    {%- endif -%}
+
+                    <p class="product__form-status body-6" role="status" data-form-status hidden></p>
+                  {%- endform -%}
+
+                  {%- if block.settings.promise != blank -%}
+                    <ul class="product__promises" role="list">
+                      {%- assign promises = block.settings.promise | newline_to_br | split: '<br />' -%}
+                      {%- for promise in promises -%}
+                        <li class="body-6">{%- render 'icon', name: 'check' -%}<span>{{ promise | strip }}</span></li>
+                      {%- endfor -%}
+                    </ul>
+                  {%- endif -%}
+                </div>
+
+              {%- when 'description' -%}
+                {%- if product.description != blank -%}
+                  <div class="product__block product__description rte body-3" {{ block.shopify_attributes }}>
+                    {{ product.description }}
+                  </div>
+                {%- endif -%}
+
+              {%- when 'collapsible' -%}
+                <details class="product__block product__collapsible" {{ block.shopify_attributes }} {% if block.settings.open %}open{% endif %}>
+                  <summary class="product__collapsible-summary title-3">
+                    {{ block.settings.heading }}
+                    {%- render 'icon', name: 'plus', class: 'product__collapsible-icon' -%}
+                  </summary>
+                  <div class="product__collapsible-content rte body-6">
+                    {{ block.settings.content }}
+                    {%- if block.settings.page != blank -%}
+                      {{ block.settings.page.content }}
+                    {%- endif -%}
+                  </div>
+                </details>
+
+              {%- when 'craft_note' -%}
+                <div class="product__block product__craft-note color-{{ block.settings.color_scheme }}" {{ block.shopify_attributes }}>
+                  <p class="caption-3">{{ block.settings.heading }}</p>
+                  <p class="body-6">{{ block.settings.text }}</p>
+                </div>
+            {%- endcase -%}
+          {%- endfor -%}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {%- comment -%} ---------- Zoom ---------- {%- endcomment -%}
+  <dialog class="product__lightbox" data-lightbox aria-label="{{ 'products.page.zoom_dialog' | t: title: product.title }}" scroll-lock>
+    <button type="button" class="product__lightbox-close site-header__icon-button" data-lightbox-close aria-label="{{ 'products.page.close_zoom' | t }}">
+      {%- render 'icon', name: 'x' -%}
+    </button>
+    <ul class="product__lightbox-list" role="list">
+      {%- for media in product.media -%}
+        {%- if media.media_type == 'image' -%}
+          <li data-lightbox-item>
+            {%- assign media_alt = media.alt | default: product.title -%}
+            {{
+              media
+              | image_url: width: 2400
+              | image_tag: widths: '1200, 1800, 2400', sizes: '100vw', loading: 'lazy', alt: media_alt
+            }}
+          </li>
+        {%- endif -%}
+      {%- endfor -%}
+    </ul>
+  </dialog>
+
+  {%- comment -%} ---------- Sticky add to cart (phones) ---------- {%- endcomment -%}
+  <div class="product__sticky color-{{ section.settings.color_scheme }}" data-sticky-bar aria-hidden="true" inert>
+    <div class="product__sticky-text">
+      <p class="product__sticky-title title-4">{{ product.title }}</p>
+      <div class="body-6" data-sticky-price>{%- render 'product-price', variant: current_variant -%}</div>
+    </div>
+    <button type="submit" form="{{ form_id }}" class="button button--small" data-sticky-add {% unless current_variant.available %}disabled{% endunless %}>
+      {%- if current_variant.available -%}
+        {{ 'products.quick_add.add' | t }}
+      {%- else -%}
+        {{ 'products.card.sold_out' | t }}
+      {%- endif -%}
+    </button>
+  </div>
+
+  {%- if has_model -%}
+    <script type="application/json" data-models>{{ product.media | where: 'media_type', 'model' | json }}</script>
+  {%- endif -%}
+</product-page>
 
 {% schema %}
 {
-  "name": "t:general.product",
-  "settings": [],
+  "name": "t:sections.product.name",
+  "class": "section-product",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:settings.colors.scheme",
+      "default": "scheme-kora"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "title",
+      "name": "t:sections.product.blocks.title",
+      "limit": 1,
+      "settings": [
+        { "type": "checkbox", "id": "show_vendor", "label": "t:sections.product.show_vendor", "default": false }
+      ]
+    },
+    {
+      "type": "price",
+      "name": "t:sections.product.blocks.price",
+      "limit": 1,
+      "settings": [
+        { "type": "text", "id": "tax_note", "label": "t:sections.product.tax_note", "default": "Inclusive of all taxes" }
+      ]
+    },
+    {
+      "type": "variant_picker",
+      "name": "t:sections.product.blocks.variant_picker",
+      "limit": 1,
+      "settings": []
+    },
+    {
+      "type": "buy_buttons",
+      "name": "t:sections.product.blocks.buy_buttons",
+      "limit": 1,
+      "settings": [
+        { "type": "checkbox", "id": "show_dynamic_checkout", "label": "t:sections.product.show_dynamic_checkout", "info": "t:sections.product.show_dynamic_checkout_info", "default": true },
+        { "type": "textarea", "id": "promise", "label": "t:sections.product.promise", "info": "t:sections.product.promise_info", "default": "Free shipping over ₹1,499\nFree gift wrap and a handwritten note\nEasy 7 day returns" }
+      ]
+    },
+    {
+      "type": "description",
+      "name": "t:sections.product.blocks.description",
+      "limit": 1,
+      "settings": []
+    },
+    {
+      "type": "collapsible",
+      "name": "t:sections.product.blocks.collapsible",
+      "settings": [
+        { "type": "text", "id": "heading", "label": "t:sections.product.collapsible_heading", "default": "Care" },
+        { "type": "richtext", "id": "content", "label": "t:sections.product.collapsible_content", "default": "<p>Wash cold, separately the first time; natural dyes may bleed a little at first. Dry in shade and iron while slightly damp.</p>" },
+        { "type": "page", "id": "page", "label": "t:sections.product.collapsible_page" },
+        { "type": "checkbox", "id": "open", "label": "t:sections.product.collapsible_open", "default": false }
+      ]
+    },
+    {
+      "type": "craft_note",
+      "name": "t:sections.product.blocks.craft_note",
+      "settings": [
+        { "type": "color_scheme", "id": "color_scheme", "label": "t:settings.colors.scheme", "default": "scheme-kora-2" },
+        { "type": "text", "id": "heading", "label": "t:sections.product.craft_heading", "default": "Printed by hand" },
+        { "type": "text", "id": "text", "label": "t:sections.product.craft_text", "default": "Each piece is stamped one block at a time, so small shifts in the print are part of its character." }
+      ]
+    }
+  ],
   "disabled_on": {
     "groups": ["header", "footer"]
   }

@@ -164,7 +164,7 @@ For each section:
 
 Calm, fast, no bugs. Agencies judge this part hardest.
 
-- [ ] **Product page**: gallery (photos, video, 3D models if you have them) with zoom; picking a size or color updates the price, photos, stock and URL; color swatches; add-to-cart button that stays on screen on mobile; size guide or ingredients from metafields; "Complete the look" product suggestions.
+- [x] **Product page** (built: swipe/stacked gallery with zoom dialog, video, 3D + AR; variant chips or select for long names, sold out values marked, price/stock/photo/URL update; quantity; dynamic checkout; promises; collapsible rows; craft note; sticky phone bar; Complete the look via recommendations API): gallery (photos, video, 3D models if you have them) with zoom; picking a size or color updates the price, photos, stock and URL; color swatches; add-to-cart button that stays on screen on mobile; size guide or ingredients from metafields; "Complete the look" product suggestions.
 - [ ] **Collection page**: filters and sorting (Shopify's free Search & Discovery app), cards that show a second photo on hover, quick add, a "load more" button.
 - [ ] **Cart drawer**: add, change and remove items without reloading the page (Cart API + Section Rendering API), free-shipping progress bar, a row of suggested products, a designed empty-cart state.
 - [ ] **Search suggestions** as you type, usable by keyboard.

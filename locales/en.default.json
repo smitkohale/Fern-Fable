@@ -158,6 +158,25 @@
       "options": "Options",
       "announce": "{{ title }} added to your cart.",
       "error": "Could not add this to your cart. Try again."
+    },
+    "page": {
+      "breadcrumb": "Breadcrumb",
+      "home": "Home",
+      "gallery": "Product photos",
+      "zoom": "Zoom photo {{ number }}",
+      "zoom_dialog": "Photos of {{ title }}",
+      "close_zoom": "Close photos",
+      "view_in_space": "View in your space",
+      "low_stock": {
+        "one": "Only {{ count }} left",
+        "other": "Only {{ count }} left"
+      },
+      "low_stock_template": "Only [count] left",
+      "unavailable": "Unavailable",
+      "added_suffix": "added to your cart.",
+      "quantity": "Quantity",
+      "decrease": "Decrease quantity",
+      "increase": "Increase quantity"
     }
   },
   "general": {

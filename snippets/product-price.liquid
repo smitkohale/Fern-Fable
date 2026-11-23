@@ -1,0 +1,25 @@
+{%- doc -%}
+  Price for one variant: sale price, struck compare at price and the saving,
+  or the regular price. Used on the product page and its sticky bar, and
+  rendered per variant into the picker's JSON so switching needs no maths in JS.
+
+  @param {variant} variant - The variant to price.
+
+  @example
+  {% render 'product-price', variant: product.selected_or_first_available_variant %}
+{%- enddoc -%}
+
+{%- if variant.compare_at_price > variant.price -%}
+  {%- assign saving = variant.compare_at_price | minus: variant.price | money_without_trailing_zeros -%}
+  <span class="price price--sale">
+    <span class="visually-hidden">{{ 'products.card.sale_price' | t }}</span>
+    <span class="price__current">{{ variant.price | money_without_trailing_zeros }}</span>
+    <span class="visually-hidden">{{ 'products.card.regular_price' | t }}</span>
+    <s class="price__compare">{{ variant.compare_at_price | money_without_trailing_zeros }}</s>
+    <span class="price__badge caption-3">{{ 'products.card.save' | t: amount: saving }}</span>
+  </span>
+{%- else -%}
+  <span class="price">
+    <span class="price__current">{{ variant.price | money_without_trailing_zeros }}</span>
+  </span>
+{%- endif -%}

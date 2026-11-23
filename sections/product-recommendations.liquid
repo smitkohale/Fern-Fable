@@ -1,0 +1,75 @@
+{%- comment -%}
+  Complete the look: Shopify's product recommendations. Rendered empty first,
+  then assets/product-recommendations.js fetches this same section from the
+  recommendations endpoint (complementary first, related as a fallback) and
+  swaps in the grid. Nothing shows if Shopify has no recommendations.
+{%- endcomment -%}
+
+{{ 'component-product-card.css' | asset_url | stylesheet_tag }}
+{{ 'section-product-recommendations.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'product-recommendations.js' | asset_url }}" type="module"></script>
+<script src="{{ 'quick-add.js' | asset_url }}" type="module"></script>
+
+<product-recommendations
+  class="recommendations full-width color-{{ section.settings.color_scheme }}"
+  data-url="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&product_id={{ product.id }}&limit={{ section.settings.products_to_show }}"
+>
+  {%- if recommendations.performed? and recommendations.products_count > 0 -%}
+    <div class="recommendations__inner page-width section-space">
+      <h2 class="recommendations__heading heading-3">
+        {%- if recommendations.intent == 'complementary' -%}
+          {{ section.settings.heading_complementary }}
+        {%- else -%}
+          {{ section.settings.heading_related }}
+        {%- endif -%}
+      </h2>
+      <ul class="product-grid recommendations__grid" role="list">
+        {%- for product in recommendations.products -%}
+          <li class="product-grid__item">
+            {%- render 'product-card', product: product, sizes: '(min-width: 1200px) 25vw, (min-width: 750px) 33vw, 50vw' -%}
+          </li>
+        {%- endfor -%}
+      </ul>
+    </div>
+  {%- endif -%}
+</product-recommendations>
+
+{% schema %}
+{
+  "name": "t:sections.recommendations.name",
+  "class": "section-recommendations",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:settings.colors.scheme",
+      "default": "scheme-kora"
+    },
+    {
+      "type": "text",
+      "id": "heading_complementary",
+      "label": "t:sections.recommendations.heading_complementary",
+      "info": "t:sections.recommendations.heading_complementary_info",
+      "default": "Complete the look"
+    },
+    {
+      "type": "text",
+      "id": "heading_related",
+      "label": "t:sections.recommendations.heading_related",
+      "default": "You might also like"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "min": 2,
+      "max": 8,
+      "step": 1,
+      "label": "t:sections.recommendations.products_to_show",
+      "default": 4
+    }
+  ],
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  }
+}
+{% endschema %}
