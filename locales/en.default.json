@@ -117,6 +117,13 @@
       "next": "Next reels",
       "play": "Play video: {{ title }}",
       "pause": "Pause video: {{ title }}"
+    },
+    "gift_finder": {
+      "count": {
+        "one": "{{ count }} gift",
+        "other": "{{ count }} gifts"
+      },
+      "browse": "Browse gifts"
     }
   },
   "newsletter": {

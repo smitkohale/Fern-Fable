@@ -1,0 +1,216 @@
+{%- comment -%}
+  Gift finder: big coloured tiles (Under ₹999, For hosts, The Festive Edit).
+  Each tile links to a collection, or to all products filtered by a tag when no
+  collection is picked (/collections/all/<tag>), so it works before any
+  collection exists. Three small product photos fan out on hover or focus.
+  "Festive only" tiles hide when festive mode is off.
+{%- endcomment -%}
+
+{{ 'section-gift-finder.css' | asset_url | stylesheet_tag }}
+
+<div class="gifts full-width color-{{ section.settings.color_scheme }} section-space">
+  <div class="page-width">
+    <div class="gifts__header" data-reveal="rise">
+      {%- if section.settings.heading != blank -%}
+        <h2 class="gifts__heading heading-2" id="GiftsHeading-{{ section.id }}">{{ section.settings.heading }}</h2>
+      {%- endif -%}
+      {%- if section.settings.text != blank -%}
+        <p class="gifts__text body-3 text-muted">{{ section.settings.text }}</p>
+      {%- endif -%}
+    </div>
+
+    <ul
+      class="gifts__list"
+      role="list"
+      {% if section.settings.heading != blank %}
+        aria-labelledby="GiftsHeading-{{ section.id }}"
+      {% endif %}
+      data-reveal-group
+    >
+      {%- for block in section.blocks -%}
+        {%- if block.settings.festive_only and settings.festive_mode == false -%}
+          {%- continue -%}
+        {%- endif -%}
+        {%- liquid
+          assign tile_collection = block.settings.collection
+          assign tag = block.settings.tag | strip | handleize
+          assign gift_count = 0
+
+          if tile_collection != blank
+            assign url = tile_collection.url
+            assign gift_count = tile_collection.products_count
+          elsif tag != blank
+            assign url = routes.all_products_collection_url | append: '/' | append: tag
+          else
+            assign url = routes.all_products_collection_url
+          endif
+        -%}
+        <li class="gifts__item" data-reveal="rise" {{ block.shopify_attributes }}>
+          <a href="{{ url }}" class="gift-tile gift-tile--{{ block.settings.tone }}">
+            <div class="gift-tile__text">
+              {%- if block.settings.eyebrow != blank -%}
+                <p class="gift-tile__eyebrow caption-3">{{ block.settings.eyebrow }}</p>
+              {%- endif -%}
+              <h3 class="gift-tile__title heading-3">{{ block.settings.title }}</h3>
+              {%- if block.settings.text != blank -%}
+                <p class="gift-tile__copy body-6">{{ block.settings.text }}</p>
+              {%- endif -%}
+            </div>
+
+            <div class="gift-tile__visual" aria-hidden="true">
+              {%- if block.settings.image != blank -%}
+                {{
+                  block.settings.image
+                  | image_url: width: 900
+                  | image_tag:
+                    widths: '360, 540, 720, 900',
+                    sizes: '(min-width: 990px) 30vw, 90vw',
+                    loading: 'lazy',
+                    class: 'gift-tile__image',
+                    alt: ''
+                }}
+              {%- else -%}
+                <div class="gift-tile__fan">
+                  {%- if tile_collection != blank -%}
+                    {%- for product in tile_collection.products limit: 3 -%}
+                      {%- if product.featured_image -%}
+                        <span class="gift-tile__card" style="--n: {{ forloop.index0 }};">
+                          {{ product.featured_image | image_url: width: 360 | image_tag: widths: '180, 360', sizes: '140px', loading: 'lazy', alt: '' }}
+                        </span>
+                      {%- endif -%}
+                    {%- endfor -%}
+                  {%- elsif tag != blank -%}
+                    {%- assign shown = 0 -%}
+                    {%- for product in collections.all.products limit: 50 -%}
+                      {%- assign product_tags = product.tags | join: ',' | downcase | split: ',' -%}
+                      {%- if product_tags contains tag -%}
+                        {%- assign gift_count = gift_count | plus: 1 -%}
+                        {%- if shown < 3 and product.featured_image -%}
+                          <span class="gift-tile__card" style="--n: {{ shown }};">
+                            {{ product.featured_image | image_url: width: 360 | image_tag: widths: '180, 360', sizes: '140px', loading: 'lazy', alt: '' }}
+                          </span>
+                          {%- assign shown = shown | plus: 1 -%}
+                        {%- endif -%}
+                      {%- endif -%}
+                    {%- endfor -%}
+                  {%- endif -%}
+                </div>
+              {%- endif -%}
+            </div>
+
+            <div class="gift-tile__footer">
+              <span class="gift-tile__count body-5">
+                {%- if gift_count > 0 -%}
+                  {{ 'sections.gift_finder.count' | t: count: gift_count }}
+                {%- else -%}
+                  {{ 'sections.gift_finder.browse' | t }}
+                {%- endif -%}
+              </span>
+              <span class="gift-tile__arrow">
+                {%- render 'icon', name: 'arrow-right' -%}
+              </span>
+            </div>
+          </a>
+        </li>
+      {%- endfor -%}
+    </ul>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.gift_finder.name",
+  "class": "section-gift-finder",
+  "max_blocks": 4,
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:settings.colors.scheme",
+      "default": "scheme-kora"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "t:sections.gift_finder.heading",
+      "default": "Gifts they'll actually use"
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "t:sections.gift_finder.text",
+      "default": "Every order ships in a cotton wrap with a handwritten note, free."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "tile",
+      "name": "t:sections.gift_finder.tile",
+      "settings": [
+        {
+          "type": "text",
+          "id": "eyebrow",
+          "label": "t:sections.gift_finder.eyebrow"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "t:sections.gift_finder.title",
+          "default": "Under ₹999"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "t:sections.gift_finder.tile_text"
+        },
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "t:sections.gift_finder.collection"
+        },
+        {
+          "type": "text",
+          "id": "tag",
+          "label": "t:sections.gift_finder.tag",
+          "info": "t:sections.gift_finder.tag_info"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "t:sections.gift_finder.image",
+          "info": "t:sections.gift_finder.image_info"
+        },
+        {
+          "type": "select",
+          "id": "tone",
+          "label": "t:sections.gift_finder.tone",
+          "options": [
+            { "value": "turmeric", "label": "t:sections.gift_finder.tone_turmeric" },
+            { "value": "madder", "label": "t:sections.gift_finder.tone_madder" },
+            { "value": "indigo", "label": "t:sections.gift_finder.tone_indigo" },
+            { "value": "forest", "label": "t:sections.gift_finder.tone_forest" }
+          ],
+          "default": "turmeric"
+        },
+        {
+          "type": "checkbox",
+          "id": "festive_only",
+          "label": "t:sections.gift_finder.festive_only",
+          "info": "t:sections.gift_finder.festive_only_info",
+          "default": false
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.gift_finder.name",
+      "blocks": [
+        { "type": "tile", "settings": { "title": "Under ₹999", "tag": "gift-under-999", "tone": "turmeric" } },
+        { "type": "tile", "settings": { "title": "For hosts", "tag": "gift-for-hosts", "tone": "madder" } },
+        { "type": "tile", "settings": { "title": "The Festive Edit", "tag": "festive", "tone": "forest", "festive_only": true } }
+      ]
+    }
+  ]
+}
+{% endschema %}

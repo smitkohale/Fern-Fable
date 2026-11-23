@@ -143,6 +143,7 @@ Fern & Fable picks (from START.md): ★ hero with a three.js cloth unfurling ont
 - [ ] Scrolling strip of brand claims or press quotes (CSS only; it stops on hover and for people who turn off motion)
 - [x] Craft story: steps scroll past a pinned 3D carved block that turns (carve), dips in indigo (dye) and stamps the cloth (print); follows scroll, never hijacks it; flat print fallback
 - [x] Product reels: swipeable 9:16 video row with quick add; plays only in view, per reel pause, posters for reduced motion and Save Data
+- [x] Gift finder: Under ₹999, For hosts, The Festive Edit (festive only) tiles; tag links work before collections exist; product photos fan out on hover
 - [ ] Magazine-style image + text with huge numbers and mixed type sizes
 - [x] Shop the look, The Indigo Table: numbered dots open product cards with quick add (bottom sheet on phones), matching list, total and "Add the whole look" (items[] form, works without JS)
 - [x] Shop by collection: staggered row of 5 tiles, hover and focus react, swipe row on phones

@@ -249,6 +249,27 @@
       "poster_info": "Shown before the video plays and to people who turn off motion.",
       "reel_caption": "Caption",
       "reel_caption_info": "Leave empty to show the product title."
+    },
+    "gift_finder": {
+      "name": "Gift finder",
+      "heading": "Heading",
+      "text": "Text",
+      "tile": "Gift tile",
+      "eyebrow": "Small line above the title",
+      "title": "Title",
+      "tile_text": "Text",
+      "collection": "Collection",
+      "tag": "Or a product tag",
+      "tag_info": "Used when no collection is picked: links to all products with this tag, for example gift-under-999.",
+      "image": "Image",
+      "image_info": "Leave empty to show three product photos that fan out on hover.",
+      "tone": "Tile colour",
+      "tone_turmeric": "Turmeric",
+      "tone_madder": "Madder",
+      "tone_indigo": "Indigo",
+      "tone_forest": "Forest (festive)",
+      "festive_only": "Festive only",
+      "festive_only_info": "Hidden while festive mode is off."
     }
   }
 }

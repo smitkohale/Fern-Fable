@@ -282,6 +282,54 @@
         "caption": "In use",
         "heading": "See it on the table"
       }
+    },
+    "gift-finder": {
+      "type": "gift-finder",
+      "blocks": {
+        "tile-under-999": {
+          "type": "tile",
+          "settings": {
+            "eyebrow": "Small and lovely",
+            "title": "Under ₹999",
+            "text": "Napkins, coasters, cushion covers and roti covers.",
+            "tag": "gift-under-999",
+            "tone": "turmeric",
+            "festive_only": false
+          }
+        },
+        "tile-hosts": {
+          "type": "tile",
+          "settings": {
+            "eyebrow": "Never arrive empty handed",
+            "title": "For hosts",
+            "text": "Aprons, throws and boxes that say thank you for having us.",
+            "tag": "gift-for-hosts",
+            "tone": "madder",
+            "festive_only": false
+          }
+        },
+        "tile-festive": {
+          "type": "tile",
+          "settings": {
+            "eyebrow": "Christmas and New Year",
+            "title": "The Festive Edit",
+            "text": "Winter Berry linen, star ornaments and the Festive Host Box.",
+            "tag": "festive",
+            "tone": "forest",
+            "festive_only": true
+          }
+        }
+      },
+      "block_order": [
+        "tile-under-999",
+        "tile-hosts",
+        "tile-festive"
+      ],
+      "settings": {
+        "color_scheme": "scheme-kora",
+        "heading": "Gifts they'll actually use",
+        "text": "Every order ships in a cotton wrap with a handwritten note, free."
+      }
     }
   },
   "order": [
@@ -291,6 +339,7 @@
     "product-tabs",
     "tagline-reveal",
     "shop-the-look",
-    "craft-story"
+    "craft-story",
+    "gift-finder"
   ]
 }
